@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'hospice_setup_screen.dart';
 
 class SetupInfoScreen extends StatefulWidget {
@@ -8,136 +10,263 @@ class SetupInfoScreen extends StatefulWidget {
   State<SetupInfoScreen> createState() => _SetupInfoScreenState();
 }
 
-class _SetupInfoScreenState extends State<SetupInfoScreen> {
+class _SetupInfoScreenState extends State<SetupInfoScreen>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
-
   final patientController = TextEditingController();
   final caregiverController = TextEditingController();
   final emailController = TextEditingController();
+
+  late AnimationController _animController;
+  late Animation<double> _fadeAnim;
+  late Animation<Offset> _slideAnim;
+
+  int? _focusedField; // track which field is focused for highlight
+
+  @override
+  void initState() {
+    super.initState();
+    _animController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    );
+    _fadeAnim = CurvedAnimation(parent: _animController, curve: Curves.easeOut);
+    _slideAnim = Tween<Offset>(
+      begin: const Offset(0, 0.06),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _animController, curve: Curves.easeOut));
+    _animController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animController.dispose();
+    patientController.dispose();
+    caregiverController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: double.infinity,
+        height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color(0xFFF8F6FC), // lilac white
-              Colors.white,
-            ],
+            colors: [Color(0xFFE6E2EE), Color(0xFFDAD4E6)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
+          child: FadeTransition(
+            opacity: _fadeAnim,
+            child: SlideTransition(
+              position: _slideAnim,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 16),
 
-                  /// Back button
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back_ios_new),
-                    color: Color(0xFF6B5B95),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  /// Title
-                  const Text(
-                    "Who are you caring for?",
-                    style: TextStyle(
-                      fontSize: 34,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF6B5B95),
-                    ),
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  const Text(
-                    "We'll help coordinate care and keep everyone connected.",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color(0xFF8B7BB5),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-
-                  const SizedBox(height: 40),
-
-                  /// Patient name
-                  _buildLabel("Patient's Name"),
-                  _buildTextField(
-                    controller: patientController,
-                    hint: "Enter full name",
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  /// Caregiver name
-                  _buildLabel("Your name"),
-                  _buildTextField(
-                    controller: caregiverController,
-                    hint: "Your full name",
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  /// Email
-                  _buildLabel("Your email"),
-                  _buildTextField(
-                    controller: emailController,
-                    hint: "name@example.com",
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-
-                  const SizedBox(height: 40),
-
-                  /// Continue button
-                  SizedBox(
-                    width: double.infinity,
-                    height: 64,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF6B5B95),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
+                      // Back button
+                      GestureDetector(
+                        onTap: () => context.go('/'),
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFE1DCEA),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: const Color(0xFFCFC8DB)),
+                          ),
+                          child: const Icon(
+                            Icons.arrow_back_ios_new,
+                            size: 16,
+                            color: Color(0xFF6C648B),
+                          ),
                         ),
                       ),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => HospiceSetupScreen(
-                                patientName: patientController.text,
-                                caregiverName: caregiverController.text,
-                                email: emailController.text,
-                              ),
+
+                      const SizedBox(height: 32),
+
+                      // Step indicator
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE1DCEA),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: const Color(0xFFCFC8DB)),
+                        ),
+                        child: Text(
+                          'STEP 1 OF 2',
+                          style: GoogleFonts.inter(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 2,
+                            color: const Color(0xFF7A7195),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Title
+                      Text(
+                        'Who are you\ncaring for?',
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 48,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF443C63),
+                          height: 1.0,
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      Text(
+                        "We'll help coordinate care and keep\neveryone connected.",
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 17,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF6C648B),
+                          height: 1.4,
+                        ),
+                      ),
+
+                      const SizedBox(height: 40),
+
+                      // Divider with ring motif
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              color: const Color(0xFFD4CDDF),
+                              thickness: 1,
                             ),
-                          );
-                        }
-                      },
-                      child: const Text(
-                        "Continue",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: _miniRing(),
+                          ),
+                          Expanded(
+                            child: Divider(
+                              color: const Color(0xFFD4CDDF),
+                              thickness: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 32),
+
+                      // Fields
+                      _buildField(
+                        index: 0,
+                        label: "Patient's Name",
+                        hint: 'Enter full name',
+                        controller: patientController,
+                        icon: Icons.favorite_border_rounded,
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      _buildField(
+                        index: 1,
+                        label: 'Your Name',
+                        hint: 'Your full name',
+                        controller: caregiverController,
+                        icon: Icons.person_outline_rounded,
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      _buildField(
+                        index: 2,
+                        label: 'Your Email',
+                        hint: 'name@example.com',
+                        controller: emailController,
+                        icon: Icons.mail_outline_rounded,
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+
+                      const SizedBox(height: 44),
+
+                      // Continue button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 60,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF6B5B8E),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32),
+                            ),
+                          ),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => HospiceSetupScreen(
+                                    patientName: patientController.text,
+                                    caregiverName: caregiverController.text,
+                                    email: emailController.text,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Continue',
+                                style: GoogleFonts.cormorantGaramond(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              const Icon(
+                                Icons.arrow_forward,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
 
-                  const SizedBox(height: 40),
-                ],
+                      const SizedBox(height: 20),
+
+                      // Privacy note
+                      Center(
+                        child: Text(
+                          '🔒  Your information stays private to your care team',
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            color: const Color(0xFF9B92B8),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 40),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
@@ -146,46 +275,117 @@ class _SetupInfoScreenState extends State<SetupInfoScreen> {
     );
   }
 
-  // 🔹 Label
-  Widget _buildLabel(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w800,
-          color: Color(0xFF6B5B95),
-        ),
+  Widget _buildField({
+    required int index,
+    required String label,
+    required String hint,
+    required TextEditingController controller,
+    required IconData icon,
+    TextInputType? keyboardType,
+  }) {
+    final isFocused = _focusedField == index;
+    return Focus(
+      onFocusChange: (focused) {
+        setState(() => _focusedField = focused ? index : null);
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 8),
+            child: Text(
+              label,
+              style: GoogleFonts.inter(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.3,
+                color: isFocused
+                    ? const Color(0xFF7A64A4)
+                    : const Color(0xFF6C648B),
+              ),
+            ),
+          ),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(isFocused ? 1.0 : 0.7),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: isFocused
+                    ? const Color(0xFF7A64A4)
+                    : const Color(0xFFD4CDDF),
+                width: isFocused ? 2 : 1.5,
+              ),
+              boxShadow: isFocused
+                  ? [
+                      BoxShadow(
+                        color: const Color(0xFF7A64A4).withOpacity(0.12),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ]
+                  : [],
+            ),
+            child: TextFormField(
+              controller: controller,
+              keyboardType: keyboardType,
+              style: GoogleFonts.inter(
+                fontSize: 15,
+                color: const Color(0xFF443C63),
+                fontWeight: FontWeight.w500,
+              ),
+              validator: (v) =>
+                  v == null || v.trim().isEmpty ? 'Required' : null,
+              decoration: InputDecoration(
+                hintText: hint,
+                hintStyle: GoogleFonts.inter(
+                  fontSize: 14,
+                  color: const Color(0xFFB8B0CC),
+                ),
+                prefixIcon: Icon(
+                  icon,
+                  size: 20,
+                  color: isFocused
+                      ? const Color(0xFF7A64A4)
+                      : const Color(0xFFB8B0CC),
+                ),
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 18,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  // 🔹 TextField
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hint,
-    TextInputType? keyboardType,
-  }) {
-    return Container(
-      height: 64,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Color(0xFFE5E1F0), width: 2),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 3),
+  Widget _miniRing() {
+    return SizedBox(
+      width: 18,
+      height: 18,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: 18,
+            height: 18,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFD4CDDF), width: 1),
+            ),
+          ),
+          Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFD4CDDF), width: 1),
+            ),
+          ),
         ],
-      ),
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        validator: (v) => v == null || v.isEmpty ? "Required" : null,
-        decoration: InputDecoration(
-          hintText: hint,
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-        ),
       ),
     );
   }
