@@ -172,7 +172,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                       // Fields
                       _buildField(
                         index: 0,
-                        label: "Patient's Name",
+                        label: "Patient's full Name",
                         hint: 'Enter full name',
                         controller: patientController,
                         icon: Icons.favorite_border_rounded,
@@ -182,7 +182,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
 
                       _buildField(
                         index: 1,
-                        label: 'Your Name',
+                        label: 'Your full Name',
                         hint: 'Your full name',
                         controller: caregiverController,
                         icon: Icons.person_outline_rounded,

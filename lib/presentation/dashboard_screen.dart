@@ -187,7 +187,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
                     const SizedBox(height: 12),
 
-                    // ── Messages — full width with small side padding ──
+                    // ── Messages ──
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: _messagesCard(),
@@ -195,7 +195,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
                     const SizedBox(height: 10),
 
-                    // ── Emergency — full width with small side padding ──
+                    // ── Emergency ──
                     if (careTeam.nurseLineNumber != null &&
                         careTeam.nurseLineNumber!.isNotEmpty)
                       Padding(
@@ -332,10 +332,8 @@ class _DashboardScreenState extends State<DashboardScreen>
     return LayoutBuilder(
       builder: (context, constraints) {
         final spacing = 12.0;
-        // card size = half width minus half spacing, and same for height
         final cardW = (constraints.maxWidth - spacing) / 2;
         final cardH = (constraints.maxHeight - spacing) / 2;
-        // use the smaller dimension to keep cards square
         final cardSize = cardW < cardH ? cardW : cardH;
 
         return Center(
@@ -372,7 +370,9 @@ class _DashboardScreenState extends State<DashboardScreen>
       child: SizedBox(
         width: size,
         height: size,
+        // ✅ clipBehavior.none allows badge to overflow outside card boundary
         child: Stack(
+          clipBehavior: Clip.none,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(22),
@@ -429,25 +429,35 @@ class _DashboardScreenState extends State<DashboardScreen>
                 ),
               ),
             ),
+
+            // ✅ Badge — outside top-right corner like reference image
             if (c.badge > 0)
               Positioned(
-                top: 8,
-                right: 8,
+                top: -8,
+                right: -8,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 7,
-                    vertical: 3,
-                  ),
+                  width: 26,
+                  height: 26,
                   decoration: BoxDecoration(
                     color: Colors.red.shade600,
-                    borderRadius: BorderRadius.circular(20),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.red.withOpacity(0.4),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
-                  child: Text(
-                    c.badge.toString(),
-                    style: GoogleFonts.inter(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w700,
+                  child: Center(
+                    child: Text(
+                      c.badge.toString(),
+                      style: GoogleFonts.inter(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ),
                 ),
@@ -461,7 +471,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   // ─── Messages ──────────────────────────────────────────────────────────────
   Widget _messagesCard() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => context.push('/messages'),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: BackdropFilter(

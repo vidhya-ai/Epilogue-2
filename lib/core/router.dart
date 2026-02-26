@@ -11,6 +11,7 @@ import '../presentation/calendar_screen.dart';
 import '../presentation/symptom_events_screen.dart';
 import '../presentation/moments_screen.dart';
 import '../presentation/care_plan_screen.dart';
+import '../presentation/messages.dart';
 import '../presentation/what_we_provide_screen.dart';
 import '../presentation/how_it_works_screen.dart';
 
@@ -61,6 +62,11 @@ final GoRouter appRouter = GoRouter(
       path: '/moments',
       builder: (BuildContext context, GoRouterState state) =>
           const MomentsScreen(),
+    ),
+    GoRoute(
+      path: '/messages',
+      builder: (BuildContext context, GoRouterState state) =>
+          const MessagesScreen(),
     ),
     GoRoute(
       path: '/care_plan',
