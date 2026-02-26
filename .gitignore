@@ -1,0 +1,94 @@
+# ===============================
+# OS & Misc
+# ===============================
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*.swo
+*.class
+*.pyc
+.history
+.svn/
+.atom/
+.build/
+.buildlog/
+.swiftpm/
+migrate_working_dir/
+
+# ===============================
+# IDE / Editors
+# ===============================
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# ===============================
+# Flutter / Dart
+# ===============================
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+coverage/
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+
+# Generated Dart files (optional but recommended)
+*.g.dart
+
+# ===============================
+# Flutter Generated Plugin Files
+# ===============================
+**/generated_plugin_registrant.*
+**/GeneratedPluginRegistrant.*
+
+# ===============================
+# Platform Ephemeral Files
+# ===============================
+
+# Android
+android/.gradle/
+android/app/build/
+android/local.properties
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/ephemeral/
+
+# macOS
+macos/Flutter/ephemeral/
+macos/Pods/
+
+# Linux
+linux/flutter/ephemeral/
+
+# Windows
+windows/flutter/ephemeral/
+
+# ===============================
+# Symbolication / Obfuscation
+# ===============================
+app.*.symbols
+app.*.map.json
+
+# ===============================
+# Flutter Docs
+# ===============================
+**/doc/api/
+**/ios/Flutter/.last_build_id
+
+# ===============================
+# Android build outputs
+# ===============================
+/android/app/debug
+/android/app/profile
+/android/app/release
