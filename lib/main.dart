@@ -19,7 +19,7 @@ Future<void> main() async {
       ? configuredAnonKey
       : (configuredKey.isNotEmpty
             ? configuredKey
-            : 'sb_secret_N7UND0UgjKTVK-Uodkm0Hg_xSvEMPv');
+            : 'sb_secret_N7UND0UgjKTVK-Uodkm0Hg_xSvEMPvz');
 
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
