@@ -160,7 +160,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                   child: Row(
                     children: [
                       Text('Log Symptoms',
-                          style: GoogleFonts.cormorantGaramond(
+                          style: GoogleFonts.nunito(
                             fontSize: 28,
                             fontWeight: FontWeight.w600,
                             color: _deepPurple,
@@ -183,7 +183,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                       children: [
                         // ── Severity ──
                         Text('Severity',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.nunito(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
                               color: _mutedPurple,
@@ -220,7 +220,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                                   ),
                                   child: Center(
                                     child: Text(s,
-                                        style: GoogleFonts.inter(
+                                        style: GoogleFonts.nunito(
                                           fontSize: 13,
                                           fontWeight: isSelected
                                               ? FontWeight.w700
@@ -240,14 +240,14 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
 
                         // ── Symptoms ──
                         Text('Symptoms',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.nunito(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
                               color: _mutedPurple,
                             )),
                         const SizedBox(height: 4),
                         Text('Select all that apply',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.nunito(
                                 fontSize: 11, color: _lightPurple)),
                         const SizedBox(height: 10),
 
@@ -312,7 +312,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                                                 Colors.red.shade400),
                                       ),
                                     Text(symptom,
-                                        style: GoogleFonts.inter(
+                                        style: GoogleFonts.nunito(
                                           fontSize: 12,
                                           fontWeight: isSelected
                                               ? FontWeight.w600
@@ -341,12 +341,12 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                             ),
                             child: TextField(
                               controller: otherCtrl,
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.nunito(
                                   fontSize: 13, color: _deepPurple),
                               decoration: InputDecoration(
                                 hintText:
                                     'Describe other symptom...',
-                                hintStyle: GoogleFonts.inter(
+                                hintStyle: GoogleFonts.nunito(
                                     fontSize: 13,
                                     color:
                                         const Color(0xFFB8B0CC)),
@@ -379,7 +379,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                                 Expanded(
                                   child: Text(
                                     'Severe symptoms detected. The nurse will be automatically notified.',
-                                    style: GoogleFonts.inter(
+                                    style: GoogleFonts.nunito(
                                       fontSize: 12,
                                       color: Colors.red.shade700,
                                       fontWeight: FontWeight.w500,
@@ -441,7 +441,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                                 Expanded(
                                   child: Text(
                                     'I already contacted the nurse',
-                                    style: GoogleFonts.inter(
+                                    style: GoogleFonts.nunito(
                                       fontSize: 13,
                                       color: _deepPurple,
                                       fontWeight: FontWeight.w500,
@@ -457,7 +457,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
 
                         // ── Additional notes ──
                         Text('Additional notes (optional)',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.nunito(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
                               color: _mutedPurple,
@@ -472,12 +472,12 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                           child: TextField(
                             controller: notesCtrl,
                             maxLines: 3,
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.nunito(
                                 fontSize: 13, color: _deepPurple),
                             decoration: InputDecoration(
                               hintText:
                                   'Any additional context...',
-                              hintStyle: GoogleFonts.inter(
+                              hintStyle: GoogleFonts.nunito(
                                   fontSize: 13,
                                   color: const Color(0xFFB8B0CC)),
                               border: InputBorder.none,
@@ -543,7 +543,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                                     _loadEvents();
                                   },
                             child: Text('Log Symptoms',
-                                style: GoogleFonts.cormorantGaramond(
+                                style: GoogleFonts.nunito(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.white,
@@ -604,13 +604,13 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Symptoms',
-                              style: GoogleFonts.cormorantGaramond(
+                              style: GoogleFonts.nunito(
                                 fontSize: 26,
                                 fontWeight: FontWeight.w600,
                                 color: _deepPurple,
                               )),
                           Text('${_events.length} logged events',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.nunito(
                                   fontSize: 11, color: _mutedPurple)),
                         ],
                       ),
@@ -671,7 +671,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                 const Icon(Icons.add, color: Colors.white, size: 20),
                 const SizedBox(width: 8),
                 Text('Log Symptoms',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.nunito(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -725,7 +725,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                       color: severityColor.withOpacity(0.4)),
                 ),
                 child: Text(event.severity ?? 'Unknown',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.nunito(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       color: severityColor,
@@ -746,7 +746,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                           size: 11, color: Colors.red.shade500),
                       const SizedBox(width: 3),
                       Text('Nurse notified',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.nunito(
                             fontSize: 10,
                             color: Colors.red.shade500,
                             fontWeight: FontWeight.w600,
@@ -757,7 +757,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
               ],
               const Spacer(),
               Text(time,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.nunito(
                       fontSize: 10, color: _lightPurple)),
             ],
           ),
@@ -782,7 +782,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                   ),
                 ),
                 child: Text(s,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.nunito(
                       fontSize: 11,
                       color: isSev
                           ? Colors.red.shade600
@@ -794,7 +794,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
           if (event.whatHappened != null) ...[
             const SizedBox(height: 8),
             Text(event.whatHappened!,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.nunito(
                   fontSize: 12,
                   color: _mutedPurple,
                   fontStyle: FontStyle.italic,
@@ -802,7 +802,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
           ],
           const SizedBox(height: 8),
           Text('Logged by ${event.createdByMemberName ?? 'Unknown'}',
-              style: GoogleFonts.inter(
+              style: GoogleFonts.nunito(
                   fontSize: 10, color: _lightPurple)),
         ],
       ),
@@ -826,14 +826,14 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
           ),
           const SizedBox(height: 16),
           Text('No symptoms logged',
-              style: GoogleFonts.lora(
+              style: GoogleFonts.nunito(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
                 color: _deepPurple,
               )),
           const SizedBox(height: 6),
           Text('Tap "Log Symptoms" to get started',
-              style: GoogleFonts.inter(
+              style: GoogleFonts.nunito(
                   fontSize: 13, color: _mutedPurple)),
         ],
       ),

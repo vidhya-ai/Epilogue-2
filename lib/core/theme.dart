@@ -2,28 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
+  // Nunito font system:
+  //   Headings / Titles  → Nunito Bold (700–800)
+  //   Body / Notes        → Nunito Regular (400–500)
+  //   Labels / Small text → Nunito SemiBold (600)
   static final TextTheme _textTheme = TextTheme(
-    displayLarge: GoogleFonts.cormorantGaramond(
-      fontSize: 57,
-      fontWeight: FontWeight.bold,
-    ),
-    displayMedium: GoogleFonts.cormorantGaramond(
+    displayLarge: GoogleFonts.nunito(fontSize: 57, fontWeight: FontWeight.w800),
+    displayMedium: GoogleFonts.nunito(
       fontSize: 45,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w700,
     ),
-    displaySmall: GoogleFonts.cormorantGaramond(
-      fontSize: 36,
-      fontWeight: FontWeight.w600,
+    displaySmall: GoogleFonts.nunito(fontSize: 36, fontWeight: FontWeight.w700),
+    headlineLarge: GoogleFonts.nunito(
+      fontSize: 32,
+      fontWeight: FontWeight.w700,
     ),
-    headlineLarge: GoogleFonts.lora(fontSize: 32, fontWeight: FontWeight.w600),
-    headlineMedium: GoogleFonts.lora(fontSize: 28, fontWeight: FontWeight.w600),
-    titleLarge: GoogleFonts.lora(fontSize: 22, fontWeight: FontWeight.w600),
-    titleMedium: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w500),
-    titleSmall: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w500),
-    bodyLarge: GoogleFonts.inter(fontSize: 16, height: 1.5),
-    bodyMedium: GoogleFonts.inter(fontSize: 14, height: 1.4),
-    labelLarge: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600),
-    labelSmall: GoogleFonts.inter(fontSize: 11),
+    headlineMedium: GoogleFonts.nunito(
+      fontSize: 28,
+      fontWeight: FontWeight.w700,
+    ),
+    titleLarge: GoogleFonts.nunito(fontSize: 22, fontWeight: FontWeight.w700),
+    titleMedium: GoogleFonts.nunito(fontSize: 16, fontWeight: FontWeight.w500),
+    titleSmall: GoogleFonts.nunito(fontSize: 14, fontWeight: FontWeight.w500),
+    bodyLarge: GoogleFonts.nunito(
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      height: 1.5,
+    ),
+    bodyMedium: GoogleFonts.nunito(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      height: 1.4,
+    ),
+    labelLarge: GoogleFonts.nunito(fontSize: 14, fontWeight: FontWeight.w600),
+    labelSmall: GoogleFonts.nunito(fontSize: 11, fontWeight: FontWeight.w600),
   );
 
   static ThemeData get lightTheme {

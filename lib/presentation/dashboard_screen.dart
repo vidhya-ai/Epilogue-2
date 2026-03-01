@@ -95,7 +95,7 @@ class _DashboardScreenState extends State<DashboardScreen>
             children: [
               Text(
                 'Session expired',
-                style: GoogleFonts.cormorantGaramond(
+                style: GoogleFonts.nunito(
                   fontSize: 24,
                   color: _deepPurple,
                 ),
@@ -156,7 +156,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                         children: [
                           Text(
                             'Welcome back, $firstName',
-                            style: GoogleFonts.cormorantGaramond(
+                            style: GoogleFonts.nunito(
                               fontSize: 30,
                               fontWeight: FontWeight.w600,
                               color: _deepPurple,
@@ -166,7 +166,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                           const SizedBox(height: 3),
                           Text(
                             'How can we help today?',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.nunito(
                               fontSize: 13,
                               color: _mutedPurple,
                             ),
@@ -231,7 +231,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           child: Center(
             child: Text(
               'E',
-              style: GoogleFonts.cormorantGaramond(
+              style: GoogleFonts.nunito(
                 fontSize: 22,
                 fontWeight: FontWeight.w700,
                 color: _purple,
@@ -246,7 +246,7 @@ class _DashboardScreenState extends State<DashboardScreen>
             children: [
               Text(
                 'Epilogue',
-                style: GoogleFonts.cormorantGaramond(
+                style: GoogleFonts.nunito(
                   fontSize: 19,
                   fontWeight: FontWeight.w700,
                   color: _deepPurple,
@@ -255,7 +255,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
               Text(
                 "${careTeam.patientFirstName ?? 'Your'}'s Care Space",
-                style: GoogleFonts.inter(
+                style: GoogleFonts.nunito(
                   fontSize: 11,
                   color: _mutedPurple,
                   fontWeight: FontWeight.w500,
@@ -266,7 +266,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         ),
         Text(
           today,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.nunito(
             fontSize: 10,
             color: _mutedPurple,
             fontWeight: FontWeight.w500,
@@ -409,7 +409,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       Text(
                         c.title,
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.lora(
+                        style: GoogleFonts.nunito(
                           fontSize: size * 0.09,
                           fontWeight: FontWeight.w600,
                           color: _deepPurple,
@@ -419,7 +419,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       Text(
                         c.subtitle,
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.nunito(
                           fontSize: size * 0.074,
                           color: _mutedPurple,
                         ),
@@ -453,7 +453,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   child: Center(
                     child: Text(
                       c.badge.toString(),
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.nunito(
                         color: Colors.white,
                         fontSize: 11,
                         fontWeight: FontWeight.w800,
@@ -508,7 +508,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     children: [
                       Text(
                         'Messages',
-                        style: GoogleFonts.lora(
+                        style: GoogleFonts.nunito(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
                           color: _deepPurple,
@@ -516,7 +516,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       ),
                       Text(
                         'Team communication',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.nunito(
                           fontSize: 11,
                           color: _mutedPurple,
                         ),
@@ -536,7 +536,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     ),
                     child: Text(
                       '$_messageBadge new',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.nunito(
                         color: Colors.white,
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
@@ -590,7 +590,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               children: [
                 Text(
                   'Emergency Help',
-                  style: GoogleFonts.lora(
+                  style: GoogleFonts.nunito(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: Colors.redAccent,
@@ -598,7 +598,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 ),
                 Text(
                   'Nurse on call 24/7',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.nunito(
                     fontSize: 11,
                     color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.6),
                   ),
@@ -621,7 +621,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
               child: Text(
                 'CALL NOW',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.nunito(
                   color: Colors.white,
                   fontSize: 11,
                   fontWeight: FontWeight.w800,
@@ -739,7 +739,7 @@ class _BottomNav extends StatelessWidget {
           const SizedBox(height: 1),
           Text(
             item.label,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.nunito(
               fontSize: 9,
               fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
               color: isActive
@@ -784,7 +784,7 @@ class _AppDrawer extends StatelessWidget {
                 children: [
                   Text(
                     'Epilogue',
-                    style: GoogleFonts.cormorantGaramond(
+                    style: GoogleFonts.nunito(
                       fontSize: 32,
                       fontWeight: FontWeight.w600,
                       color: const Color(0xFF443C63),
@@ -792,7 +792,7 @@ class _AppDrawer extends StatelessWidget {
                   ),
                   Text(
                     "$patientName's Care Space",
-                    style: GoogleFonts.inter(fontSize: 13, color: _mutedPurple),
+                    style: GoogleFonts.nunito(fontSize: 13, color: _mutedPurple),
                   ),
                 ],
               ),
@@ -853,7 +853,7 @@ class _AppDrawer extends StatelessWidget {
       leading: Icon(icon, color: color ?? _mutedPurple, size: 20),
       title: Text(
         label,
-        style: GoogleFonts.inter(
+        style: GoogleFonts.nunito(
           fontSize: 14,
           fontWeight: FontWeight.w500,
           color: color ?? const Color(0xFF443C63),

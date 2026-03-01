@@ -82,7 +82,7 @@ class PremiumBottomNav extends StatelessWidget {
           const SizedBox(height: 1),
           Text(
             item.label,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.nunito(
               fontSize: 9,
               fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
               color: isActive

@@ -48,7 +48,7 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
                   // Section Label
                   Text(
                     'GETTING STARTED',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.nunito(
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0.2,
@@ -62,7 +62,7 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
-                        style: GoogleFonts.playfairDisplay(
+                        style: GoogleFonts.nunito(
                           fontSize: 32,
                           fontWeight: FontWeight.w400,
                           color: const Color(0xFF2E2540),
@@ -71,7 +71,7 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
                           const TextSpan(text: 'Simple to begin,\n'),
                           TextSpan(
                             text: 'meaningful',
-                            style: GoogleFonts.playfairDisplay(
+                            style: GoogleFonts.nunito(
                               fontSize: 32,
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.italic,
@@ -135,7 +135,7 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
                           children: [
                             Text(
                               'Get Started',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.nunito(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white,
@@ -210,7 +210,7 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
                               },
                               child: Text(
                                 'Home',
-                                style: GoogleFonts.playfairDisplay(
+                                style: GoogleFonts.nunito(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
                                   color: const Color(0xFF2E2540),
@@ -226,7 +226,7 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
                               },
                               child: Text(
                                 'What We Provide',
-                                style: GoogleFonts.playfairDisplay(
+                                style: GoogleFonts.nunito(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
                                   color: const Color(0xFF2E2540),
@@ -257,7 +257,7 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
                                   children: [
                                     Text(
                                       'Get Started',
-                                      style: GoogleFonts.inter(
+                                      style: GoogleFonts.nunito(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white,
@@ -329,7 +329,7 @@ class _StepCard extends StatelessWidget {
               child: Center(
                 child: Text(
                   number,
-                  style: GoogleFonts.cormorantGaramond(
+                  style: GoogleFonts.nunito(
                     fontSize: 22,
                     fontWeight: FontWeight.w300,
                     color: Colors.white,
@@ -355,7 +355,7 @@ class _StepCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: GoogleFonts.playfairDisplay(
+                  style: GoogleFonts.nunito(
                     fontSize: 17,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xFF2E2540),
@@ -364,7 +364,7 @@ class _StepCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   description,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.nunito(
                     fontSize: 13,
                     color: const Color(0xFF8A7FA8),
                     fontStyle: FontStyle.italic,

@@ -78,19 +78,19 @@ class _MedicationsScreenState extends State<MedicationsScreen>
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text('Deactivate Medication',
-            style: GoogleFonts.lora(
+            style: GoogleFonts.nunito(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
                 color: _deepPurple)),
         content: Text(
           'This will deactivate "${med.name}" and preserve its history. You can add a new entry to replace it.',
-          style: GoogleFonts.inter(fontSize: 13, color: _mutedPurple),
+          style: GoogleFonts.nunito(fontSize: 13, color: _mutedPurple),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
             child: Text('Cancel',
-                style: GoogleFonts.inter(color: _mutedPurple)),
+                style: GoogleFonts.nunito(color: _mutedPurple)),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -100,7 +100,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
             ),
             onPressed: () => Navigator.pop(ctx, true),
             child: Text('Deactivate',
-                style: GoogleFonts.inter(color: Colors.white)),
+                style: GoogleFonts.nunito(color: Colors.white)),
           ),
         ],
       ),
@@ -197,7 +197,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
 
                 Text(
                   'Add medication',
-                  style: GoogleFonts.cormorantGaramond(
+                  style: GoogleFonts.nunito(
                     fontSize: 28,
                     fontWeight: FontWeight.w600,
                     color: _deepPurple,
@@ -313,7 +313,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                         const SizedBox(width: 10),
                         Text(
                           prescribedDate ?? 'Select date',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.nunito(
                             fontSize: 14,
                             color: prescribedDate != null
                                 ? _deepPurple
@@ -343,7 +343,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('Please enter a medication name',
-                                style: GoogleFonts.inter(fontSize: 13)),
+                                style: GoogleFonts.nunito(fontSize: 13)),
                             backgroundColor: _deepPurple,
                             behavior: SnackBarBehavior.floating,
                             shape: RoundedRectangleBorder(
@@ -380,7 +380,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                     },
                     child: Text(
                       'Add medication',
-                      style: GoogleFonts.cormorantGaramond(
+                      style: GoogleFonts.nunito(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -441,7 +441,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                     Expanded(
                       child: Text(
                         'Medications',
-                        style: GoogleFonts.cormorantGaramond(
+                        style: GoogleFonts.nunito(
                           fontSize: 26,
                           fontWeight: FontWeight.w600,
                           color: _deepPurple,
@@ -491,7 +491,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                                   // Active meds
                                   Text(
                                     'Active',
-                                    style: GoogleFonts.lora(
+                                    style: GoogleFonts.nunito(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                       color: _mutedPurple,
@@ -508,7 +508,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                                     const SizedBox(height: 20),
                                     Text(
                                       'Inactive / History',
-                                      style: GoogleFonts.lora(
+                                      style: GoogleFonts.nunito(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
                                         color: _lightPurple,
@@ -559,7 +559,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                 const SizedBox(width: 8),
                 Text(
                   'Add Medication',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.nunito(
                     color: Colors.white,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -620,7 +620,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                     children: [
                       Text(
                         med.name ?? 'Unknown',
-                        style: GoogleFonts.lora(
+                        style: GoogleFonts.nunito(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: isActive
@@ -631,7 +631,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                       if (med.strength != null)
                         Text(
                           med.strength!,
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.nunito(
                             fontSize: 12,
                             color: _mutedPurple,
                           ),
@@ -652,7 +652,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                     ),
                     child: Text(
                       'PRN',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.nunito(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         color: _purple,
@@ -669,7 +669,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                     ),
                     child: Text(
                       'Inactive',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.nunito(
                         fontSize: 11,
                         color: _lightPurple,
                         fontWeight: FontWeight.w600,
@@ -722,7 +722,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
               const SizedBox(height: 8),
               Text(
                 med.scheduleDetails!,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.nunito(
                   fontSize: 12,
                   color: _mutedPurple,
                   fontStyle: FontStyle.italic,
@@ -739,7 +739,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                   const SizedBox(width: 4),
                   Text(
                     'Added $dateStr',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.nunito(
                       fontSize: 11,
                       color: _lightPurple,
                     ),
@@ -769,7 +769,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
           const SizedBox(width: 4),
           Text(
             label,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.nunito(
               fontSize: 11,
               color: _mutedPurple,
               fontWeight: FontWeight.w500,
@@ -798,7 +798,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
           const SizedBox(height: 16),
           Text(
             'No medications yet',
-            style: GoogleFonts.lora(
+            style: GoogleFonts.nunito(
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: const Color.fromARGB(255, 12, 12, 12),
@@ -807,7 +807,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
           const SizedBox(height: 6),
           Text(
             'Tap "Add Medication" to get started',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.nunito(
               fontSize: 13,
               color: _mutedPurple,
             ),
@@ -823,7 +823,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
       padding: const EdgeInsets.only(bottom: 7),
       child: Text(
         text,
-        style: GoogleFonts.inter(
+        style: GoogleFonts.nunito(
           fontSize: 13,
           fontWeight: FontWeight.w600,
           color: _mutedPurple,
@@ -847,13 +847,13 @@ class _MedicationsScreenState extends State<MedicationsScreen>
       child: TextField(
         controller: controller,
         keyboardType: type,
-        style: GoogleFonts.inter(
+        style: GoogleFonts.nunito(
             fontSize: 14,
             color: _deepPurple,
             fontWeight: FontWeight.w500),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: GoogleFonts.inter(
+          hintStyle: GoogleFonts.nunito(
               fontSize: 14, color: const Color(0xFFB8B0CC)),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(
@@ -881,7 +881,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
           isExpanded: true,
           icon: const Icon(Icons.keyboard_arrow_down,
               color: _mutedPurple),
-          style: GoogleFonts.inter(
+          style: GoogleFonts.nunito(
               fontSize: 14,
               color: _deepPurple,
               fontWeight: FontWeight.w500),
@@ -889,7 +889,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
               .map((s) => DropdownMenuItem(
                   value: s,
                   child: Text(s,
-                      style: GoogleFonts.inter(fontSize: 14))))
+                      style: GoogleFonts.nunito(fontSize: 14))))
               .toList(),
           onChanged: onChanged,
         ),

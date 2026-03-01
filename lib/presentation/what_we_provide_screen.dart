@@ -52,7 +52,7 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
                   // Section Label
                   Text(
                     'EVERYTHING YOUR FAMILY NEEDS',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.nunito(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 0.2,
@@ -68,7 +68,7 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
-                        style: GoogleFonts.playfairDisplay(
+                        style: GoogleFonts.nunito(
                           fontSize: 32,
                           fontWeight: FontWeight.w400,
                           color: const Color(0xFF2E2540),
@@ -77,7 +77,7 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
                           const TextSpan(text: 'Designed with '),
                           TextSpan(
                             text: 'care',
-                            style: GoogleFonts.playfairDisplay(
+                            style: GoogleFonts.nunito(
                               fontSize: 32,
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.italic,
@@ -203,7 +203,7 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
                           children: [
                             Text(
                               'Get Started',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.nunito(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white,
@@ -282,7 +282,7 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
                               },
                               child: Text(
                                 'Home',
-                                style: GoogleFonts.playfairDisplay(
+                                style: GoogleFonts.nunito(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
                                   color: const Color(0xFF2E2540),
@@ -299,7 +299,7 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
                               },
                               child: Text(
                                 'How it Works',
-                                style: GoogleFonts.playfairDisplay(
+                                style: GoogleFonts.nunito(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
                                   color: const Color(0xFF2E2540),
@@ -372,7 +372,7 @@ class _FeatureCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: GoogleFonts.playfairDisplay(
+                  style: GoogleFonts.nunito(
                     fontSize: 17,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xFF2E2540),
@@ -381,7 +381,7 @@ class _FeatureCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   description,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.nunito(
                     fontSize: 13,
                     color: const Color(0xFF8A7FA8),
                     fontStyle: FontStyle.italic,
@@ -410,7 +410,7 @@ class _ValueCard extends StatelessWidget {
       children: [
         Text(
           value,
-          style: GoogleFonts.cormorantGaramond(
+          style: GoogleFonts.nunito(
             fontSize: 44,
             fontWeight: FontWeight.w300,
             color: Colors.white,
@@ -419,7 +419,7 @@ class _ValueCard extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           label.toUpperCase(),
-          style: GoogleFonts.inter(
+          style: GoogleFonts.nunito(
             fontSize: 10,
             fontWeight: FontWeight.w600,
             letterSpacing: 0.14,

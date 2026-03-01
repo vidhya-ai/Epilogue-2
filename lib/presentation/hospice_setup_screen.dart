@@ -242,7 +242,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
   void _showSnack(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(msg, style: GoogleFonts.inter(fontSize: 13)),
+        content: Text(msg, style: GoogleFonts.nunito(fontSize: 13)),
         backgroundColor: _deepPurple,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -309,7 +309,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                       const SizedBox(height: 6),
                       Text(
                         'Add key contacts from your hospice care team',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.nunito(
                           fontSize: 12,
                           color: _mutedPurple,
                         ),
@@ -328,7 +328,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                       const SizedBox(height: 4),
                       Text(
                         'Optional — skip if your family is self-caring',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.nunito(
                           fontSize: 12,
                           color: _mutedPurple,
                           fontStyle: FontStyle.italic,
@@ -389,7 +389,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
       ),
       child: Text(
         'STEP 2 OF 2',
-        style: GoogleFonts.inter(
+        style: GoogleFonts.nunito(
           fontSize: 10,
           fontWeight: FontWeight.w700,
           letterSpacing: 2,
@@ -405,7 +405,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
       children: [
         Text(
           'Your hospice\nprovider',
-          style: GoogleFonts.cormorantGaramond(
+          style: GoogleFonts.nunito(
             fontSize: 48,
             fontWeight: FontWeight.w600,
             color: _deepPurple,
@@ -415,7 +415,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
         const SizedBox(height: 10),
         Text(
           'Select your organization to auto-fill contact\ninformation, or add one manually.',
-          style: GoogleFonts.cormorantGaramond(
+          style: GoogleFonts.nunito(
             fontSize: 17,
             fontStyle: FontStyle.italic,
             fontWeight: FontWeight.w600,
@@ -443,7 +443,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
   Widget _sectionLabel(String text) {
     return Text(
       text,
-      style: GoogleFonts.lora(
+      style: GoogleFonts.nunito(
         fontSize: 16,
         fontWeight: FontWeight.w600,
         color: _deepPurple,
@@ -476,7 +476,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
           child: TextField(
             controller: _searchCtrl,
             focusNode: _searchFocus,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.nunito(
               fontSize: 14,
               color: _deepPurple,
               fontWeight: FontWeight.w500,
@@ -494,7 +494,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
             onTap: () => setState(() => _showDropdown = true),
             decoration: InputDecoration(
               hintText: 'Search for a hospice...',
-              hintStyle: GoogleFonts.inter(
+              hintStyle: GoogleFonts.nunito(
                 fontSize: 14,
                 color: const Color(0xFFB8B0CC),
               ),
@@ -594,7 +594,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                 children: [
                   Text(
                     h.name,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.nunito(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: _deepPurple,
@@ -603,7 +603,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                   const SizedBox(height: 2),
                   Text(
                     h.address,
-                    style: GoogleFonts.inter(fontSize: 11, color: _mutedPurple),
+                    style: GoogleFonts.nunito(fontSize: 11, color: _mutedPurple),
                   ),
                 ],
               ),
@@ -645,7 +645,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
             const SizedBox(width: 12),
             Text(
               'Other — add manually',
-              style: GoogleFonts.inter(
+              style: GoogleFonts.nunito(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: _purple,
@@ -680,7 +680,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
               Expanded(
                 child: Text(
                   h.name,
-                  style: GoogleFonts.lora(
+                  style: GoogleFonts.nunito(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: _deepPurple,
@@ -692,7 +692,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
           const SizedBox(height: 4),
           Text(
             h.address,
-            style: GoogleFonts.inter(fontSize: 12, color: _mutedPurple),
+            style: GoogleFonts.nunito(fontSize: 12, color: _mutedPurple),
           ),
           const Divider(height: 20, color: _borderColor),
           _phoneRow(Icons.phone_outlined, 'Main Office', h.mainPhone),
@@ -721,7 +721,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
           const SizedBox(width: 8),
           Text(
             '$label: ',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.nunito(
               fontSize: 12,
               color: _mutedPurple,
               fontWeight: FontWeight.w500,
@@ -729,7 +729,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
           ),
           Text(
             number,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.nunito(
               fontSize: 12,
               color: _deepPurple,
               fontWeight: FontWeight.w600,
@@ -753,7 +753,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
         children: [
           Text(
             'Hospice Details',
-            style: GoogleFonts.lora(
+            style: GoogleFonts.nunito(
               fontSize: 14,
               fontWeight: FontWeight.w600,
               color: _deepPurple,
@@ -774,7 +774,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
           const SizedBox(height: 16),
           Text(
             'Phone Numbers',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.nunito(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: _mutedPurple,
@@ -830,7 +830,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
               Expanded(
                 child: Text(
                   'Contact ${index + 1}',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.nunito(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: _mutedPurple,
@@ -860,7 +860,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                 value: contact.role.isEmpty ? null : contact.role,
                 hint: Text(
                   'Select role',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.nunito(
                     fontSize: 13,
                     color: const Color(0xFFB8B0CC),
                   ),
@@ -870,7 +870,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                   Icons.keyboard_arrow_down,
                   color: _mutedPurple,
                 ),
-                style: GoogleFonts.inter(
+                style: GoogleFonts.nunito(
                   fontSize: 13,
                   color: _deepPurple,
                   fontWeight: FontWeight.w500,
@@ -879,7 +879,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                     .map(
                       (r) => DropdownMenuItem(
                         value: r,
-                        child: Text(r, style: GoogleFonts.inter(fontSize: 13)),
+                        child: Text(r, style: GoogleFonts.nunito(fontSize: 13)),
                       ),
                     )
                     .toList(),
@@ -931,7 +931,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
             const SizedBox(width: 8),
             Text(
               'Add another contact',
-              style: GoogleFonts.inter(
+              style: GoogleFonts.nunito(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: _purple,
@@ -970,7 +970,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                 children: [
                   Text(
                     'Go to Dashboard',
-                    style: GoogleFonts.cormorantGaramond(
+                    style: GoogleFonts.nunito(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
@@ -992,7 +992,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
     return Center(
       child: Text(
         '🔒  Your information stays private to your care team',
-        style: GoogleFonts.inter(
+        style: GoogleFonts.nunito(
           fontSize: 11,
           color: const Color(0xFF9B92B8),
           fontWeight: FontWeight.w500,
@@ -1018,14 +1018,14 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
         controller: controller,
         keyboardType: keyboardType,
         onChanged: onChanged,
-        style: GoogleFonts.inter(
+        style: GoogleFonts.nunito(
           fontSize: 14,
           color: _deepPurple,
           fontWeight: FontWeight.w500,
         ),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: GoogleFonts.inter(
+          hintStyle: GoogleFonts.nunito(
             fontSize: 14,
             color: const Color(0xFFB8B0CC),
           ),
@@ -1052,7 +1052,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
       children: [
         Text(
           label,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.nunito(
             fontSize: 11,
             fontWeight: FontWeight.w600,
             color: _mutedPurple,
@@ -1070,14 +1070,14 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
             controller: ctrl,
             keyboardType: type,
             onChanged: onChanged,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.nunito(
               fontSize: 13,
               color: _deepPurple,
               fontWeight: FontWeight.w500,
             ),
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: GoogleFonts.inter(
+              hintStyle: GoogleFonts.nunito(
                 fontSize: 13,
                 color: const Color(0xFFB8B0CC),
               ),

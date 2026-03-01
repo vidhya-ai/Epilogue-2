@@ -96,7 +96,7 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
               const SizedBox(height: 20),
               Text(
                 'Add Note',
-                style: GoogleFonts.cormorantGaramond(
+                style: GoogleFonts.nunito(
                   fontSize: 28,
                   fontWeight: FontWeight.w600,
                   color: _deepPurple,
@@ -105,7 +105,7 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
               const SizedBox(height: 6),
               Text(
                 'Notes are saved permanently and cannot be edited.',
-                style: GoogleFonts.inter(fontSize: 12, color: _mutedPurple),
+                style: GoogleFonts.nunito(fontSize: 12, color: _mutedPurple),
               ),
               const SizedBox(height: 20),
               Container(
@@ -118,17 +118,17 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
                   controller: ctrl,
                   maxLength: maxChars,
                   maxLines: 5,
-                  style: GoogleFonts.inter(fontSize: 14, color: _deepPurple),
+                  style: GoogleFonts.nunito(fontSize: 14, color: _deepPurple),
                   onChanged: (_) => setModal(() {}),
                   decoration: InputDecoration(
                     hintText: 'What would you like to note?',
-                    hintStyle: GoogleFonts.inter(
+                    hintStyle: GoogleFonts.nunito(
                       fontSize: 14,
                       color: const Color(0xFFB8B0CC),
                     ),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.all(16),
-                    counterStyle: GoogleFonts.inter(
+                    counterStyle: GoogleFonts.nunito(
                       fontSize: 11,
                       color: _mutedPurple,
                     ),
@@ -140,7 +140,7 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
                 alignment: Alignment.centerRight,
                 child: Text(
                   '${ctrl.text.length}/$maxChars',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.nunito(
                     fontSize: 11,
                     color: ctrl.text.length > 180
                         ? Colors.red.shade400
@@ -182,7 +182,7 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
                         },
                   child: Text(
                     'Save Note',
-                    style: GoogleFonts.cormorantGaramond(
+                    style: GoogleFonts.nunito(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
@@ -276,7 +276,7 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
                         children: [
                           Text(
                             'Quick Notes',
-                            style: GoogleFonts.cormorantGaramond(
+                            style: GoogleFonts.nunito(
                               fontSize: 26,
                               fontWeight: FontWeight.w600,
                               color: _deepPurple,
@@ -284,7 +284,7 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
                           ),
                           Text(
                             '${_notes.length} entries',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.nunito(
                               fontSize: 11,
                               color: _mutedPurple,
                             ),
@@ -350,7 +350,7 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
                 const SizedBox(width: 8),
                 Text(
                   'Add Note',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.nunito(
                     color: Colors.white,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -369,7 +369,7 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
       padding: const EdgeInsets.only(bottom: 8, top: 4),
       child: Text(
         label,
-        style: GoogleFonts.lora(
+        style: GoogleFonts.nunito(
           fontSize: 13,
           fontWeight: FontWeight.w600,
           color: _mutedPurple,
@@ -402,7 +402,7 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
         children: [
           Text(
             note.content ?? '',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.nunito(
               fontSize: 13,
               color: _deepPurple,
               height: 1.5,
@@ -421,7 +421,7 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
                 child: Center(
                   child: Text(
                     initials,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.nunito(
                       fontSize: 9,
                       fontWeight: FontWeight.w700,
                       color: _purple,
@@ -432,7 +432,7 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
               const SizedBox(width: 6),
               Text(
                 note.createdByMemberName ?? 'Unknown',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.nunito(
                   fontSize: 11,
                   color: _mutedPurple,
                   fontWeight: FontWeight.w500,
@@ -443,7 +443,7 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
               const SizedBox(width: 3),
               Text(
                 time,
-                style: GoogleFonts.inter(fontSize: 10, color: _lightPurple),
+                style: GoogleFonts.nunito(fontSize: 10, color: _lightPurple),
               ),
             ],
           ),
@@ -473,7 +473,7 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
           const SizedBox(height: 16),
           Text(
             'No notes yet',
-            style: GoogleFonts.lora(
+            style: GoogleFonts.nunito(
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: _deepPurple,
@@ -482,7 +482,7 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
           const SizedBox(height: 6),
           Text(
             'Tap "Add Note" to get started',
-            style: GoogleFonts.inter(fontSize: 13, color: _mutedPurple),
+            style: GoogleFonts.nunito(fontSize: 13, color: _mutedPurple),
           ),
         ],
       ),

@@ -108,7 +108,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                         ),
                         child: Text(
                           'STEP 1 OF 2',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.nunito(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 2,
@@ -122,7 +122,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                       // Title
                       Text(
                         'Who are you\ncaring for?',
-                        style: GoogleFonts.cormorantGaramond(
+                        style: GoogleFonts.nunito(
                           fontSize: 48,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xFF443C63),
@@ -134,7 +134,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
 
                       Text(
                         "We'll help coordinate care and keep\neveryone connected.",
-                        style: GoogleFonts.cormorantGaramond(
+                        style: GoogleFonts.nunito(
                           fontSize: 17,
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.w600,
@@ -232,7 +232,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                             children: [
                               Text(
                                 'Continue',
-                                style: GoogleFonts.cormorantGaramond(
+                                style: GoogleFonts.nunito(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.white,
@@ -255,7 +255,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                       Center(
                         child: Text(
                           '🔒  Your information stays private to your care team',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.nunito(
                             fontSize: 11,
                             color: const Color(0xFF9B92B8),
                             fontWeight: FontWeight.w500,
@@ -295,7 +295,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
             padding: const EdgeInsets.only(left: 4, bottom: 8),
             child: Text(
               label,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.nunito(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.3,
@@ -329,7 +329,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
             child: TextFormField(
               controller: controller,
               keyboardType: keyboardType,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.nunito(
                 fontSize: 15,
                 color: const Color(0xFF443C63),
                 fontWeight: FontWeight.w500,
@@ -338,7 +338,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                   v == null || v.trim().isEmpty ? 'Required' : null,
               decoration: InputDecoration(
                 hintText: hint,
-                hintStyle: GoogleFonts.inter(
+                hintStyle: GoogleFonts.nunito(
                   fontSize: 14,
                   color: const Color(0xFFB8B0CC),
                 ),
