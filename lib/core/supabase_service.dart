@@ -42,7 +42,14 @@ class SupabaseService {
   }
 
   Future<void> addMedication(Medication medication) async {
-    await _client.from('medications').insert(medication.toJson());
+    await _client.from('medications').upsert(medication.toJson());
+  }
+
+  Future<void> updateMedication(Medication medication) async {
+    await _client
+        .from('medications')
+        .update(medication.toJson())
+        .eq('id', medication.id);
   }
 
   // Dose Logs

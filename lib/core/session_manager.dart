@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../domain/models.dart';
 
 class SessionManager {
@@ -35,9 +36,28 @@ class SessionManager {
     final memberId = prefs.getString('member_id');
 
     if (teamId != null && memberId != null) {
-      // In a real app, you might want to fetch the full objects from Supabase here
-      // For now, we'll just store the IDs or placeholder objects
-      return true;
+      try {
+        // Restore full objects from Supabase
+        final teamResp = await Supabase.instance.client
+            .from('care_teams')
+            .select()
+            .eq('id', teamId)
+            .maybeSingle();
+        final memberResp = await Supabase.instance.client
+            .from('members')
+            .select()
+            .eq('id', memberId)
+            .maybeSingle();
+        if (teamResp != null && memberResp != null) {
+          _currentCareTeam = CareTeam.fromJson(teamResp);
+          _currentMember = Member.fromJson(memberResp);
+          return true;
+        }
+      } catch (_) {
+        // If fetch fails, clear stale session
+      }
+      await clearSession();
+      return false;
     }
     return false;
   }

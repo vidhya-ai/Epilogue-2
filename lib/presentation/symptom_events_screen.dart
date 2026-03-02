@@ -1,11 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../core/session_manager.dart';
 import '../core/supabase_service.dart';
 import '../domain/models.dart';
+import '../domain/symptom_data.dart';
 import 'premium_bottom_nav.dart';
 
 const _deepPurple = Color(0xFF2E2540);
@@ -16,58 +18,9 @@ const _borderColor = Color(0xFFD4CDDF);
 const _bg1 = Color(0xFFE6E2EE);
 const _bg2 = Color(0xFFDAD4E6);
 
-// All predefined symptoms in alphabetical order
-const _symptomList = [
-  'Agitation',
-  'Anxiety',
-  'Breathing difficulty',
-  'Chest pain',
-  'Confusion',
-  'Constipation',
-  'Coughing',
-  'Decreased appetite',
-  'Delirium',
-  'Depression',
-  'Diarrhea',
-  'Dizziness',
-  'Edema / Swelling',
-  'Excessive secretions',
-  'Fatigue',
-  'Fever',
-  'Hallucinations',
-  'Headache',
-  'Incontinence',
-  'Insomnia',
-  'Irregular breathing',
-  'Loss of consciousness',
-  'Mouth dryness',
-  'Muscle spasms',
-  'Nausea',
-  'Pain',
-  'Rash',
-  'Restlessness',
-  'Seizure',
-  'Skin changes',
-  'Sweating',
-  'Swallowing difficulty',
-  'Unresponsiveness',
-  'Vomiting',
-  'Weakness',
-  'Other',
-];
-
-// Symptoms that trigger automatic nurse alert
-const _severeSymptoms = {
-  'Breathing difficulty',
-  'Chest pain',
-  'Confusion',
-  'Delirium',
-  'Hallucinations',
-  'Irregular breathing',
-  'Loss of consciousness',
-  'Seizure',
-  'Unresponsiveness',
-};
+/// Sorted symptom list for the UI, alphabetical by name.
+final _sortedSymptoms = List<SymptomDefinition>.from(kHospiceSymptoms)
+  ..sort((a, b) => a.name.compareTo(b.name));
 
 class SymptomEventsScreen extends StatefulWidget {
   const SymptomEventsScreen({super.key});
@@ -103,19 +56,14 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
   }
 
   void _showLogSymptomModal() {
-    final selectedSymptoms = <String>{};
-    String severity = 'Mild';
+    // Maps symptom ID → selected option value (for dropdown symptoms).
+    final selectedValues = <String, String>{};
+    // Set of selected symptom IDs.
+    final selectedIds = <String>{};
     final notesCtrl = TextEditingController();
     final otherCtrl = TextEditingController();
     bool nurseContacted = false;
     bool showOtherField = false;
-
-    final severities = ['Mild', 'Moderate', 'Severe'];
-    final severityColors = {
-      'Mild': const Color(0xFF4CAF50),
-      'Moderate': const Color(0xFFFF9800),
-      'Severe': const Color(0xFFF44336),
-    };
 
     showModalBottomSheet(
       context: context,
@@ -123,11 +71,24 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
       backgroundColor: Colors.transparent,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setModal) {
-          // Check if any selected symptom is severe
-          final hasSevere = selectedSymptoms
-              .any((s) => _severeSymptoms.contains(s));
-          final isSeverityLevel = severity == 'Severe';
-          final showNurseAlert = hasSevere || isSeverityLevel;
+          // Check if any selected symptom triggers a nurse alert
+          final hasAlert = selectedIds.any((id) {
+            final def = kSymptomById[id];
+            return def != null && def.isAlertTrigger;
+          });
+
+          // Also alert when a severity-type symptom is set to "Severe"
+          final hasSevereValue = selectedValues.values
+              .any((v) => v == 'Severe');
+          final showNurseAlert = hasAlert || hasSevereValue;
+
+          // Gather selected definitions that have options for the detail section
+          final withOptions = selectedIds
+              .map((id) => kSymptomById[id])
+              .where((d) => d != null && d.options.isNotEmpty)
+              .cast<SymptomDefinition>()
+              .toList()
+            ..sort((a, b) => a.name.compareTo(b.name));
 
           return Container(
             height: MediaQuery.of(ctx).size.height * 0.92,
@@ -181,63 +142,6 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // ── Severity ──
-                        Text('Severity',
-                            style: GoogleFonts.nunito(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: _mutedPurple,
-                            )),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: severities.map((s) {
-                            final isSelected = severity == s;
-                            final color = severityColors[s]!;
-                            return Expanded(
-                              child: GestureDetector(
-                                onTap: () =>
-                                    setModal(() => severity = s),
-                                child: AnimatedContainer(
-                                  duration:
-                                      const Duration(milliseconds: 180),
-                                  margin: EdgeInsets.only(
-                                      right:
-                                          s != 'Severe' ? 8 : 0),
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10),
-                                  decoration: BoxDecoration(
-                                    color: isSelected
-                                        ? color.withOpacity(0.15)
-                                        : Colors.white.withOpacity(0.5),
-                                    borderRadius:
-                                        BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: isSelected
-                                          ? color
-                                          : _borderColor,
-                                      width: isSelected ? 2 : 1,
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(s,
-                                        style: GoogleFonts.nunito(
-                                          fontSize: 13,
-                                          fontWeight: isSelected
-                                              ? FontWeight.w700
-                                              : FontWeight.w500,
-                                          color: isSelected
-                                              ? color
-                                              : _mutedPurple,
-                                        )),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-
-                        const SizedBox(height: 20),
-
                         // ── Symptoms ──
                         Text('Symptoms',
                             style: GoogleFonts.nunito(
@@ -254,26 +158,92 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                         Wrap(
                           spacing: 8,
                           runSpacing: 8,
-                          children: _symptomList.map((symptom) {
-                            final isSelected =
-                                selectedSymptoms.contains(symptom);
-                            final isSevere =
-                                _severeSymptoms.contains(symptom);
+                          children: [
+                            ..._sortedSymptoms.map((def) {
+                              final isSelected =
+                                  selectedIds.contains(def.id);
+                              final isAlert = def.isAlertTrigger;
 
-                            return GestureDetector(
+                              return GestureDetector(
+                                onTap: () {
+                                  setModal(() {
+                                    if (isSelected) {
+                                      selectedIds.remove(def.id);
+                                      selectedValues.remove(def.id);
+                                    } else {
+                                      selectedIds.add(def.id);
+                                      // Auto-select first option for dropdown
+                                      if (def.inputType ==
+                                              SymptomInputType.dropdown &&
+                                          def.options.isNotEmpty) {
+                                        selectedValues[def.id] =
+                                            def.options.first;
+                                      } else if (def.inputType ==
+                                              SymptomInputType.event &&
+                                          def.options.isNotEmpty) {
+                                        selectedValues[def.id] =
+                                            def.options.first;
+                                      }
+                                    }
+                                  });
+                                },
+                                child: AnimatedContainer(
+                                  duration:
+                                      const Duration(milliseconds: 150),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 7),
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? (isAlert
+                                            ? Colors.red.withOpacity(0.12)
+                                            : _purple.withOpacity(0.12))
+                                        : Colors.white.withOpacity(0.6),
+                                    borderRadius:
+                                        BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? (isAlert
+                                              ? Colors.red.shade300
+                                              : _purple)
+                                          : _borderColor,
+                                      width: isSelected ? 1.5 : 1,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      if (isAlert && isSelected)
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 4),
+                                          child: Icon(
+                                              Icons.warning_amber_rounded,
+                                              size: 12,
+                                              color:
+                                                  Colors.red.shade400),
+                                        ),
+                                      Text(def.name,
+                                          style: GoogleFonts.nunito(
+                                            fontSize: 12,
+                                            fontWeight: isSelected
+                                                ? FontWeight.w600
+                                                : FontWeight.w400,
+                                            color: isSelected
+                                                ? (isAlert
+                                                    ? Colors.red.shade600
+                                                    : _purple)
+                                                : _mutedPurple,
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                            // "Other" chip
+                            GestureDetector(
                               onTap: () {
                                 setModal(() {
-                                  if (isSelected) {
-                                    selectedSymptoms.remove(symptom);
-                                    if (symptom == 'Other') {
-                                      showOtherField = false;
-                                    }
-                                  } else {
-                                    selectedSymptoms.add(symptom);
-                                    if (symptom == 'Other') {
-                                      showOtherField = true;
-                                    }
-                                  }
+                                  showOtherField = !showOtherField;
                                 });
                               },
                               child: AnimatedContainer(
@@ -282,52 +252,31 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 12, vertical: 7),
                                 decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? (isSevere
-                                          ? Colors.red.withOpacity(0.12)
-                                          : _purple.withOpacity(0.12))
+                                  color: showOtherField
+                                      ? _purple.withOpacity(0.12)
                                       : Colors.white.withOpacity(0.6),
                                   borderRadius:
                                       BorderRadius.circular(20),
                                   border: Border.all(
-                                    color: isSelected
-                                        ? (isSevere
-                                            ? Colors.red.shade300
-                                            : _purple)
+                                    color: showOtherField
+                                        ? _purple
                                         : _borderColor,
-                                    width: isSelected ? 1.5 : 1,
+                                    width: showOtherField ? 1.5 : 1,
                                   ),
                                 ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    if (isSevere && isSelected)
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            right: 4),
-                                        child: Icon(
-                                            Icons.warning_amber_rounded,
-                                            size: 12,
-                                            color:
-                                                Colors.red.shade400),
-                                      ),
-                                    Text(symptom,
-                                        style: GoogleFonts.nunito(
-                                          fontSize: 12,
-                                          fontWeight: isSelected
-                                              ? FontWeight.w600
-                                              : FontWeight.w400,
-                                          color: isSelected
-                                              ? (isSevere
-                                                  ? Colors.red.shade600
-                                                  : _purple)
-                                              : _mutedPurple,
-                                        )),
-                                  ],
-                                ),
+                                child: Text('Other',
+                                    style: GoogleFonts.nunito(
+                                      fontSize: 12,
+                                      fontWeight: showOtherField
+                                          ? FontWeight.w600
+                                          : FontWeight.w400,
+                                      color: showOtherField
+                                          ? _purple
+                                          : _mutedPurple,
+                                    )),
                               ),
-                            );
-                          }).toList(),
+                            ),
+                          ],
                         ),
 
                         // Other field
@@ -356,6 +305,38 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                               ),
                             ),
                           ),
+                        ],
+
+                        // ── Per-symptom detail selectors ──
+                        if (withOptions.isNotEmpty) ...[
+                          const SizedBox(height: 20),
+                          Text('Symptom Details',
+                              style: GoogleFonts.nunito(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: _mutedPurple,
+                              )),
+                          const SizedBox(height: 4),
+                          Text('Set the level for each selected symptom',
+                              style: GoogleFonts.nunito(
+                                  fontSize: 11, color: _lightPurple)),
+                          const SizedBox(height: 10),
+                          ...withOptions.map((def) {
+                            final current =
+                                selectedValues[def.id] ??
+                                    def.options.first;
+                            final label = def.description != null
+                                ? '${def.name}  ·  ${def.description}'
+                                : def.name;
+                            return _optionRow(
+                              label: label,
+                              options: def.options,
+                              current: current,
+                              isAlert: def.isAlertTrigger,
+                              onChanged: (v) =>
+                                  setModal(() => selectedValues[def.id] = v),
+                            );
+                          }),
                         ],
 
                         const SizedBox(height: 20),
@@ -501,7 +482,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                                   borderRadius:
                                       BorderRadius.circular(32)),
                             ),
-                            onPressed: selectedSymptoms.isEmpty
+                            onPressed: (selectedIds.isEmpty && !showOtherField)
                                 ? null
                                 : () async {
                                     final member = SessionManager()
@@ -511,16 +492,37 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                                         ?.id;
                                     if (teamId == null) return;
 
-                                    var symptoms =
-                                        selectedSymptoms.toList();
+                                    // Build symptom strings with values
+                                    final symptoms = <String>[];
+                                    for (final id in selectedIds) {
+                                      final def = kSymptomById[id];
+                                      if (def == null) continue;
+                                      final val = selectedValues[id];
+                                      if (val != null) {
+                                        symptoms.add('${def.name}: $val');
+                                      } else {
+                                        symptoms.add(def.name);
+                                      }
+                                    }
+
                                     if (showOtherField &&
                                         otherCtrl.text
                                             .trim()
                                             .isNotEmpty) {
-                                      symptoms.remove('Other');
                                       symptoms.add(
                                           'Other: ${otherCtrl.text.trim()}');
                                     }
+
+                                    // Derive severity from worst value
+                                    String severity = 'Mild';
+                                    if (hasSevereValue) {
+                                      severity = 'Severe';
+                                    } else if (selectedValues.values
+                                        .any((v) => v == 'Moderate')) {
+                                      severity = 'Moderate';
+                                    }
+                                    // Alert symptoms always Severe
+                                    if (hasAlert) severity = 'Severe';
 
                                     final event = SymptomEvent(
                                       id: _uuid.v4(),
@@ -563,6 +565,87 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
     );
   }
 
+  /// Compact row showing a symptom name and its selectable options.
+  Widget _optionRow({
+    required String label,
+    required List<String> options,
+    required String current,
+    required bool isAlert,
+    required ValueChanged<String> onChanged,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.72),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: isAlert ? Colors.red.shade200 : _borderColor,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                if (isAlert)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 4),
+                    child: Icon(Icons.warning_amber_rounded,
+                        size: 13, color: Colors.red.shade400),
+                  ),
+                Expanded(
+                  child: Text(label,
+                      style: GoogleFonts.nunito(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: isAlert
+                            ? Colors.red.shade700
+                            : _deepPurple,
+                      )),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: options.map((opt) {
+                final isSel = current == opt;
+                return GestureDetector(
+                  onTap: () => onChanged(opt),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 140),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: isSel
+                          ? _purple.withOpacity(0.15)
+                          : Colors.white.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: isSel ? _purple : _borderColor,
+                        width: isSel ? 1.5 : 1,
+                      ),
+                    ),
+                    child: Text(opt,
+                        style: GoogleFonts.nunito(
+                          fontSize: 11,
+                          fontWeight:
+                              isSel ? FontWeight.w700 : FontWeight.w400,
+                          color: isSel ? _purple : _mutedPurple,
+                        )),
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -585,7 +668,13 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                 child: Row(
                   children: [
                     GestureDetector(
-                      onTap: () => Navigator.pop(context),
+                      onTap: () {
+                        if (context.canPop()) {
+                          context.pop();
+                        } else {
+                          context.go('/dashboard');
+                        }
+                      },
                       child: Container(
                         width: 38,
                         height: 38,
@@ -696,7 +785,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
         _mutedPurple;
 
     final hasSevere = (event.symptoms ?? [])
-        .any((s) => _severeSymptoms.any((sv) => s.contains(sv)));
+        .any((s) => kAlertSymptomNames.any((sv) => s.contains(sv)));
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -766,7 +855,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
             spacing: 6,
             runSpacing: 6,
             children: (event.symptoms ?? []).map((s) {
-              final isSev = _severeSymptoms.any((sv) => s.contains(sv));
+              final isSev = kAlertSymptomNames.any((sv) => s.contains(sv));
               return Container(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 8, vertical: 4),
