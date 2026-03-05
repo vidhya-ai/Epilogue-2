@@ -249,6 +249,23 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
         child: SafeArea(
           child: Column(
             children: [
+              // ── Patient name banner ──
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
+                color: _purple.withOpacity(0.08),
+                child: Text(
+                  "${SessionManager().currentCareTeam?.patientFirstName ?? 'Patient'}'s Care",
+                  style: GoogleFonts.nunito(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: _purple,
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
                 child: Row(

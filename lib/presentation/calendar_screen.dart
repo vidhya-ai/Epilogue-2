@@ -39,7 +39,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     showDialog(
       context: context, // This is _CalendarScreenState's context
-      builder: (dialogContext) { // This is the AlertDialog's context
+      builder: (dialogContext) {
+        // This is the AlertDialog's context
         return AlertDialog(
           title: const Text('Add Calendar Event'),
           content: Column(
@@ -73,7 +74,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(dialogContext), // Use dialogContext here
+              onPressed: () =>
+                  Navigator.pop(dialogContext), // Use dialogContext here
               child: const Text('Cancel'),
             ),
             ElevatedButton(
@@ -112,7 +114,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Calendar')),
+      appBar: AppBar(
+        title: Text(
+          "${SessionManager().currentCareTeam?.patientFirstName ?? 'Patient'}'s Calendar",
+        ),
+      ),
       body: FutureBuilder<List<CalendarEvent>>(
         future: _eventsFuture,
         builder: (context, snapshot) {

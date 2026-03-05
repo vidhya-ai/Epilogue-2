@@ -17,6 +17,82 @@ class MedicationInfo {
 
   /// Display string: 'GenericName (BrandName)'
   String get displayName => brand.isNotEmpty ? '$name ($brand)' : name;
+
+  /// All brand names split on commas / slashes for search matching.
+  List<String> get brandNames => brand
+      .split(RegExp(r'[,/]'))
+      .map((s) => s.trim())
+      .where((s) => s.isNotEmpty)
+      .toList();
+
+  /// Parsed list of route-of-administration options taken **directly** from
+  /// the spreadsheet's route/form column for this specific medication.
+  /// Splits on commas and semicolons so each distinct form becomes its own
+  /// dropdown item (e.g. "Oral tablet/capsule", "Oral liquid", "Rectal suppository").
+  List<String> get routeOptions {
+    if (route.trim().isEmpty) return ['Other'];
+    final parts = route
+        .split(RegExp(r'[;,]'))
+        .map((s) => s.trim())
+        .where((s) => s.isNotEmpty)
+        .map(
+          (s) => s[0].toUpperCase() + s.substring(1),
+        ) // capitalise first letter
+        .toList();
+    // De-duplicate while preserving order
+    final seen = <String>{};
+    final unique = <String>[];
+    for (final p in parts) {
+      if (seen.add(p)) unique.add(p);
+    }
+    if (unique.isEmpty) return ['Other'];
+    unique.add('Other');
+    return unique;
+  }
+
+  /// Parsed list of unit options derived from the spreadsheet's doseUnit field.
+  /// Returns simplified, dropdown-friendly labels.
+  List<String> get unitOptions {
+    final lower = doseUnit.toLowerCase();
+    final opts = <String>{};
+    if (lower.contains('mg') && !lower.contains('mcg')) opts.add('mg');
+    if (lower.contains('mcg')) opts.add('mcg');
+    if (lower.contains('ml')) opts.add('mL');
+    if (lower.contains('%')) opts.add('%');
+    if (lower.contains('units') || lower.contains('iu')) opts.add('units');
+    if (lower.contains('g ') ||
+        lower.contains('g/') ||
+        RegExp(r'\bg\b').hasMatch(lower))
+      opts.add('g');
+    if (lower.contains('tablet')) opts.add('tablet(s)');
+    if (lower.contains('capsule')) opts.add('capsule(s)');
+    if (lower.contains('patch')) opts.add('patch');
+    if (lower.contains('actuation')) opts.add('actuation(s)');
+    if (lower.contains('drop')) opts.add('drop(s)');
+    if (lower.contains('suppository')) opts.add('suppository');
+    if (lower.contains('lozenge')) opts.add('lozenge(s)');
+    if (opts.isEmpty) opts.add('mg'); // sensible default
+    opts.add('Other');
+    return opts.toList();
+  }
+}
+
+/// Search hospice medications by generic name OR brand name.
+/// Both 'lorazepam' and 'ativan' will match Lorazepam (Ativan).
+List<MedicationInfo> searchMedications(String query) {
+  if (query.trim().isEmpty) return [];
+  final q = query.trim().toLowerCase();
+  return kHospiceMedications.where((m) {
+    if (m.name.toLowerCase().contains(q)) return true;
+    // Check each brand name token
+    for (final b in m.brandNames) {
+      // Strip parenthetical content for matching
+      final clean = b.replaceAll(RegExp(r'\(.*?\)'), '').trim().toLowerCase();
+      if (clean.contains(q)) return true;
+    }
+    // Also check raw brand string
+    return m.brand.toLowerCase().contains(q);
+  }).toList();
 }
 
 const List<MedicationInfo> kHospiceMedications = [

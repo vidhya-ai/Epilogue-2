@@ -91,6 +91,7 @@ Medication _$MedicationFromJson(Map<String, dynamic> json) => Medication(
   route: json['route'] as String?,
   pattern: json['pattern'] as String?,
   scheduleDetails: json['schedule_details'] as String?,
+  notes: json['notes'] as String?,
   prnReasonTags: (json['prn_reason_tags'] as List<dynamic>?)
       ?.map((e) => e as String)
       .toList(),
@@ -98,6 +99,9 @@ Medication _$MedicationFromJson(Map<String, dynamic> json) => Medication(
       ? null
       : DateTime.parse(json['created_at'] as String),
   createdByMemberId: json['created_by_member_id'] as String?,
+  deprescribedAt: json['deprescribed_at'] == null
+      ? null
+      : DateTime.parse(json['deprescribed_at'] as String),
 );
 
 Map<String, dynamic> _$MedicationToJson(Medication instance) =>
@@ -110,9 +114,11 @@ Map<String, dynamic> _$MedicationToJson(Medication instance) =>
       'route': instance.route,
       'pattern': instance.pattern,
       'schedule_details': instance.scheduleDetails,
+      'notes': instance.notes,
       'prn_reason_tags': instance.prnReasonTags,
       'created_at': instance.createdAt?.toIso8601String(),
       'created_by_member_id': instance.createdByMemberId,
+      'deprescribed_at': instance.deprescribedAt?.toIso8601String(),
     };
 
 DoseLog _$DoseLogFromJson(Map<String, dynamic> json) => DoseLog(

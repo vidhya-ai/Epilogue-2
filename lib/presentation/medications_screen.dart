@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
@@ -595,10 +594,6 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                       try {
                         await _service.addMedication(newMed);
                         if (!mounted) return;
-                        // Allow the dialog pop animation to settle
-                        // before closing the bottom sheet.
-                        await Future.delayed(const Duration(milliseconds: 50));
-                        if (!mounted) return;
                         Navigator.pop(ctx);
                         _loadMedications();
                       } catch (e) {
@@ -666,13 +661,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                 child: Row(
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        if (context.canPop()) {
-                          context.pop();
-                        } else {
-                          context.go('/dashboard');
-                        }
-                      },
+                      onTap: () => Navigator.pop(context),
                       child: Container(
                         width: 38,
                         height: 38,

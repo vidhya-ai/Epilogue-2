@@ -50,6 +50,8 @@ CREATE TABLE IF NOT EXISTS medications (
   pattern text,
   schedule_details text,
   prn_reason_tags jsonb,
+  notes text,
+  deprescribed_at timestamptz,
   created_at timestamptz DEFAULT now(),
   created_by_member_id uuid
 );

@@ -308,7 +308,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       ),
       _CardData(
         title: 'Quick Notes',
-        subtitle: 'Daily jots',
+        subtitle: 'Capture thoughts',
         icon: Icons.description_outlined,
         badge: _observationBadge,
         route: '/observations',

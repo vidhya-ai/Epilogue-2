@@ -138,6 +138,8 @@ class MedicationCreate(BaseModel):
     pattern: str  # scheduled or prn
     schedule_details: Optional[str] = None
     prn_reason_tags: Optional[List[str]] = None
+    notes: Optional[str] = None
+    deprescribed_at: Optional[str] = None
 
 class Medication(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -150,6 +152,8 @@ class Medication(BaseModel):
     pattern: str
     schedule_details: Optional[str] = None
     prn_reason_tags: Optional[List[str]] = None
+    notes: Optional[str] = None
+    deprescribed_at: Optional[str] = None
     created_at: str
     created_by_member_id: str
 
@@ -203,7 +207,7 @@ class NurseContactAttempt(BaseModel):
     attempted_at: str
     attempted_by_member_id: str
 
-# Observations (Quick Jots)
+# Observations (Quick Notes)
 class ObservationCreate(BaseModel):
     content: str
     category: Optional[str] = None

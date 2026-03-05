@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -51,14 +52,17 @@ class _LandingScreenState extends State<LandingScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFFE6E2EE), Color(0xFFDAD4E6)],
+                colors: [
+                  Color(0xFF74659A), // deep purple at top
+                  Color(0xFFDFDBE5), // soft lilac at bottom
+                ],
               ),
             ),
             child: Stack(
               children: [
                 Positioned.fill(
                   child: Align(
-                    alignment: const Alignment(0, -0.05),
+                    alignment: const Alignment(0, 0.10),
                     child: SizedBox(
                       width: 760,
                       height: 760,
@@ -73,7 +77,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(18, 10, 18, 12),
+                        padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,32 +86,32 @@ class _LandingScreenState extends State<LandingScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'TODAY',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: 2.2,
-                                    color: const Color(0xFF7A7195),
+                                  'Today',
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 3.0,
+                                    color: Colors.white,
                                   ),
                                 ),
-                                const SizedBox(height: 2),
+                                const SizedBox(height: 4),
                                 Text(
                                   DateFormat('EEEE').format(_currentDate),
-                                  style: GoogleFonts.cormorantGaramond(
-                                    fontSize: 42,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xFF443C63),
-                                    height: 0.95,
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                    height: 1.1,
                                   ),
                                 ),
+                                const SizedBox(height: 4),
                                 Text(
                                   DateFormat('MMMM d, y')
                                       .format(_currentDate),
-                                  style: GoogleFonts.cormorantGaramond(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w900,
-                                    fontStyle: FontStyle.italic,
-                                    color: const Color(0xFF6C648B),
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ],
@@ -115,8 +119,8 @@ class _LandingScreenState extends State<LandingScreen> {
                             IconButton(
                               icon: const Icon(
                                 Icons.menu,
-                                color: Color(0xFF5F587F),
-                                size: 28,
+                                color: Colors.white,
+                                size: 36,
                               ),
                               onPressed: () {
                                 setState(() {
@@ -128,10 +132,10 @@ class _LandingScreenState extends State<LandingScreen> {
                         ),
                       ),
 
-                      const Divider(
+                      Divider(
                         height: 1,
                         thickness: 1,
-                        color: Color(0xFFD4CDDF),
+                        color: Colors.white.withOpacity(0.30),
                       ),
 
                       Expanded(
@@ -143,50 +147,66 @@ class _LandingScreenState extends State<LandingScreen> {
                             children: [
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 6,
+                                  horizontal: 24,
+                                  vertical: 12,
                                 ),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: const Color(0xFFE1DCEA),
+                                  borderRadius: BorderRadius.circular(9999),
+                                  color: Colors.white.withOpacity(0.70),
                                   border: Border.all(
-                                    color: const Color(0xFFCFC8DB),
+                                    color: const Color(0xFF6B5B95).withOpacity(0.40),
+                                    width: 2,
                                   ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.10),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
                                 ),
-                                child: Text(
-                                  '• COMPASSIONATE CARE AT HOME',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 2,
-                                    color: const Color(0xFF000000),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(9999),
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                                    child: Text(
+                                      'Compassionate Care At Home',
+                                      style: GoogleFonts.nunito(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w800,
+                                        letterSpacing: 2.0,
+                                        color: const Color(0xFF1A1A24),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 28),
+                              const SizedBox(height: 32),
                               Text(
                                 'Epilogue',
                                 style: GoogleFonts.playfairDisplay(
-                                  fontSize: 82,
+                                  fontSize: 80,
                                   fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xFF7A64A4),
-                                  height: 0.88,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                  height: 1.0,
                                 ),
                               ),
-                              const SizedBox(height: 22),
-                              Text(
-                                'Supporting families through hospice care at\nhome, one gentle day at a time.',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.cormorantGaramond(
-                                  fontSize: 15,
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.black,
-                                  height: 1.25,
+                              const SizedBox(height: 24),
+                              SizedBox(
+                                width: 320,
+                                child: Text(
+                                  'Supporting families through hospice care at home, one gentle day at a time.',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w800,
+                                    color: const Color(0xFF1A1A24),
+                                    height: 1.5,
+                                  ),
                                 ),
                               ),
-                              const SizedBox(height: 34),
+                              const SizedBox(height: 48),
 
                               // Start button
                               SizedBox(
@@ -196,78 +216,64 @@ class _LandingScreenState extends State<LandingScreen> {
                                       context.go('/setup'),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
-                                        const Color(0xFF6B5B8E),
+                                        const Color(0xFF6B5B95),
+                                    foregroundColor: Colors.white,
+                                    elevation: 6,
+                                    shadowColor: const Color(0xFF6B5B95).withOpacity(0.30),
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 16),
+                                        vertical: 20),
                                     shape: RoundedRectangleBorder(
                                       borderRadius:
-                                          BorderRadius.circular(32),
+                                          BorderRadius.circular(9999),
                                     ),
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Start Your Care Team',
-                                        style:
-                                            GoogleFonts.cormorantGaramond(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      const Icon(Icons.arrow_forward,
-                                          color: Colors.white,
-                                          size: 18),
-                                    ],
+                                  child: Text(
+                                    'Start Your Care Team',
+                                    style: GoogleFonts.nunito(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
 
-                              const SizedBox(height: 22),
+                              const SizedBox(height: 32),
 
                               Text(
                                 'Already have an invite code?',
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.cormorantGaramond(
-                                  fontSize: 15,
-                                  fontStyle: FontStyle.italic,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w900,
+                                style: GoogleFonts.nunito(
+                                  fontSize: 20,
+                                  color: const Color(0xFF1A1A24),
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
 
-                              const SizedBox(height: 14),
+                              const SizedBox(height: 16),
 
-                              SizedBox(
-                                width: 210,
-                                child: ElevatedButton(
-                                  onPressed: () =>
-                                      context.go('/join'),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        const Color(0xFF6B5B8E),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(28),
-                                    ),
+                              ElevatedButton(
+                                onPressed: () =>
+                                    context.go('/join'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color(0xFF6B5B95),
+                                  foregroundColor: Colors.white,
+                                  elevation: 4,
+                                  shadowColor: const Color(0xFF6B5B95).withOpacity(0.30),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 16, horizontal: 32),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(9999),
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                    children: const [
-                                      Text('Join here',
-                                          style: TextStyle(
-                                              color: Colors.white)),
-                                      SizedBox(width: 8),
-                                      Icon(Icons.arrow_forward,
-                                          size: 16,
-                                          color: Colors.white),
-                                    ],
+                                ),
+                                child: Text(
+                                  'Join here',
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ),
@@ -368,7 +374,10 @@ class _LandingScreenState extends State<LandingScreen> {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: const Color(0xFFD3CBDD), width: 1),
+        border: Border.all(
+          color: const Color(0xFF6B5B95).withOpacity(0.05),
+          width: 1.5,
+        ),
       ),
     );
   }

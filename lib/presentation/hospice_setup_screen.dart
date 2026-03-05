@@ -1,178 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:uuid/uuid.dart';
-import '../core/session_manager.dart';
-import '../core/supabase_service.dart';
-import '../domain/models.dart';
-import 'widgets/animated_border_field.dart';
+import 'care_address_screen.dart';
 
 // ─── Hospice Data Model ───────────────────────────────────────────────────────
-// Columns: name, address, zipCode, county, state, coverageArea, branchOf
-// TODO: Vidhya to ask data analyst to populate zip code and county columns
 class HospiceOrg {
   final String id;
   final String name;
   final String address;
+  final String city;
+  final String state;
   final String zipCode;
   final String county;
-  final String state;
-  final String coverageArea; // 30-mile radius confirmed for launch
-  final String? branchOf; // null = main office; parent id if branch
-  final String? nurseLineNumber; // 24/7 nurse on-call line
+  final String coverageArea;
+  final String? branchOf;
+  final String? nurseLineNumber;
 
   const HospiceOrg({
     required this.id,
     required this.name,
     required this.address,
+    required this.city,
+    required this.state,
     required this.zipCode,
     required this.county,
-    required this.state,
     required this.coverageArea,
     this.branchOf,
     this.nurseLineNumber,
   });
+
+  // Full location string shown in results
+  String get locationLine => '$address, $city, $state $zipCode';
+  String get countyLine => '$county County · $coverageArea';
 }
 
 // ─── Static hospice table (replace with Supabase query later) ─────────────────
 const List<HospiceOrg> _hospiceList = [
-  HospiceOrg(
-    id: 'valley_main',
-    name: 'Valley Care Hospice Center',
-    address: '123 Valley Road, Springfield, IL',
-    zipCode: '62701',
-    county: 'Sangamon',
-    state: 'IL',
-    coverageArea: '30-mile radius',
-    nurseLineNumber: '555-100-1001',
-  ),
-  HospiceOrg(
-    id: 'valley_north',
-    name: 'Valley Care Hospice Center — North Branch',
-    address: '450 North Valley Pkwy, Lincoln, IL',
-    zipCode: '62656',
-    county: 'Logan',
-    state: 'IL',
-    coverageArea: '30-mile radius',
-    branchOf: 'valley_main',
-    nurseLineNumber: '555-100-1001',
-  ),
-  HospiceOrg(
-    id: 'serenity',
-    name: 'Serenity Pathways Palliative',
-    address: '456 Serenity Lane, Chicago, IL',
-    zipCode: '60601',
-    county: 'Cook',
-    state: 'IL',
-    coverageArea: '30-mile radius',
-    nurseLineNumber: '555-200-2002',
-  ),
-  HospiceOrg(
-    id: 'grace',
-    name: 'Graceful Transitions Hospice',
-    address: '789 Grace Ave, Naperville, IL',
-    zipCode: '60540',
-    county: 'DuPage',
-    state: 'IL',
-    coverageArea: '30-mile radius',
-    nurseLineNumber: '555-300-3003',
-  ),
-  HospiceOrg(
-    id: 'north',
-    name: 'North Star Comfort Care',
-    address: '321 North Star Blvd, Rockford, IL',
-    zipCode: '61101',
-    county: 'Winnebago',
-    state: 'IL',
-    coverageArea: '30-mile radius',
-    nurseLineNumber: '555-400-4004',
-  ),
+  HospiceOrg(id: 'valley_main', name: 'Valley Care Hospice Center',
+    address: '123 Valley Road', city: 'Springfield', state: 'IL', zipCode: '62701',
+    county: 'Sangamon', coverageArea: '30-mile radius', nurseLineNumber: '555-100-1001'),
+  HospiceOrg(id: 'valley_north', name: 'Valley Care Hospice Center',
+    address: '450 North Valley Pkwy', city: 'Lincoln', state: 'IL', zipCode: '62656',
+    county: 'Logan', coverageArea: '30-mile radius', branchOf: 'valley_main', nurseLineNumber: '555-100-1001'),
+  HospiceOrg(id: 'valley_south', name: 'Valley Care Hospice Center',
+    address: '88 South Creek Blvd', city: 'Decatur', state: 'IL', zipCode: '62521',
+    county: 'Macon', coverageArea: '30-mile radius', branchOf: 'valley_main', nurseLineNumber: '555-100-1001'),
+  HospiceOrg(id: 'serenity', name: 'Serenity Pathways Palliative',
+    address: '456 Serenity Lane', city: 'Chicago', state: 'IL', zipCode: '60601',
+    county: 'Cook', coverageArea: '30-mile radius', nurseLineNumber: '555-200-2002'),
+  HospiceOrg(id: 'grace', name: 'Graceful Transitions Hospice',
+    address: '789 Grace Ave', city: 'Naperville', state: 'IL', zipCode: '60540',
+    county: 'DuPage', coverageArea: '30-mile radius', nurseLineNumber: '555-300-3003'),
+  HospiceOrg(id: 'grace_west', name: 'Graceful Transitions Hospice',
+    address: '22 Westfield Dr', city: 'Aurora', state: 'IL', zipCode: '60505',
+    county: 'Kane', coverageArea: '30-mile radius', branchOf: 'grace', nurseLineNumber: '555-300-3003'),
+  HospiceOrg(id: 'north', name: 'North Star Comfort Care',
+    address: '321 North Star Blvd', city: 'Rockford', state: 'IL', zipCode: '61101',
+    county: 'Winnebago', coverageArea: '30-mile radius', nurseLineNumber: '555-400-4004'),
 ];
-
-// ─── US States (two-letter codes) ─────────────────────────────────────────────
-const _usStates = [
-  'AL',
-  'AK',
-  'AZ',
-  'AR',
-  'CA',
-  'CO',
-  'CT',
-  'DE',
-  'FL',
-  'GA',
-  'HI',
-  'ID',
-  'IL',
-  'IN',
-  'IA',
-  'KS',
-  'KY',
-  'LA',
-  'ME',
-  'MD',
-  'MA',
-  'MI',
-  'MN',
-  'MS',
-  'MO',
-  'MT',
-  'NE',
-  'NV',
-  'NH',
-  'NJ',
-  'NM',
-  'NY',
-  'NC',
-  'ND',
-  'OH',
-  'OK',
-  'OR',
-  'PA',
-  'RI',
-  'SC',
-  'SD',
-  'TN',
-  'TX',
-  'UT',
-  'VT',
-  'VA',
-  'WA',
-  'WV',
-  'WI',
-  'WY',
-  'DC',
-];
-
-// ─── Phone number formatter + validator ───────────────────────────────────────
-class _PhoneFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue old,
-    TextEditingValue newVal,
-  ) {
-    final digits = newVal.text.replaceAll(RegExp(r'\D'), '');
-    if (digits.isEmpty) return newVal.copyWith(text: '');
-    String formatted;
-    if (digits.length <= 3) {
-      formatted = '($digits';
-    } else if (digits.length <= 6) {
-      formatted = '(${digits.substring(0, 3)}) ${digits.substring(3)}';
-    } else {
-      formatted =
-          '(${digits.substring(0, 3)}) ${digits.substring(3, 6)}-${digits.substring(6, digits.length.clamp(0, 10))}';
-    }
-    return newVal.copyWith(
-      text: formatted,
-      selection: TextSelection.collapsed(offset: formatted.length),
-    );
-  }
-}
-
-// ignore: unused_element
-bool _isValidPhone(String phone) =>
-    phone.replaceAll(RegExp(r'\D'), '').length == 10;
 
 // ─── Colors ───────────────────────────────────────────────────────────────────
 const _bg1 = Color(0xFFE6E2EE);
@@ -201,66 +85,53 @@ class HospiceSetupScreen extends StatefulWidget {
 
 class _HospiceSetupScreenState extends State<HospiceSetupScreen>
     with SingleTickerProviderStateMixin {
-  // ── Hospice selection ──
   HospiceOrg? _selectedHospice;
-  bool _showSearch = false;
   String _searchQuery = '';
-  bool _showDropdown = false;
   final _searchCtrl = TextEditingController();
   final _searchFocus = FocusNode();
-
-  // ── Care address ──
-  final _streetCtrl = TextEditingController();
-  final _cityCtrl = TextEditingController();
-  String? _selectedState;
-  final _zipCtrl = TextEditingController();
-
-  // County is derived automatically via Google Geocoding API (not user input)
-  String? _derivedCounty;
-  bool _derivingCounty = false;
-
-  // ── Loading ──
-  bool _isLoading = false;
+  bool _showResults = false;
 
   late AnimationController _animCtrl;
   late Animation<double> _fadeAnim;
   late Animation<Offset> _slideAnim;
 
-  // Main hospices only for dropdown
-  List<HospiceOrg> get _mainHospices =>
-      _hospiceList.where((h) => h.branchOf == null).toList();
+  // Autocomplete: match against name, city, zip, county
+  List<HospiceOrg> get _results {
+    final q = _searchQuery.toLowerCase().trim();
+    if (q.isEmpty) return [];
+    return _hospiceList.where((h) =>
+      h.name.toLowerCase().contains(q) ||
+      h.city.toLowerCase().contains(q) ||
+      h.zipCode.contains(q) ||
+      h.county.toLowerCase().contains(q) ||
+      h.address.toLowerCase().contains(q)
+    ).toList();
+  }
 
-  // Branches under a given parent
-  List<HospiceOrg> _branchesOf(String parentId) =>
-      _hospiceList.where((h) => h.branchOf == parentId).toList();
-
-  // Search filters by name, county, or zip
-  List<HospiceOrg> get _filteredHospices {
-    final q = _searchQuery.toLowerCase();
-    if (q.isEmpty) return _hospiceList;
-    return _hospiceList
-        .where(
-          (h) =>
-              h.name.toLowerCase().contains(q) ||
-              h.county.toLowerCase().contains(q) ||
-              h.zipCode.contains(q),
-        )
-        .toList();
+  // Group results: parent name → list of locations
+  Map<String, List<HospiceOrg>> get _groupedResults {
+    final map = <String, List<HospiceOrg>>{};
+    for (final h in _results) {
+      final key = h.name; // group by org name
+      map.putIfAbsent(key, () => []).add(h);
+    }
+    return map;
   }
 
   @override
   void initState() {
     super.initState();
-    _animCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 600),
-    );
+    _animCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
     _fadeAnim = CurvedAnimation(parent: _animCtrl, curve: Curves.easeOut);
-    _slideAnim = Tween<Offset>(
-      begin: const Offset(0, 0.05),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _animCtrl, curve: Curves.easeOut));
+    _slideAnim = Tween<Offset>(begin: const Offset(0, 0.05), end: Offset.zero)
+        .animate(CurvedAnimation(parent: _animCtrl, curve: Curves.easeOut));
     _animCtrl.forward();
+
+    _searchFocus.addListener(() {
+      if (_searchFocus.hasFocus && _searchQuery.isNotEmpty) {
+        setState(() => _showResults = true);
+      }
+    });
   }
 
   @override
@@ -268,102 +139,54 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
     _animCtrl.dispose();
     _searchCtrl.dispose();
     _searchFocus.dispose();
-    _streetCtrl.dispose();
-    _cityCtrl.dispose();
-    _zipCtrl.dispose();
     super.dispose();
   }
 
-  // ── Derive county via Google Geocoding API ────────────────────────────────
-  // TODO: Replace stub with real HTTP call:
-  // GET https://maps.googleapis.com/maps/api/geocode/json
-  //     ?address={street},{city},{state}+{zip}&key=YOUR_API_KEY
-  // Parse 'administrative_area_level_2' from address_components
-  // Zip code alone is insufficient — two addresses 1 mile apart can be
-  // in different counties.
-  Future<void> _deriveCounty() async {
-    final street = _streetCtrl.text.trim();
-    final city = _cityCtrl.text.trim();
-    final state = _selectedState;
-    final zip = _zipCtrl.text.trim();
-    if (street.isEmpty || city.isEmpty || state == null || zip.length < 5) {
-      return;
-    }
+  void _onSearchChanged(String val) {
     setState(() {
-      _derivingCounty = true;
-      _derivedCounty = null;
+      _searchQuery = val;
+      _showResults = val.trim().isNotEmpty;
+      // Clear selection if user edits after picking
+      if (_selectedHospice != null && val != _selectedHospice!.name) {
+        _selectedHospice = null;
+      }
     });
-    await Future.delayed(const Duration(milliseconds: 800)); // stub
-    if (mounted) {
-      setState(() {
-        _derivingCounty = false;
-        _derivedCounty = 'Pending Google API integration';
-      });
-    }
   }
 
-  Future<void> _continueToDashboard() async {
-    if (_isLoading) return;
-    setState(() => _isLoading = true);
-    try {
-      const uuid = Uuid();
-      final now = DateTime.now();
-      final teamId = uuid.v4();
-      final memberId = uuid.v4();
-      // Generate a 4-digit PIN so the member can rejoin / login later
-      final pin = (1000 + (DateTime.now().microsecondsSinceEpoch % 9000))
-          .toString();
-
-      final careTeam = CareTeam(
-        id: teamId,
-        patientFirstName: widget.patientName.trim().isEmpty
-            ? null
-            : widget.patientName.trim(),
-        hospiceOrgId: _selectedHospice?.id,
-        nurseLineNumber: _selectedHospice?.nurseLineNumber,
-        createdAt: now,
-      );
-
-      final member = Member(
-        id: memberId,
-        careTeamId: teamId,
-        name: widget.caregiverName.trim().isEmpty
-            ? 'Caregiver'
-            : widget.caregiverName.trim(),
-        email: widget.email.trim().isEmpty
-            ? 'unknown@example.com'
-            : widget.email.trim(),
-        role: 'family',
-        isAdmin: true,
-        accessPin: pin,
-        joinedAt: now,
-        lastActive: now,
-      );
-
-      // Save to Supabase — must succeed for medication tracking to work
-      final service = SupabaseService();
-      await service.createCareTeam(careTeam);
-      await service.addMember(member);
-
-      await SessionManager().setSession(careTeam, member);
-
-      if (!mounted) return;
-      context.go('/dashboard');
-    } catch (e) {
-      debugPrint('Setup error: $e');
-      if (mounted) _showSnack('Error: ${e.toString()}');
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
-    }
+  void _selectHospice(HospiceOrg h) {
+    setState(() {
+      _selectedHospice = h;
+      _showResults = false;
+      _searchQuery = h.name;
+      _searchCtrl.text = h.name;
+    });
+    _searchFocus.unfocus();
   }
 
-  void _showSnack(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(msg, style: GoogleFonts.nunito(fontSize: 13)),
-        backgroundColor: _deepPurple,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+  void _clearSearch() {
+    setState(() {
+      _selectedHospice = null;
+      _searchQuery = '';
+      _showResults = false;
+    });
+    _searchCtrl.clear();
+    _searchFocus.requestFocus();
+  }
+
+  void _goNext() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CareAddressScreen(
+          patientName: widget.patientName,
+          caregiverName: widget.caregiverName,
+          email: widget.email,
+          hospiceId: _selectedHospice?.id ?? '',
+          hospiceName: _selectedHospice != null
+              ? '${_selectedHospice!.name} — ${_selectedHospice!.city}'
+              : '',
+          nurseLineNumber: _selectedHospice?.nurseLineNumber,
+        ),
       ),
     );
   }
@@ -373,7 +196,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
-        if (_showDropdown) setState(() => _showDropdown = false);
+        setState(() => _showResults = false);
       },
       child: Scaffold(
         body: Container(
@@ -397,201 +220,150 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 16),
-                      _backButton(),
-                      const SizedBox(height: 28),
-                      _stepBadge(),
-                      const SizedBox(height: 16),
-                      _title(),
-                      const SizedBox(height: 32),
-                      _sectionDivider(),
-                      const SizedBox(height: 28),
 
-                      // ══════════════════════════════════════
-                      // SECTION 1 — Select Your Hospice Provider
-                      // ══════════════════════════════════════
-                      _sectionLabel('Select Your Hospice Provider'),
-                      const SizedBox(height: 10),
-
-                      // Primary dropdown (shows name only when selected)
-                      _hospiceDropdown(),
-
-                      // Show selected hospice name only — no contact info here
-                      if (_selectedHospice != null) ...[
-                        const SizedBox(height: 10),
-                        _selectedHospiceNameDisplay(),
-                      ],
-
-                      const SizedBox(height: 12),
-
-                      // "Can't find your provider? Search" secondary option
+                      // Back
                       GestureDetector(
-                        onTap: () => setState(() {
-                          _showSearch = !_showSearch;
-                          if (_showSearch) {
-                            Future.delayed(
-                              const Duration(milliseconds: 100),
-                              () => _searchFocus.requestFocus(),
-                            );
-                          } else {
-                            _searchCtrl.clear();
-                            _searchQuery = '';
-                            _showDropdown = false;
-                          }
-                        }),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(
-                              Icons.search_rounded,
-                              size: 15,
-                              color: _purple,
-                            ),
-                            const SizedBox(width: 6),
-                            Text(
-                              "Can't find your provider? Search",
-                              style: GoogleFonts.nunito(
-                                fontSize: 13,
-                                color: _purple,
-                                fontWeight: FontWeight.w700,
-                                decoration: TextDecoration.underline,
-                                decorationColor: _purple,
-                              ),
-                            ),
-                          ],
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Container(
+                          width: 40, height: 40,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFE1DCEA),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: _borderColor),
+                          ),
+                          child: const Icon(Icons.arrow_back_ios_new, size: 16, color: _mutedPurple),
                         ),
                       ),
 
-                      // Search box + results (toggled)
-                      if (_showSearch) ...[
-                        const SizedBox(height: 12),
-                        _searchBox(),
-                        if (_showDropdown) _searchResults(),
-                      ],
+                      const SizedBox(height: 28),
+
+                      // Step badge
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE1DCEA),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: _borderColor),
+                        ),
+                        child: Text('STEP 2 OF 3',
+                          style: GoogleFonts.nunito(fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 2, color: const Color(0xFF7A7195))),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Title
+                      Text('Your hospice\nprovider',
+                        style: GoogleFonts.nunito(fontSize: 48, fontWeight: FontWeight.w600, color: _deepPurple, height: 1.0)),
+                      const SizedBox(height: 10),
+                      Text('Search by name, city, or zip code.',
+                        style: GoogleFonts.nunito(fontSize: 17, fontStyle: FontStyle.italic, fontWeight: FontWeight.w600, color: _mutedPurple, height: 1.4)),
 
                       const SizedBox(height: 32),
 
-                      // ══════════════════════════════════════
-                      // SECTION 2 — Care Address
-                      // ══════════════════════════════════════
-                      _sectionLabel('Where will care be delivered?'),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Care will be delivered at this address.',
-                        style: GoogleFonts.nunito(
-                          fontSize: 12,
-                          color: _mutedPurple,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                      const SizedBox(height: 14),
+                      // Divider
+                      Row(children: [
+                        Expanded(child: Divider(color: _borderColor, thickness: 1)),
+                        Padding(padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: SizedBox(width: 18, height: 18,
+                            child: Stack(alignment: Alignment.center, children: [
+                              Container(width: 18, height: 18, decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: _borderColor, width: 1))),
+                              Container(width: 10, height: 10, decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: _borderColor, width: 1))),
+                            ]))),
+                        Expanded(child: Divider(color: _borderColor, thickness: 1)),
+                      ]),
 
-                      // Street Address
-                      _fieldLabel('Street Address'),
-                      _inputField(
-                        controller: _streetCtrl,
-                        hint: 'e.g. 1234 Elm Street',
-                        icon: Icons.home_outlined,
-                        onChanged: (_) => _deriveCounty(),
-                      ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 28),
 
-                      // City
-                      _fieldLabel('City'),
-                      _inputField(
-                        controller: _cityCtrl,
-                        hint: 'e.g. Springfield',
-                        icon: Icons.location_city_outlined,
-                        onChanged: (_) => _deriveCounty(),
-                      ),
-                      const SizedBox(height: 12),
-
-                      // State + Zip side by side
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _fieldLabel('State'),
-                                _stateDropdown(),
-                              ],
-                            ),
+                      // ── Single autocomplete search field ──
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: _searchFocus.hasFocus ? _purple : _borderColor,
+                            width: _searchFocus.hasFocus ? 2 : 1.5,
                           ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            flex: 3,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _fieldLabel('Zip Code'),
-                                _inputField(
-                                  controller: _zipCtrl,
-                                  hint: '00000',
-                                  icon: Icons.pin_drop_outlined,
-                                  type: TextInputType.number,
-                                  maxLength: 5,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly,
-                                  ],
-                                  onChanged: (_) => _deriveCounty(),
-                                ),
-                              ],
+                          boxShadow: _searchFocus.hasFocus
+                            ? [BoxShadow(color: _purple.withOpacity(0.12), blurRadius: 12, offset: const Offset(0, 4))]
+                            : [],
+                        ),
+                        child: TextField(
+                          controller: _searchCtrl,
+                          focusNode: _searchFocus,
+                          onChanged: _onSearchChanged,
+                          style: GoogleFonts.nunito(fontSize: 15, color: _deepPurple, fontWeight: FontWeight.w600),
+                          decoration: InputDecoration(
+                            hintText: 'Search hospice name, city, or zip...',
+                            hintStyle: GoogleFonts.nunito(fontSize: 14, color: const Color(0xFFB8B0CC), fontWeight: FontWeight.w400),
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Icon(
+                                _selectedHospice != null ? Icons.check_circle_rounded : Icons.search_rounded,
+                                size: 22,
+                                color: _selectedHospice != null ? _purple : _mutedPurple,
+                              ),
                             ),
+                            suffixIcon: _searchQuery.isNotEmpty
+                              ? IconButton(
+                                  icon: const Icon(Icons.close, size: 18, color: _mutedPurple),
+                                  onPressed: _clearSearch,
+                                )
+                              : null,
+                            border: InputBorder.none,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                           ),
-                        ],
+                        ),
                       ),
 
-                      // County status — auto-derived, never shown as editable
-                      if (_derivingCounty) ...[
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            const SizedBox(
-                              width: 14,
-                              height: 14,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: _purple,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Determining county...',
-                              style: GoogleFonts.nunito(
-                                fontSize: 11,
-                                color: _mutedPurple,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ] else if (_derivedCounty != null) ...[
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.check_circle_outline,
-                              size: 14,
-                              color: _purple,
-                            ),
-                            const SizedBox(width: 6),
-                            Text(
-                              _derivedCounty!,
-                              style: GoogleFonts.nunito(
-                                fontSize: 11,
-                                color: _mutedPurple,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
+                      // ── Autocomplete results ──
+                      if (_showResults) ...[
+                        const SizedBox(height: 6),
+                        _buildResults(),
+                      ],
+
+                      // ── Selected location confirmation ──
+                      if (_selectedHospice != null && !_showResults) ...[
+                        const SizedBox(height: 14),
+                        _selectedConfirmation(),
+                      ],
+
+                      // Helper text when nothing typed
+                      if (_searchQuery.isEmpty && _selectedHospice == null) ...[
+                        const SizedBox(height: 14),
+                        Row(children: [
+                          const Icon(Icons.info_outline, size: 14, color: _mutedPurple),
+                          const SizedBox(width: 6),
+                          Expanded(child: Text(
+                            'Start typing to find your hospice provider. If they have multiple locations, you can select the closest one.',
+                            style: GoogleFonts.nunito(fontSize: 12, color: _mutedPurple, height: 1.5),
+                          )),
+                        ]),
                       ],
 
                       const SizedBox(height: 44),
-                      _continueButton(),
+
+                      // Continue
+                      SizedBox(
+                        width: double.infinity, height: 60,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF6B5B8E),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+                          ),
+                          onPressed: _goNext,
+                          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                            Text('Continue', style: GoogleFonts.nunito(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white)),
+                            const SizedBox(width: 10),
+                            const Icon(Icons.arrow_forward, color: Colors.white, size: 18),
+                          ]),
+                        ),
+                      ),
+
                       const SizedBox(height: 16),
-                      _privacyNote(),
+                      Center(child: Text('🔒  Your information stays private to your care team',
+                        style: GoogleFonts.nunito(fontSize: 11, color: const Color(0xFF9B92B8), fontWeight: FontWeight.w500))),
                       const SizedBox(height: 40),
                     ],
                   ),
@@ -604,589 +376,144 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
     );
   }
 
-  // ─── Primary dropdown — shows branches under parents ──────────────────────
-  Widget _hospiceDropdown() {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.85),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: _borderColor, width: 1.5),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<HospiceOrg>(
-          value: _selectedHospice,
-          isExpanded: true,
-          hint: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'Select a hospice provider',
-              style: GoogleFonts.nunito(
-                fontSize: 14,
-                color: const Color(0xFFB8B0CC),
-              ),
-            ),
-          ),
-          icon: const Padding(
-            padding: EdgeInsets.only(right: 12),
-            child: Icon(Icons.keyboard_arrow_down, color: _mutedPurple),
-          ),
-          style: GoogleFonts.nunito(
-            fontSize: 14,
-            color: _deepPurple,
-            fontWeight: FontWeight.w600,
-          ),
-          items: [
-            // Main offices
-            ..._mainHospices.map((h) {
-              final branches = _branchesOf(h.id);
-              return DropdownMenuItem<HospiceOrg>(
-                value: h,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        h.name,
-                        style: GoogleFonts.nunito(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: _deepPurple,
-                        ),
-                      ),
-                      if (branches.isNotEmpty)
-                        Text(
-                          '${branches.length} branch location${branches.length > 1 ? 's' : ''}',
-                          style: GoogleFonts.nunito(
-                            fontSize: 11,
-                            color: _mutedPurple,
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              );
-            }),
-            // Branch locations — indented with vertical line
-            ..._hospiceList
-                .where((h) => h.branchOf != null)
-                .map(
-                  (h) => DropdownMenuItem<HospiceOrg>(
-                    value: h,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 28, right: 16),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 3,
-                            height: 20,
-                            decoration: BoxDecoration(
-                              color: _borderColor,
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              h.name,
-                              style: GoogleFonts.nunito(
-                                fontSize: 13,
-                                color: _mutedPurple,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-          ],
-          onChanged: (val) => setState(() {
-            _selectedHospice = val;
-            _showSearch = false;
-            _searchCtrl.clear();
-            _searchQuery = '';
-            _showDropdown = false;
-          }),
+  // ── Grouped autocomplete results (GPS-style) ──────────────────────────────
+  Widget _buildResults() {
+    final grouped = _groupedResults;
+    if (grouped.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: _borderColor),
         ),
-      ),
-    );
-  }
+        child: Row(children: [
+          const Icon(Icons.search_off_rounded, size: 20, color: _mutedPurple),
+          const SizedBox(width: 12),
+          Expanded(child: Text(
+            'No hospice found. Try a different name, city, or zip.',
+            style: GoogleFonts.nunito(fontSize: 13, color: _mutedPurple),
+          )),
+        ]),
+      );
+    }
 
-  // ─── Selected hospice — name only, no contact info ────────────────────────
-  Widget _selectedHospiceNameDisplay() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      decoration: BoxDecoration(
-        color: _purple.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: _purple.withOpacity(0.3), width: 1.5),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 28,
-            height: 28,
-            decoration: BoxDecoration(
-              color: _purple.withOpacity(0.12),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.check_rounded, size: 15, color: _purple),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              _selectedHospice!.name,
-              style: GoogleFonts.nunito(
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
-                color: _purple,
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () => setState(() => _selectedHospice = null),
-            child: const Icon(Icons.close, size: 16, color: _mutedPurple),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ─── Search box ───────────────────────────────────────────────────────────
-  Widget _searchBox() {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.85),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: _showDropdown ? _purple : _borderColor,
-          width: _showDropdown ? 2 : 1.5,
-        ),
-        boxShadow: _showDropdown
-            ? [
-                BoxShadow(
-                  color: _purple.withOpacity(0.12),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ]
-            : [],
-      ),
-      child: TextField(
-        controller: _searchCtrl,
-        focusNode: _searchFocus,
-        style: GoogleFonts.nunito(
-          fontSize: 14,
-          color: _deepPurple,
-          fontWeight: FontWeight.w500,
-        ),
-        onChanged: (v) => setState(() {
-          _searchQuery = v;
-          _showDropdown = v.isNotEmpty;
-        }),
-        onTap: () =>
-            setState(() => _showDropdown = _searchCtrl.text.isNotEmpty),
-        decoration: InputDecoration(
-          hintText: 'Search by name, county, or zip code...',
-          hintStyle: GoogleFonts.nunito(
-            fontSize: 14,
-            color: const Color(0xFFB8B0CC),
-          ),
-          prefixIcon: const Icon(
-            Icons.search_rounded,
-            size: 20,
-            color: _mutedPurple,
-          ),
-          suffixIcon: _searchCtrl.text.isNotEmpty
-              ? IconButton(
-                  icon: const Icon(Icons.clear, size: 18, color: _mutedPurple),
-                  onPressed: () => setState(() {
-                    _searchCtrl.clear();
-                    _searchQuery = '';
-                    _showDropdown = false;
-                  }),
-                )
-              : null,
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16,
-          ),
-        ),
-      ),
-    );
-  }
-
-  // ─── Search results ───────────────────────────────────────────────────────
-  Widget _searchResults() {
-    final results = _filteredHospices;
-    return Container(
-      margin: const EdgeInsets.only(top: 4),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: _borderColor),
-        boxShadow: [
-          BoxShadow(
-            color: _purple.withOpacity(0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: _purple.withOpacity(0.10), blurRadius: 20, offset: const Offset(0, 6))],
       ),
-      child: results.isEmpty
-          ? Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text(
-                'No providers found. Try a different search.',
-                style: GoogleFonts.nunito(fontSize: 13, color: _mutedPurple),
-              ),
-            )
-          : Column(
-              children: results.map((h) {
-                final isBranch = h.branchOf != null;
-                return InkWell(
-                  borderRadius: BorderRadius.circular(16),
-                  onTap: () => setState(() {
-                    _selectedHospice = h;
-                    _showDropdown = false;
-                    _showSearch = false;
-                    _searchCtrl.clear();
-                    _searchQuery = '';
-                  }),
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(
-                      isBranch ? 28 : 16,
-                      14,
-                      16,
-                      14,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: _borderColor.withOpacity(0.5),
-                        ),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 36,
-                          height: 36,
-                          decoration: BoxDecoration(
-                            color: _cardBg,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Icon(
-                            Icons.local_hospital_outlined,
-                            size: 18,
-                            color: _purple,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                h.name,
-                                style: GoogleFonts.nunito(
-                                  fontSize: 13,
-                                  fontWeight: isBranch
-                                      ? FontWeight.w500
-                                      : FontWeight.w700,
-                                  color: _deepPurple,
-                                ),
-                              ),
-                              Text(
-                                '${h.county} County · ${h.zipCode} · ${h.coverageArea}',
-                                style: GoogleFonts.nunito(
-                                  fontSize: 11,
-                                  color: _mutedPurple,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Icon(
-                          Icons.chevron_right,
-                          size: 16,
-                          color: _mutedPurple,
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-    );
-  }
-
-  // ─── State two-letter dropdown ─────────────────────────────────────────────
-  Widget _stateDropdown() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.85),
+      child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: _borderColor, width: 1.5),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: _selectedState,
-          isExpanded: true,
-          hint: Text(
-            'State',
-            style: GoogleFonts.nunito(
-              fontSize: 14,
-              color: const Color(0xFFB8B0CC),
-            ),
-          ),
-          icon: const Icon(
-            Icons.keyboard_arrow_down,
-            size: 18,
-            color: _mutedPurple,
-          ),
-          style: GoogleFonts.nunito(
-            fontSize: 14,
-            color: _deepPurple,
-            fontWeight: FontWeight.w600,
-          ),
-          items: _usStates
-              .map(
-                (s) => DropdownMenuItem(
-                  value: s,
-                  child: Text(s, style: GoogleFonts.nunito(fontSize: 14)),
-                ),
-              )
-              .toList(),
-          onChanged: (v) {
-            setState(() => _selectedState = v);
-            _deriveCounty();
-          },
-        ),
-      ),
-    );
-  }
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: grouped.entries.expand((entry) {
+            final orgName = entry.key;
+            final locations = entry.value;
+            final isMulti = locations.length > 1;
 
-  // ─── Input field ──────────────────────────────────────────────────────────
-  Widget _inputField({
-    required TextEditingController controller,
-    required String hint,
-    required IconData icon,
-    TextInputType? type,
-    int? maxLength,
-    List<TextInputFormatter>? inputFormatters,
-    void Function(String)? onChanged,
-  }) {
-    return AnimatedBorderField(
-      controller: controller,
-      hint: hint,
-      prefixIcon: icon,
-      keyboardType: type,
-      maxLength: maxLength,
-      inputFormatters: inputFormatters,
-      onChanged: onChanged,
-      borderRadius: 16,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-    );
-  }
-
-  // ─── Reused style widgets (identical to original page) ────────────────────
-  Widget _backButton() {
-    return GestureDetector(
-      onTap: () => Navigator.of(context).pop(),
-      child: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          color: const Color(0xFFE1DCEA),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: _borderColor),
-        ),
-        child: const Icon(
-          Icons.arrow_back_ios_new,
-          size: 16,
-          color: _mutedPurple,
-        ),
-      ),
-    );
-  }
-
-  Widget _stepBadge() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-      decoration: BoxDecoration(
-        color: const Color(0xFFE1DCEA),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _borderColor),
-      ),
-      child: Text(
-        'STEP 2 OF 2',
-        style: GoogleFonts.nunito(
-          fontSize: 10,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 2,
-          color: const Color(0xFF7A7195),
-        ),
-      ),
-    );
-  }
-
-  Widget _title() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Your hospice\nprovider',
-          style: GoogleFonts.nunito(
-            fontSize: 48,
-            fontWeight: FontWeight.w600,
-            color: _deepPurple,
-            height: 1.0,
-          ),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          'Select your provider and confirm where\ncare will be delivered.',
-          style: GoogleFonts.nunito(
-            fontSize: 17,
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.w600,
-            color: _mutedPurple,
-            height: 1.4,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _sectionDivider() {
-    return Row(
-      children: [
-        Expanded(child: Divider(color: _borderColor, thickness: 1)),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: _miniRing(),
-        ),
-        Expanded(child: Divider(color: _borderColor, thickness: 1)),
-      ],
-    );
-  }
-
-  Widget _sectionLabel(String text) {
-    return Text(
-      text,
-      style: GoogleFonts.nunito(
-        fontSize: 16,
-        fontWeight: FontWeight.w700,
-        color: _deepPurple,
-      ),
-    );
-  }
-
-  Widget _fieldLabel(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6),
-      child: Text(
-        text,
-        style: GoogleFonts.nunito(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: _mutedPurple,
-          letterSpacing: 0.2,
-        ),
-      ),
-    );
-  }
-
-  Widget _continueButton() {
-    return SizedBox(
-      width: double.infinity,
-      height: 60,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF6B5B8E),
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(32),
-          ),
-        ),
-        onPressed: _isLoading ? null : _continueToDashboard,
-        child: _isLoading
-            ? const SizedBox(
-                width: 22,
-                height: 22,
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2,
-                ),
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Continue',
-                    style: GoogleFonts.nunito(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
+            return [
+              // Org name header (only shown when multiple locations)
+              if (isMulti)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+                  child: Row(children: [
+                    const Icon(Icons.business_rounded, size: 13, color: _mutedPurple),
+                    const SizedBox(width: 6),
+                    Text(orgName,
+                      style: GoogleFonts.nunito(fontSize: 11, fontWeight: FontWeight.w800, color: _mutedPurple, letterSpacing: 0.4)),
+                    const SizedBox(width: 6),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                      decoration: BoxDecoration(color: _purple.withOpacity(0.10), borderRadius: BorderRadius.circular(10)),
+                      child: Text('${locations.length} locations',
+                        style: GoogleFonts.nunito(fontSize: 10, fontWeight: FontWeight.w700, color: _purple)),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  const Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                ],
-              ),
-      ),
-    );
-  }
+                  ]),
+                ),
 
-  Widget _privacyNote() {
-    return Center(
-      child: Text(
-        '🔒  Your information stays private to your care team',
-        style: GoogleFonts.nunito(
-          fontSize: 11,
-          color: const Color(0xFF9B92B8),
-          fontWeight: FontWeight.w500,
+              // Each location row
+              ...locations.map((h) => _locationRow(h, isIndented: isMulti)),
+            ];
+          }).toList(),
         ),
       ),
     );
   }
 
-  Widget _miniRing() {
-    return SizedBox(
-      width: 18,
-      height: 18,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
+  Widget _locationRow(HospiceOrg h, {bool isIndented = false}) {
+    final isSelected = _selectedHospice?.id == h.id;
+    return InkWell(
+      onTap: () => _selectHospice(h),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(isIndented ? 32 : 16, 12, 16, 12),
+        decoration: BoxDecoration(
+          color: isSelected ? _purple.withOpacity(0.06) : Colors.transparent,
+          border: Border(bottom: BorderSide(color: _borderColor.withOpacity(0.5))),
+        ),
+        child: Row(children: [
+          // Location pin icon
           Container(
-            width: 18,
-            height: 18,
+            width: 36, height: 36,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: _borderColor, width: 1),
+              color: isSelected ? _purple.withOpacity(0.12) : _cardBg,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              isIndented ? Icons.location_on_rounded : Icons.local_hospital_outlined,
+              size: 18,
+              color: isSelected ? _purple : _mutedPurple,
             ),
           ),
-          Container(
-            width: 10,
-            height: 10,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: _borderColor, width: 1),
+          const SizedBox(width: 12),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            // Show org name if single result, city if multi
+            Text(
+              isIndented ? '${h.city}, ${h.state}' : h.name,
+              style: GoogleFonts.nunito(fontSize: 14, fontWeight: FontWeight.w700, color: _deepPurple),
             ),
-          ),
-        ],
+            Text(h.address, style: GoogleFonts.nunito(fontSize: 12, color: _mutedPurple)),
+            const SizedBox(height: 2),
+            Text(h.countyLine, style: GoogleFonts.nunito(fontSize: 11, color: const Color(0xFFB0A8C8))),
+          ])),
+          if (isSelected)
+            const Icon(Icons.check_circle_rounded, size: 18, color: _purple)
+          else
+            const Icon(Icons.chevron_right, size: 18, color: _mutedPurple),
+        ]),
       ),
+    );
+  }
+
+  // ── Selected confirmation chip ────────────────────────────────────────────
+  Widget _selectedConfirmation() {
+    final h = _selectedHospice!;
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: _purple.withOpacity(0.07),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: _purple.withOpacity(0.25), width: 1.5),
+      ),
+      child: Row(children: [
+        Container(
+          width: 38, height: 38,
+          decoration: BoxDecoration(color: _purple.withOpacity(0.12), shape: BoxShape.circle),
+          child: const Icon(Icons.check_rounded, size: 18, color: _purple),
+        ),
+        const SizedBox(width: 12),
+        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(h.name, style: GoogleFonts.nunito(fontSize: 14, fontWeight: FontWeight.w700, color: _purple)),
+          Text('${h.address}, ${h.city}, ${h.state}', style: GoogleFonts.nunito(fontSize: 12, color: _mutedPurple)),
+          Text(h.countyLine, style: GoogleFonts.nunito(fontSize: 11, color: const Color(0xFFB0A8C8))),
+        ])),
+        GestureDetector(
+          onTap: _clearSearch,
+          child: const Icon(Icons.close, size: 16, color: _mutedPurple),
+        ),
+      ]),
     );
   }
 }

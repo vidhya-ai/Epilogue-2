@@ -79,7 +79,9 @@ class _CarePlanScreenState extends State<CarePlanScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Care Plan'),
+        title: Text(
+          "${SessionManager().currentCareTeam?.patientFirstName ?? 'Patient'}'s Care Plan",
+        ),
         actions: [
           IconButton(icon: const Icon(Icons.save), onPressed: _saveCarePlan),
         ],

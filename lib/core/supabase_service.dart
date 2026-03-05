@@ -80,6 +80,17 @@ class SupabaseService {
     await _client.from('symptom_events').insert(event.toJson());
   }
 
+  Future<void> updateSymptomEvent(SymptomEvent event) async {
+    await _client
+        .from('symptom_events')
+        .update(event.toJson())
+        .eq('id', event.id);
+  }
+
+  Future<void> deleteSymptomEvent(String eventId) async {
+    await _client.from('symptom_events').delete().eq('id', eventId);
+  }
+
   // Care Plans
   Future<CarePlan?> getCarePlan(String careTeamId) async {
     final response = await _client

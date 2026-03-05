@@ -95,9 +95,11 @@ class Medication {
   final String? route;
   final String? pattern;
   final String? scheduleDetails;
+  final String? notes;
   final List<String>? prnReasonTags;
   final DateTime? createdAt;
   final String? createdByMemberId;
+  final DateTime? deprescribedAt;
 
   Medication({
     required this.id,
@@ -108,9 +110,11 @@ class Medication {
     this.route,
     this.pattern,
     this.scheduleDetails,
+    this.notes,
     this.prnReasonTags,
     this.createdAt,
     this.createdByMemberId,
+    this.deprescribedAt,
   });
 
   factory Medication.fromJson(Map<String, dynamic> json) =>
