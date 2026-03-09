@@ -233,58 +233,31 @@ class _CareAddressScreenState extends State<CareAddressScreen>
                         children: [
                           const SizedBox(height: 16),
 
-                          // Top row: back arrow + centered step indicator
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: GestureDetector(
-                                  onTap: () => Navigator.of(context).pop(),
-                                  child: Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.4),
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                        color: Colors.white.withOpacity(0.4),
-                                      ),
-                                    ),
-                                    child: const Icon(
-                                      Icons.arrow_back_ios_new,
-                                      size: 16,
-                                      color: Color.fromARGB(255, 0, 0, 0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 14,
-                                  vertical: 5,
-                                ),
+                          // Top row: back arrow
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: GestureDetector(
+                              onTap: () => Navigator.of(context).pop(),
+                              child: Container(
+                                width: 40,
+                                height: 40,
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.25),
-                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white.withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
-                                    color: Colors.white.withOpacity(0.35),
+                                    color: Colors.white.withOpacity(0.4),
                                   ),
                                 ),
-                                child: Text(
-                                  'STEP 3 OF 3',
-                                  style: GoogleFonts.nunito(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: 2,
-                                    color: const Color.fromARGB(255, 0, 0, 0),
-                                  ),
+                                child: const Icon(
+                                  Icons.arrow_back_ios_new,
+                                  size: 16,
+                                  color: Color.fromARGB(255, 0, 0, 0),
                                 ),
                               ),
-                            ],
+                            ),
                           ),
 
-                          const SizedBox(height: 60),
+                          const SizedBox(height: 30),
                           Text(
                             'Care address',
                             style: GoogleFonts.nunito(
@@ -305,6 +278,35 @@ class _CareAddressScreenState extends State<CareAddressScreen>
                             ),
                           ),
                           const SizedBox(height: 40),
+
+                          // Step indicator pill
+                          Center(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 5,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.25),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.35),
+                                ),
+                              ),
+                              child: Text(
+                                'STEP 3 OF 3',
+                                style: GoogleFonts.nunito(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 2,
+                                  color: const Color.fromARGB(255, 0, 0, 0),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 16),
+
                           Row(
                             children: [
                               Expanded(
@@ -376,10 +378,15 @@ class _CareAddressScreenState extends State<CareAddressScreen>
                                 vertical: 12,
                               ),
                               decoration: BoxDecoration(
-                                color: _purple.withOpacity(0.06),
+                                color: const Color.fromARGB(
+                                  255,
+                                  0,
+                                  0,
+                                  0,
+                                ).withOpacity(0.06),
                                 borderRadius: BorderRadius.circular(14),
                                 border: Border.all(
-                                  color: Colors.black,
+                                  color: const Color.fromARGB(255, 0, 0, 0),
                                   width: 1.5,
                                 ),
                               ),
@@ -388,7 +395,7 @@ class _CareAddressScreenState extends State<CareAddressScreen>
                                   const Icon(
                                     Icons.local_hospital_outlined,
                                     size: 16,
-                                    color: Colors.black,
+                                    color: Color.fromARGB(255, 247, 245, 245),
                                   ),
                                   const SizedBox(width: 10),
                                   Expanded(
@@ -397,7 +404,12 @@ class _CareAddressScreenState extends State<CareAddressScreen>
                                       style: GoogleFonts.nunito(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
-                                        color: Colors.black,
+                                        color: const Color.fromARGB(
+                                          255,
+                                          248,
+                                          248,
+                                          248,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -406,11 +418,11 @@ class _CareAddressScreenState extends State<CareAddressScreen>
                             ),
                           const SizedBox(height: 20),
                           Text(
-                            'Care will be delivered at this address.',
+                            'Provide the Care Address',
                             style: GoogleFonts.nunito(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: const Color.fromARGB(255, 0, 0, 0),
+                              fontSize: 24,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white,
                             ),
                           ),
                           const SizedBox(height: 14),

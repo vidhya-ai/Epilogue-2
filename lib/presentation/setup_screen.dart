@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'hospice_setup_screen.dart';
@@ -74,58 +75,31 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                     children: [
                       const SizedBox(height: 16),
 
-                      // Top row: back arrow + centered step indicator
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: GestureDetector(
-                              onTap: () => context.go('/'),
-                              child: Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.4),
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: Colors.white.withOpacity(0.4),
-                                  ),
-                                ),
-                                child: const Icon(
-                                  Icons.arrow_back_ios_new,
-                                  size: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 14,
-                              vertical: 5,
-                            ),
+                      // Top row: back arrow
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                          onTap: () => context.go('/'),
+                          child: Container(
+                            width: 40,
+                            height: 40,
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.25),
-                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.white.withOpacity(0.4),
+                              borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: Colors.white.withOpacity(0.35),
+                                color: Colors.white.withOpacity(0.4),
                               ),
                             ),
-                            child: Text(
-                              'STEP 1 OF 3',
-                              style: GoogleFonts.nunito(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 2,
-                                color: const Color.fromARGB(255, 0, 0, 0),
-                              ),
+                            child: const Icon(
+                              Icons.arrow_back_ios_new,
+                              size: 16,
+                              color: Color.fromARGB(255, 0, 0, 0),
                             ),
                           ),
-                        ],
+                        ),
                       ),
 
-                      const SizedBox(height: 60),
+                      const SizedBox(height: 50),
 
                       // Title
                       Text(
@@ -152,6 +126,34 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                       ),
 
                       const SizedBox(height: 40),
+
+                      // Step indicator pill
+                      Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.25),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.35),
+                            ),
+                          ),
+                          child: Text(
+                            'STEP 1 OF 3',
+                            style: GoogleFonts.nunito(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 2,
+                              color: const Color.fromARGB(255, 0, 0, 0),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
 
                       // Divider with ring motif
                       Row(
@@ -180,8 +182,8 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                       // Fields
                       _buildField(
                         index: 0,
-                        label: "Patient's full Name",
-                        hint: 'Enter full name',
+                        label: "Patient's Full Name",
+                        hint: 'Enter Full name',
                         controller: patientController,
                         icon: Icons.favorite_border_rounded,
                       ),
@@ -190,8 +192,8 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
 
                       _buildField(
                         index: 1,
-                        label: 'Your full Name',
-                        hint: 'Your full name',
+                        label: 'Your Full Name',
+                        hint: 'Your Full name',
                         controller: caregiverController,
                         icon: Icons.person_outline_rounded,
                       ),
@@ -325,6 +327,9 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
               textCapitalization: keyboardType == TextInputType.emailAddress
                   ? TextCapitalization.none
                   : TextCapitalization.words,
+              inputFormatters: keyboardType == TextInputType.emailAddress
+                  ? null
+                  : [_CapitalizeWordsFormatter()],
               style: GoogleFonts.nunito(
                 fontSize: 15,
                 color: const Color(0xFF443C63),
@@ -370,7 +375,10 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
             height: 18,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: const Color(0xFFD4CDDF), width: 1),
+              border: Border.all(
+                color: const Color.fromARGB(255, 0, 0, 0),
+                width: 1,
+              ),
             ),
           ),
           Container(
@@ -378,11 +386,42 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
             height: 10,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: const Color(0xFFD4CDDF), width: 1),
+              border: Border.all(
+                color: const Color.fromARGB(255, 0, 0, 0),
+                width: 1,
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+}
+
+class _CapitalizeWordsFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final text = newValue.text;
+    if (text.isEmpty) return newValue;
+
+    final buffer = StringBuffer();
+    bool capitalizeNext = true;
+    for (int i = 0; i < text.length; i++) {
+      if (text[i] == ' ') {
+        buffer.write(text[i]);
+        capitalizeNext = true;
+      } else if (capitalizeNext) {
+        buffer.write(text[i].toUpperCase());
+        capitalizeNext = false;
+      } else {
+        buffer.write(text[i]);
+      }
+    }
+
+    final newText = buffer.toString();
+    return newValue.copyWith(text: newText, selection: newValue.selection);
   }
 }

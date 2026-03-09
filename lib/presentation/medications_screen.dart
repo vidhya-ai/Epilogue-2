@@ -9,6 +9,7 @@ import '../domain/models.dart';
 import '../domain/medication_data.dart';
 import 'premium_bottom_nav.dart';
 import 'widgets/animated_border_field.dart';
+import 'deprescribed_history_screen.dart';
 
 // ─── Colors ───────────────────────────────────────────────────────────────────
 const _deepPurple = Color(0xFF2E2540);
@@ -287,7 +288,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
         backgroundColor: _cardBg,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text(
-          'Deactivate Medication',
+          'Deprescribe Medication',
           style: GoogleFonts.nunito(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -295,7 +296,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
           ),
         ),
         content: Text(
-          'This will deactivate "${med.name}" and preserve its history. You can add a new entry to replace it.',
+          'This will deprescribe "${med.name}" and preserve its history. You can add a new entry to replace it.',
           style: GoogleFonts.nunito(fontSize: 13, color: _mutedPurple),
         ),
         actions: [
@@ -315,7 +316,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
             ),
             onPressed: () => Navigator.pop(ctx, true),
             child: Text(
-              'Deactivate',
+              'Deprescribe',
               style: GoogleFonts.nunito(color: Colors.white),
             ),
           ),
@@ -336,6 +337,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
           scheduleDetails: med.scheduleDetails,
           createdAt: med.createdAt,
           createdByMemberId: med.createdByMemberId,
+          deprescribedAt: DateTime.now(),
         );
         await _service.updateMedication(updated);
         _loadMedications();
@@ -362,16 +364,9 @@ class _MedicationsScreenState extends State<MedicationsScreen>
   void _showAddMedicationModal() {
     final nameCtrl = TextEditingController();
     final dosageCtrl = TextEditingController();
-    final unitCtrl = TextEditingController();
     final scheduleCtrl = TextEditingController();
     final notesCtrl = TextEditingController();
-    String route = 'By mouth';
-    int freqAmount = 1;
-    final freqAmountCtrl = TextEditingController(text: '1');
-    String freqUnit = 'hours';
-    String? prescribedDate;
-
-    final routes = [
+    List<String> routeOptions = [
       'By mouth',
       'Sublingual',
       'Topical',
@@ -380,7 +375,30 @@ class _MedicationsScreenState extends State<MedicationsScreen>
       'Inhaled',
       'Other',
     ];
-    final freqUnits = ['hours', 'days', 'weeks'];
+    String route = 'By mouth';
+    List<String> unitOptions = ['mg', 'mL', 'tablet(s)', 'capsule(s)', 'Other'];
+    String selectedUnit = 'mg';
+    String? selectedFreqType; // 'prn', 'hour', 'day', 'month'
+    int hoursValue = 4;
+    final hoursCtrl = TextEditingController(text: '4');
+    int? daysValue;
+    int? monthlyDayValue;
+    String? prescribedDate;
+
+    String getFreqPattern() {
+      switch (selectedFreqType) {
+        case 'prn':
+          return 'PRN (As Needed)';
+        case 'hour':
+          return 'Every $hoursValue hours';
+        case 'day':
+          return 'Every ${daysValue ?? '?'} days';
+        case 'month':
+          return 'Monthly on day ${monthlyDayValue ?? '?'}';
+        default:
+          return 'Not set';
+      }
+    }
 
     showModalBottomSheet(
       context: context,
@@ -436,16 +454,14 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                   controller: nameCtrl,
                   onSelected: (med) {
                     nameCtrl.text = med.name;
-                    // Auto-fill route if it matches a dropdown option
-                    final autoRoute = _matchRoute(med.route, routes);
-                    if (autoRoute != null) {
-                      setModal(() => route = autoRoute);
-                    }
-                    // Auto-fill dose unit into the unit field
-                    if (unitCtrl.text.isEmpty && med.doseUnit.isNotEmpty) {
-                      final shortUnit = med.doseUnit.split(',').first.trim();
-                      unitCtrl.text = shortUnit;
-                    }
+                    setModal(() {
+                      // Update route options from the medication
+                      routeOptions = med.routeOptions;
+                      route = routeOptions.first;
+                      // Update unit options from the medication
+                      unitOptions = med.unitOptions;
+                      selectedUnit = unitOptions.first;
+                    });
                   },
                 ),
                 const SizedBox(height: 16),
@@ -472,9 +488,10 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _modalLabel('Unit'),
-                          _modalField(
-                            controller: unitCtrl,
-                            hint: 'e.g. 1 tablet',
+                          _modalDropdown(
+                            value: selectedUnit,
+                            items: unitOptions,
+                            onChanged: (v) => setModal(() => selectedUnit = v!),
                           ),
                         ],
                       ),
@@ -487,7 +504,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                 _modalLabel('How it\'s given'),
                 _modalDropdown(
                   value: route,
-                  items: routes,
+                  items: routeOptions,
                   onChanged: (v) => setModal(() => route = v!),
                 ),
                 const SizedBox(height: 16),
@@ -495,165 +512,283 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                 // Frequency
                 _modalLabel('Frequency'),
                 Text(
-                  'Every',
-                  style: GoogleFonts.nunito(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: _deepPurple,
-                  ),
+                  'How often should this be given?',
+                  style: GoogleFonts.nunito(fontSize: 14, color: _mutedPurple),
                 ),
-                const SizedBox(height: 8),
-                Row(
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
                   children: [
-                    // Counter: minus button
-                    GestureDetector(
-                      onTap: () {
-                        if (freqAmount > 1) {
-                          setModal(() {
-                            freqAmount--;
-                            freqAmountCtrl.text = '$freqAmount';
-                          });
-                        }
-                      },
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.85),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: _borderColor, width: 1.5),
-                        ),
-                        child: const Icon(
-                          Icons.remove,
-                          size: 18,
-                          color: _deepPurple,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    // Amount input
-                    SizedBox(
-                      width: 56,
-                      height: 40,
-                      child: TextField(
-                        controller: freqAmountCtrl,
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.nunito(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: _deepPurple,
-                        ),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 8,
+                    for (final entry in [
+                      {'label': 'As Needed (PRN)', 'value': 'prn'},
+                      {'label': 'Every X Hours', 'value': 'hour'},
+                      {'label': 'Every X Days', 'value': 'day'},
+                      {'label': 'Every Month', 'value': 'month'},
+                    ])
+                      GestureDetector(
+                        onTap: () => setModal(() {
+                          selectedFreqType = entry['value'];
+                          daysValue = null;
+                          monthlyDayValue = null;
+                        }),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 9,
                           ),
-                          filled: true,
-                          fillColor: Colors.white.withOpacity(0.85),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: _borderColor,
+                          decoration: BoxDecoration(
+                            color: selectedFreqType == entry['value']
+                                ? _purple
+                                : Colors.white.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: selectedFreqType == entry['value']
+                                  ? _purple
+                                  : _borderColor,
                               width: 1.5,
                             ),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: _borderColor,
-                              width: 1.5,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: _purple, width: 1.5),
-                          ),
-                          counterText: '',
-                        ),
-                        maxLength: 3,
-                        onChanged: (v) {
-                          final parsed = int.tryParse(v);
-                          if (parsed != null && parsed > 0) {
-                            setModal(() => freqAmount = parsed);
-                          }
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    // Counter: plus button
-                    GestureDetector(
-                      onTap: () => setModal(() {
-                        freqAmount++;
-                        freqAmountCtrl.text = '$freqAmount';
-                      }),
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.85),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: _borderColor, width: 1.5),
-                        ),
-                        child: const Icon(
-                          Icons.add,
-                          size: 18,
-                          color: _deepPurple,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    // Unit selector
-                    Expanded(
-                      child: Container(
-                        height: 40,
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.85),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: _borderColor, width: 1.5),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: freqUnit,
-                            isExpanded: true,
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down,
-                              size: 18,
-                              color: _mutedPurple,
-                            ),
+                          child: Text(
+                            entry['label']!,
                             style: GoogleFonts.nunito(
-                              fontSize: 15,
+                              fontSize: 13,
                               fontWeight: FontWeight.w600,
-                              color: _deepPurple,
+                              color: selectedFreqType == entry['value']
+                                  ? Colors.white
+                                  : _deepPurple,
                             ),
-                            items: freqUnits
-                                .map(
-                                  (u) => DropdownMenuItem(
-                                    value: u,
-                                    child: Text(
-                                      u,
-                                      style: GoogleFonts.nunito(fontSize: 15),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (v) => setModal(() => freqUnit = v!),
                           ),
                         ),
                       ),
-                    ),
                   ],
                 ),
-                const SizedBox(height: 6),
-                Text(
-                  'e.g. every 4 hours, every 2 days, every 48–72 hours',
-                  style: GoogleFonts.nunito(
-                    fontSize: 16,
-                    color: _mutedPurple,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
                 const SizedBox(height: 16),
+
+                // Conditional detail input
+                if (selectedFreqType == 'hour') ...[
+                  Row(
+                    children: [
+                      Text(
+                        'Every',
+                        style: GoogleFonts.nunito(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: _deepPurple,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      GestureDetector(
+                        onTap: () {
+                          if (hoursValue > 1) {
+                            setModal(() {
+                              hoursValue--;
+                              hoursCtrl.text = '$hoursValue';
+                            });
+                          }
+                        },
+                        child: Container(
+                          width: 36,
+                          height: 36,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.85),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: _borderColor, width: 1.5),
+                          ),
+                          child: const Icon(
+                            Icons.remove,
+                            size: 16,
+                            color: _deepPurple,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      SizedBox(
+                        width: 52,
+                        height: 36,
+                        child: TextField(
+                          controller: hoursCtrl,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.nunito(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            color: _deepPurple,
+                          ),
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 6,
+                            ),
+                            filled: true,
+                            fillColor: Colors.white.withOpacity(0.85),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: _borderColor,
+                                width: 1.5,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: _borderColor,
+                                width: 1.5,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: _purple,
+                                width: 1.5,
+                              ),
+                            ),
+                            counterText: '',
+                          ),
+                          maxLength: 3,
+                          onChanged: (v) {
+                            final parsed = int.tryParse(v);
+                            if (parsed != null && parsed > 0) {
+                              setModal(() => hoursValue = parsed);
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      GestureDetector(
+                        onTap: () => setModal(() {
+                          hoursValue++;
+                          hoursCtrl.text = '$hoursValue';
+                        }),
+                        child: Container(
+                          width: 36,
+                          height: 36,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.85),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: _borderColor, width: 1.5),
+                          ),
+                          child: const Icon(
+                            Icons.add,
+                            size: 16,
+                            color: _deepPurple,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        'hours',
+                        style: GoogleFonts.nunito(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: _deepPurple,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                ],
+
+                if (selectedFreqType == 'day') ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: _borderColor),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<int>(
+                        value: daysValue,
+                        hint: Text(
+                          'Select number of days',
+                          style: GoogleFonts.nunito(
+                            fontSize: 14,
+                            color: const Color(0xFFB8B0CC),
+                          ),
+                        ),
+                        isExpanded: true,
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 18,
+                          color: _mutedPurple,
+                        ),
+                        style: GoogleFonts.nunito(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: _deepPurple,
+                        ),
+                        items: List.generate(49, (i) => i + 2)
+                            .map(
+                              (d) => DropdownMenuItem(
+                                value: d,
+                                child: Text(
+                                  'Every $d days',
+                                  style: GoogleFonts.nunito(fontSize: 15),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (v) => setModal(() => daysValue = v),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+
+                if (selectedFreqType == 'month') ...[
+                  Text(
+                    'On which day of the month?',
+                    style: GoogleFonts.nunito(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: _deepPurple,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 7,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                        ),
+                    itemCount: 31,
+                    itemBuilder: (context, index) {
+                      final day = index + 1;
+                      final isSelected = monthlyDayValue == day;
+                      return GestureDetector(
+                        onTap: () => setModal(() => monthlyDayValue = day),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? _purple
+                                : Colors.white.withOpacity(0.8),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: isSelected ? _purple : _borderColor,
+                              width: 1.5,
+                            ),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            '$day',
+                            style: GoogleFonts.nunito(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: isSelected ? Colors.white : _deepPurple,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                ],
 
                 // Notes
                 _modalLabel('Notes'),
@@ -813,7 +948,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                                   'Please verify the details below are correct.',
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.nunito(
-                                    fontSize: 13,
+                                    fontSize: 18,
                                     color: _mutedPurple,
                                   ),
                                 ),
@@ -836,15 +971,11 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                                           'Dosage',
                                           dosageCtrl.text.trim(),
                                         ),
-                                      if (unitCtrl.text.trim().isNotEmpty)
-                                        _confirmRow(
-                                          'Unit',
-                                          unitCtrl.text.trim(),
-                                        ),
+                                      _confirmRow('Unit', selectedUnit),
                                       _confirmRow('Route', route),
                                       _confirmRow(
                                         'Frequency',
-                                        'Every $freqAmount $freqUnit',
+                                        getFreqPattern(),
                                       ),
                                       if (scheduleCtrl.text.trim().isNotEmpty)
                                         _confirmRow(
@@ -936,11 +1067,9 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                         strength: dosageCtrl.text.trim().isEmpty
                             ? null
                             : dosageCtrl.text.trim(),
-                        typicalDose: unitCtrl.text.trim().isEmpty
-                            ? null
-                            : unitCtrl.text.trim(),
+                        typicalDose: selectedUnit,
                         route: route,
-                        pattern: 'Every $freqAmount $freqUnit',
+                        pattern: getFreqPattern(),
                         scheduleDetails: scheduleCtrl.text.trim().isEmpty
                             ? prescribedDate
                             : '${scheduleCtrl.text.trim()}${prescribedDate != null ? ' · Prescribed: $prescribedDate' : ''}',
@@ -1059,24 +1188,53 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                         ],
                       ),
                     ),
-                    GestureDetector(
-                      onTap: _loadMedications,
-                      child: Container(
-                        width: 38,
-                        height: 38,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(11),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.4),
+                    Column(
+                      children: [
+                        GestureDetector(
+                          onTap: _loadMedications,
+                          child: Container(
+                            width: 38,
+                            height: 38,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(11),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.4),
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.refresh_rounded,
+                              size: 18,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                        child: const Icon(
-                          Icons.refresh_rounded,
-                          size: 18,
-                          color: Colors.white,
+                        const SizedBox(height: 8),
+                        GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const DeprescribedHistoryScreen(),
+                            ),
+                          ),
+                          child: Container(
+                            width: 38,
+                            height: 38,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(11),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.4),
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.history_rounded,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
@@ -1112,9 +1270,9 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                                   Text(
                                     'Active',
                                     style: GoogleFonts.nunito(
-                                      fontSize: 14,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w600,
-                                      color: _mutedPurple,
+                                      color: Colors.white,
                                     ),
                                   ),
                                   const SizedBox(height: 10),
@@ -1122,20 +1280,69 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                                     (m) => _medCard(m, isActive: true),
                                   ),
 
-                                  // Inactive meds
+                                  // Deprescribed history link
                                   if (inactiveMeds.isNotEmpty) ...[
                                     const SizedBox(height: 20),
-                                    Text(
-                                      'Inactive / History',
-                                      style: GoogleFonts.nunito(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                        color: _lightPurple,
+                                    GestureDetector(
+                                      onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) =>
+                                              const DeprescribedHistoryScreen(),
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    ...inactiveMeds.map(
-                                      (m) => _medCard(m, isActive: false),
+                                      child: Container(
+                                        width: double.infinity,
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 14,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.25),
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                          border: Border.all(
+                                            color: _borderColor.withOpacity(
+                                              0.5,
+                                            ),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.history_rounded,
+                                              size: 18,
+                                              color: _lightPurple,
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Expanded(
+                                              child: Text(
+                                                'Deprescribed History',
+                                                style: GoogleFonts.nunito(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: _lightPurple,
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              '${inactiveMeds.length}',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w600,
+                                                color: _lightPurple,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 4),
+                                            Icon(
+                                              Icons.chevron_right_rounded,
+                                              size: 18,
+                                              color: _lightPurple,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ],
@@ -1575,28 +1782,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
 
 // ─── Helper ──────────────────────────────────────────────────────────────────
 /// Maps the Excel "Typical route/form" text to one of the dropdown options.
-String? _matchRoute(String excelRoute, List<String> dropdownRoutes) {
-  final lower = excelRoute.toLowerCase();
-  if (lower.contains('oral') || lower.contains('by mouth')) return 'By mouth';
-  if (lower.contains('sublingual') || lower.contains('sl '))
-    return 'Sublingual';
-  if (lower.contains('topical') ||
-      lower.contains('patch') ||
-      lower.contains('cream'))
-    return 'Topical';
-  if (lower.contains('inject') ||
-      lower.contains('iv') ||
-      lower.contains('sc ') ||
-      lower.contains('im '))
-    return 'Injection';
-  if (lower.contains('suppository') || lower.contains('rectal'))
-    return 'Suppository';
-  if (lower.contains('inhal') ||
-      lower.contains('nebuliz') ||
-      lower.contains('mdi'))
-    return 'Inhaled';
-  return null; // leave at default
-}
+// end of file
 
 // ─── Medication autocomplete ─────────────────────────────────────────────────
 class _MedicationAutocomplete extends StatefulWidget {

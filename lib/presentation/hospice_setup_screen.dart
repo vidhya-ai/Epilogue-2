@@ -291,58 +291,31 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                           children: [
                             const SizedBox(height: 16),
 
-                            // Top row: back arrow + centered step indicator
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: GestureDetector(
-                                    onTap: () => Navigator.of(context).pop(),
-                                    child: Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.4),
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(
-                                          color: Colors.white.withOpacity(0.4),
-                                        ),
-                                      ),
-                                      child: const Icon(
-                                        Icons.arrow_back_ios_new,
-                                        size: 16,
-                                        color: Color.fromARGB(255, 0, 0, 0),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 14,
-                                    vertical: 5,
-                                  ),
+                            // Top row: back arrow
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: GestureDetector(
+                                onTap: () => Navigator.of(context).pop(),
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.25),
-                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white.withOpacity(0.4),
+                                    borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
-                                      color: Colors.white.withOpacity(0.35),
+                                      color: Colors.white.withOpacity(0.4),
                                     ),
                                   ),
-                                  child: Text(
-                                    'STEP 2 OF 3',
-                                    style: GoogleFonts.nunito(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: 2,
-                                      color: const Color.fromARGB(255, 0, 0, 0),
-                                    ),
+                                  child: const Icon(
+                                    Icons.arrow_back_ios_new,
+                                    size: 16,
+                                    color: Color.fromARGB(255, 0, 0, 0),
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
 
-                            const SizedBox(height: 60),
+                            const SizedBox(height: 50),
 
                             // Title
                             Text(
@@ -366,6 +339,34 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                             ),
 
                             const SizedBox(height: 40),
+
+                            // Step indicator pill
+                            Center(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 5,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.25),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.35),
+                                  ),
+                                ),
+                                child: Text(
+                                  'STEP 2 OF 3',
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 2,
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(height: 16),
 
                             // Divider
                             Row(
@@ -787,7 +788,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
             width: 38,
             height: 38,
             decoration: BoxDecoration(
-              color: _purple.withOpacity(0.12),
+              color: Colors.white.withOpacity(0.5),
               shape: BoxShape.circle,
             ),
             child: const Icon(Icons.check_rounded, size: 18, color: _purple),
@@ -800,19 +801,19 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                 Text(
                   h.name,
                   style: GoogleFonts.nunito(
-                    fontSize: 14,
+                    fontSize: 18,
                     fontWeight: FontWeight.w700,
                     color: Colors.black,
                   ),
                 ),
                 Text(
                   '${h.address}, ${h.city}, ${h.state}',
-                  style: GoogleFonts.nunito(fontSize: 12, color: Colors.black),
+                  style: GoogleFonts.nunito(fontSize: 14, color: Colors.black),
                 ),
                 Text(
                   h.countyLine,
                   style: GoogleFonts.nunito(
-                    fontSize: 11,
+                    fontSize: 14,
                     color: Colors.black87,
                   ),
                 ),

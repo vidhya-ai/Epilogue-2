@@ -106,7 +106,10 @@ class _DashboardScreenState extends State<DashboardScreen>
       );
     }
 
-    final firstName = member.name.split(' ').first.toLowerCase();
+    final rawFirst = member.name.split(' ').first;
+    final firstName = rawFirst.isEmpty
+        ? ''
+        : '${rawFirst[0].toUpperCase()}${rawFirst.substring(1).toLowerCase()}';
     final patientName = careTeam.patientFirstName ?? 'your loved one';
     final today = DateFormat('EEE, MMM d').format(DateTime.now());
 
@@ -251,15 +254,6 @@ class _DashboardScreenState extends State<DashboardScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Epilogue',
-                style: GoogleFonts.nunito(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                  height: 1,
-                ),
-              ),
-              Text(
                 "${careTeam.patientFirstName ?? 'Your'}'s Care Space",
                 style: GoogleFonts.nunito(
                   fontSize: 20,
@@ -272,40 +266,35 @@ class _DashboardScreenState extends State<DashboardScreen>
                   fontWeight: FontWeight.w500,
                 ),
               ),
+              Text(
+                today,
+                style: GoogleFonts.nunito(
+                  fontSize: 13,
+                  color: Colors.white.withOpacity(0.85),
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ],
           ),
         ),
-        Column(
-          children: [
-            Text(
-              today,
-              style: GoogleFonts.nunito(
-                fontSize: 13,
-                color: Colors.white.withOpacity(0.85),
-                fontWeight: FontWeight.w700,
+        Builder(
+          builder: (ctx) => GestureDetector(
+            onTap: () => Scaffold.of(ctx).openDrawer(),
+            child: Container(
+              width: 34,
+              height: 34,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.white.withOpacity(0.6)),
+              ),
+              child: const Icon(
+                Icons.people_outline,
+                size: 17,
+                color: Colors.white,
               ),
             ),
-            const SizedBox(height: 4),
-            Builder(
-              builder: (ctx) => GestureDetector(
-                onTap: () => Scaffold.of(ctx).openDrawer(),
-                child: Container(
-                  width: 34,
-                  height: 34,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white.withOpacity(0.6)),
-                  ),
-                  child: const Icon(
-                    Icons.people_outline,
-                    size: 17,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ],
     );
@@ -322,18 +311,18 @@ class _DashboardScreenState extends State<DashboardScreen>
         route: '/medications',
       ),
       _CardData(
-        title: 'Quick Notes',
-        subtitle: 'Capture thoughts',
-        icon: Icons.description_outlined,
-        badge: _observationBadge,
-        route: '/observations',
-      ),
-      _CardData(
         title: 'Symptoms',
         subtitle: 'Track changes',
         icon: Icons.monitor_heart_outlined,
         badge: _symptomBadge,
         route: '/symptoms',
+      ),
+      _CardData(
+        title: 'Quick Notes',
+        subtitle: 'Capture thoughts',
+        icon: Icons.description_outlined,
+        badge: _observationBadge,
+        route: '/observations',
       ),
       _CardData(
         title: 'Moments',
@@ -427,7 +416,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                         style: GoogleFonts.nunito(
                           fontSize: size * 0.09,
                           fontWeight: FontWeight.w600,
-                          color: _deepPurple,
+                          color: const Color.fromARGB(255, 9, 9, 9),
                         ),
                       ),
                       SizedBox(height: size * 0.02),
@@ -435,7 +424,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                         c.subtitle,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.nunito(
-                          fontSize: size * 0.074,
+                          fontSize: size * 0.1,
                           color: _mutedPurple,
                         ),
                       ),
@@ -447,11 +436,11 @@ class _DashboardScreenState extends State<DashboardScreen>
 
             // ✅ Badge — always visible, top-right corner
             Positioned(
-              top: -6,
-              right: -6,
+              top: -8,
+              right: -8,
               child: Container(
-                width: 24,
-                height: 24,
+                width: 30,
+                height: 30,
                 decoration: BoxDecoration(
                   color: Colors.black,
                   shape: BoxShape.circle,
@@ -469,7 +458,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     c.badge.toString(),
                     style: GoogleFonts.nunito(
                       color: Colors.white,
-                      fontSize: 11,
+                      fontSize: 13,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
