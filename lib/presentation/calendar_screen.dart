@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../core/session_manager.dart';
@@ -115,40 +116,63 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF74659A),
+        foregroundColor: Colors.white,
+        elevation: 0,
         title: Text(
           "${SessionManager().currentCareTeam?.patientFirstName ?? 'Patient'}'s Calendar",
+          style: GoogleFonts.nunito(
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+          ),
         ),
       ),
-      body: FutureBuilder<List<CalendarEvent>>(
-        future: _eventsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
-          final events = snapshot.data ?? [];
-          if (events.isEmpty) {
-            return const Center(child: Text('No events scheduled.'));
-          }
-          return ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: events.length,
-            itemBuilder: (context, index) {
-              final event = events[index];
-              final eventDate = DateTime.parse(event.date!);
-              return Card(
-                margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                child: ListTile(
-                  leading: CircleAvatar(child: Text(eventDate.day.toString())),
-                  title: Text(event.title ?? ''),
-                  subtitle: Text(DateFormat.yMMMd().format(eventDate)),
-                ),
-              );
-            },
-          );
-        },
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF74659A), Color(0xFFDFDBE5)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: FutureBuilder<List<CalendarEvent>>(
+          future: _eventsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+            final events = snapshot.data ?? [];
+            if (events.isEmpty) {
+              return const Center(child: Text('No events scheduled.'));
+            }
+            return ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: events.length,
+              itemBuilder: (context, index) {
+                final event = events[index];
+                final eventDate = DateTime.parse(event.date!);
+                return Card(
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 4,
+                    horizontal: 8,
+                  ),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      child: Text(eventDate.day.toString()),
+                    ),
+                    title: Text(event.title ?? ''),
+                    subtitle: Text(DateFormat.yMMMd().format(eventDate)),
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddEventDialog,

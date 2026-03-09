@@ -15,8 +15,8 @@ const _purple = Color(0xFF7A64A4);
 const _mutedPurple = Color(0xFF6C648B);
 const _lightPurple = Color(0xFFB0A8C8);
 const _borderColor = Color(0xFFD4CDDF);
-const _bg1 = Color(0xFFE6E2EE);
-const _bg2 = Color(0xFFDAD4E6);
+const _bg1 = Color(0xFF74659A);
+const _bg2 = Color(0xFFDFDBE5);
 
 /// Sorted symptom list for the UI, alphabetical by name.
 final _sortedSymptoms = List<SymptomDefinition>.from(kHospiceSymptoms)
@@ -823,93 +823,6 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
     );
   }
 
-  /// Compact row showing a symptom name and its selectable options.
-  Widget _optionRow({
-    required String label,
-    required List<String> options,
-    required String current,
-    required bool isAlert,
-    required ValueChanged<String> onChanged,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.72),
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: isAlert ? Colors.red.shade200 : _borderColor,
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                if (isAlert)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 4),
-                    child: Icon(
-                      Icons.warning_amber_rounded,
-                      size: 13,
-                      color: Colors.red.shade400,
-                    ),
-                  ),
-                Expanded(
-                  child: Text(
-                    label,
-                    style: GoogleFonts.nunito(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: isAlert ? Colors.red.shade700 : _deepPurple,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: options.map((opt) {
-                final isSel = current == opt;
-                return GestureDetector(
-                  onTap: () => onChanged(opt),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 140),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 5,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isSel
-                          ? _purple.withOpacity(0.15)
-                          : Colors.white.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: isSel ? _purple : _borderColor,
-                        width: isSel ? 1.5 : 1,
-                      ),
-                    ),
-                    child: Text(
-                      opt,
-                      style: GoogleFonts.nunito(
-                        fontSize: 11,
-                        fontWeight: isSel ? FontWeight.w700 : FontWeight.w400,
-                        color: isSel ? _purple : _mutedPurple,
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -926,23 +839,6 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // ── Patient name banner ──
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 8,
-                ),
-                color: _purple.withOpacity(0.08),
-                child: Text(
-                  "${SessionManager().currentCareTeam?.patientFirstName ?? 'Patient'}'s Care",
-                  style: GoogleFonts.nunito(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: _purple,
-                  ),
-                ),
-              ),
               // ── Header ──
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
@@ -960,14 +856,16 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                         width: 38,
                         height: 38,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE1DCEA),
+                          color: Colors.white.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(11),
-                          border: Border.all(color: _borderColor),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.4),
+                          ),
                         ),
                         child: const Icon(
                           Icons.arrow_back_ios_new,
                           size: 15,
-                          color: _mutedPurple,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -981,14 +879,15 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                             style: GoogleFonts.nunito(
                               fontSize: 26,
                               fontWeight: FontWeight.w600,
-                              color: _deepPurple,
+                              color: Colors.white,
                             ),
                           ),
                           Text(
-                            '${_events.length} logged events',
+                            "${SessionManager().currentCareTeam?.patientFirstName ?? 'Your'}'s Care Space",
                             style: GoogleFonts.nunito(
-                              fontSize: 11,
-                              color: _mutedPurple,
+                              fontSize: 20,
+                              color: Colors.white.withOpacity(0.75),
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],

@@ -11,7 +11,6 @@ import '../domain/models.dart';
 const _deepPurple = Color(0xFF2E2540);
 const _purple = Color(0xFF7A64A4);
 const _mutedPurple = Color(0xFF6C648B);
-const _lightPurple = Color(0xFFB0A8C8);
 const _borderColor = Color(0xFFD4CDDF);
 
 class DashboardScreen extends StatefulWidget {
@@ -30,7 +29,6 @@ class _DashboardScreenState extends State<DashboardScreen>
   int _observationBadge = 0;
   int _symptomBadge = 0;
   int _momentBadge = 0;
-  final int _messageBadge = 4;
   bool _isLoading = true;
 
   late AnimationController _staggerCtrl;
@@ -95,10 +93,7 @@ class _DashboardScreenState extends State<DashboardScreen>
             children: [
               Text(
                 'Session expired',
-                style: GoogleFonts.nunito(
-                  fontSize: 24,
-                  color: _deepPurple,
-                ),
+                style: GoogleFonts.nunito(fontSize: 24, color: _deepPurple),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
@@ -122,95 +117,106 @@ class _DashboardScreenState extends State<DashboardScreen>
         height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color(0xFFDDD7EC),
-              Color(0xFFCFC8E3),
-              Color(0xFFC2B8D8),
-              Color(0xFFB8ADD4),
-            ],
+            colors: [Color(0xFF74659A), Color(0xFFDFDBE5)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
-        child: SafeArea(
-          child: _isLoading
-              ? const Center(child: CircularProgressIndicator(color: _purple))
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 12),
+        child: Column(
+          children: [
+            // ── Top Bar (dark band from top of screen) ──
+            Container(
+              width: double.infinity,
+              color: const Color(0xFF74659A),
+              child: SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 14,
+                  ),
+                  child: _isLoading
+                      ? const SizedBox.shrink()
+                      : _topBar(today, careTeam, context),
+                ),
+              ),
+            ),
 
-                    // ── Top Bar ──
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: _topBar(today, careTeam, context),
-                    ),
-
-                    const SizedBox(height: 18),
-
-                    // ── Welcome ──
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
+            // ── Rest of the page ──
+            Expanded(
+              child: SafeArea(
+                top: false,
+                child: _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(color: _purple),
+                      )
+                    : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Welcome back, $firstName',
-                            style: GoogleFonts.nunito(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w600,
-                              color: _deepPurple,
-                              height: 1.1,
+                          const SizedBox(height: 18),
+
+                          // ── Welcome ──
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Welcome, $firstName',
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                    height: 1.1,
+                                  ),
+                                ),
+                                const SizedBox(height: 3),
+                                Text(
+                                  'How can we help today?',
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 20,
+                                    color: Colors.white.withOpacity(0.8),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          const SizedBox(height: 3),
-                          Text(
-                            'How can we help today?',
-                            style: GoogleFonts.nunito(
-                              fontSize: 13,
-                              color: _mutedPurple,
+
+                          const SizedBox(height: 18),
+
+                          // ── Grid ──
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                              ),
+                              child: _grid(),
                             ),
                           ),
+
+                          const SizedBox(height: 12),
+
+                          // ── Emergency ──
+                          if (careTeam.nurseLineNumber != null &&
+                              careTeam.nurseLineNumber!.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                              ),
+                              child: _emergencyCard(careTeam),
+                            ),
+
+                          const SizedBox(height: 10),
+
+                          // ── Bottom Nav ──
+                          _BottomNav(currentIndex: 0),
+
+                          const SizedBox(height: 10),
                         ],
                       ),
-                    ),
-
-                    const SizedBox(height: 18),
-
-                    // ── Grid ──
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: _grid(),
-                      ),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    // ── Messages ──
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: _messagesCard(),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    // ── Emergency ──
-                    if (careTeam.nurseLineNumber != null &&
-                        careTeam.nurseLineNumber!.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: _emergencyCard(careTeam),
-                      ),
-
-                    const SizedBox(height: 10),
-
-                    // ── Bottom Nav ──
-                    _BottomNav(currentIndex: 0),
-
-                    const SizedBox(height: 10),
-                  ],
-                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -247,50 +253,59 @@ class _DashboardScreenState extends State<DashboardScreen>
               Text(
                 'Epilogue',
                 style: GoogleFonts.nunito(
-                  fontSize: 19,
+                  fontSize: 20,
                   fontWeight: FontWeight.w700,
-                  color: _deepPurple,
+                  color: Colors.white,
                   height: 1,
                 ),
               ),
               Text(
                 "${careTeam.patientFirstName ?? 'Your'}'s Care Space",
                 style: GoogleFonts.nunito(
-                  fontSize: 11,
-                  color: _mutedPurple,
+                  fontSize: 20,
+                  color: const Color.fromARGB(
+                    255,
+                    255,
+                    255,
+                    255,
+                  ).withOpacity(0.75),
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
         ),
-        Text(
-          today,
-          style: GoogleFonts.nunito(
-            fontSize: 10,
-            color: _mutedPurple,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(width: 8),
-        Builder(
-          builder: (ctx) => GestureDetector(
-            onTap: () => Scaffold.of(ctx).openDrawer(),
-            child: Container(
-              width: 34,
-              height: 34,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.white.withOpacity(0.6)),
-              ),
-              child: const Icon(
-                Icons.people_outline,
-                size: 17,
-                color: _mutedPurple,
+        Column(
+          children: [
+            Text(
+              today,
+              style: GoogleFonts.nunito(
+                fontSize: 13,
+                color: Colors.white.withOpacity(0.85),
+                fontWeight: FontWeight.w700,
               ),
             ),
-          ),
+            const SizedBox(height: 4),
+            Builder(
+              builder: (ctx) => GestureDetector(
+                onTap: () => Scaffold.of(ctx).openDrawer(),
+                child: Container(
+                  width: 34,
+                  height: 34,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.white.withOpacity(0.6)),
+                  ),
+                  child: const Icon(
+                    Icons.people_outline,
+                    size: 17,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -430,124 +445,38 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
             ),
 
-            // ✅ Badge — outside top-right corner like reference image
-            if (c.badge > 0)
-              Positioned(
-                top: -8,
-                right: -8,
-                child: Container(
-                  width: 26,
-                  height: 26,
-                  decoration: BoxDecoration(
-                    color: Colors.red.shade600,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 2),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.red.withOpacity(0.4),
-                        blurRadius: 6,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      c.badge.toString(),
-                      style: GoogleFonts.nunito(
-                        color: Colors.white,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w800,
-                      ),
+            // ✅ Badge — always visible, top-right corner
+            Positioned(
+              top: -6,
+              right: -6,
+              child: Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    c.badge.toString(),
+                    style: GoogleFonts.nunito(
+                      color: Colors.white,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
                 ),
               ),
+            ),
           ],
-        ),
-      ),
-    );
-  }
-
-  // ─── Messages ──────────────────────────────────────────────────────────────
-  Widget _messagesCard() {
-    return GestureDetector(
-      onTap: () => context.push('/messages'),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: Colors.white.withOpacity(0.65),
-                width: 1.5,
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 34,
-                  height: 34,
-                  decoration: BoxDecoration(
-                    color: _purple.withOpacity(0.12),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Icon(
-                    Icons.chat_bubble_outline_rounded,
-                    size: 16,
-                    color: _purple,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Messages',
-                        style: GoogleFonts.nunito(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: _deepPurple,
-                        ),
-                      ),
-                      Text(
-                        'Team communication',
-                        style: GoogleFonts.nunito(
-                          fontSize: 11,
-                          color: _mutedPurple,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (_messageBadge > 0)
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 3,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 255, 1, 1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      '$_messageBadge new',
-                      style: GoogleFonts.nunito(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                const SizedBox(width: 6),
-                const Icon(Icons.chevron_right, color: _lightPurple, size: 17),
-              ],
-            ),
-          ),
         ),
       ),
     );
@@ -609,7 +538,40 @@ class _DashboardScreenState extends State<DashboardScreen>
           GestureDetector(
             onTap: () async {
               final num = careTeam.nurseLineNumber;
-              if (num != null && num.isNotEmpty) {
+              if (num == null || num.isEmpty) return;
+              final confirmed = await showDialog<bool>(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: Text(
+                    'Emergency Call',
+                    style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.redAccent,
+                    ),
+                  ),
+                  content: Text(
+                    'Are you sure you want to call the nurse line?',
+                    style: GoogleFonts.nunito(),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(ctx).pop(false),
+                      child: Text('Cancel', style: GoogleFonts.nunito()),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red.shade600,
+                      ),
+                      onPressed: () => Navigator.of(ctx).pop(true),
+                      child: Text(
+                        'Yes, Call Now',
+                        style: GoogleFonts.nunito(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+              if (confirmed == true) {
                 await launchUrl(Uri.parse('tel:$num'));
               }
             },
@@ -658,19 +620,14 @@ class _BottomNav extends StatelessWidget {
   static const _items = [
     _NavItem(icon: Icons.home_rounded, label: 'Home', route: '/dashboard'),
     _NavItem(
-      icon: Icons.medication_outlined,
-      label: 'Meds',
-      route: '/medications',
-    ),
-    _NavItem(
       icon: Icons.calendar_today_outlined,
       label: 'Calendar',
       route: '/calendar',
     ),
     _NavItem(
-      icon: Icons.favorite_border_rounded,
-      label: 'Moments',
-      route: '/moments',
+      icon: Icons.chat_bubble_outline_rounded,
+      label: 'Messages',
+      route: '/messages',
     ),
   ];
 
@@ -792,7 +749,10 @@ class _AppDrawer extends StatelessWidget {
                   ),
                   Text(
                     "$patientName's Care Space",
-                    style: GoogleFonts.nunito(fontSize: 13, color: _mutedPurple),
+                    style: GoogleFonts.nunito(
+                      fontSize: 13,
+                      color: _mutedPurple,
+                    ),
                   ),
                 ],
               ),

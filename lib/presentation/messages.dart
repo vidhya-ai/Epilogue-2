@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import '../core/session_manager.dart';
 import 'premium_bottom_nav.dart';
 
 const _deepPurple = Color(0xFF2E2540);
@@ -11,8 +10,8 @@ const _purple = Color(0xFF7A64A4);
 const _mutedPurple = Color(0xFF6C648B);
 const _lightPurple = Color(0xFFB0A8C8);
 const _borderColor = Color(0xFFD4CDDF);
-const _bg1 = Color(0xFFE6E2EE);
-const _bg2 = Color(0xFFDAD4E6);
+const _bg1 = Color(0xFF74659A);
+const _bg2 = Color(0xFFDFDBE5);
 
 // Audience options
 enum MessageAudience { family, medical, everyone }
@@ -127,25 +126,24 @@ class _MessagesScreenState extends State<MessagesScreen> {
 
   List<_Message> get _filtered {
     if (_filterAudience == null) return _messages;
-    return _messages
-        .where((m) => m.audience == _filterAudience)
-        .toList();
+    return _messages.where((m) => m.audience == _filterAudience).toList();
   }
 
   void _sendMessage() {
     final text = _messageCtrl.text.trim();
     if (text.isEmpty) return;
 
-    final member = SessionManager().currentMember;
     setState(() {
-      _messages.add(_Message(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        senderName: 'You',
-        content: text,
-        audience: _selectedAudience,
-        sentAt: DateTime.now(),
-        isMe: true,
-      ));
+      _messages.add(
+        _Message(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          senderName: 'You',
+          content: text,
+          audience: _selectedAudience,
+          sentAt: DateTime.now(),
+          isMe: true,
+        ),
+      );
       _messageCtrl.clear();
     });
 
@@ -203,12 +201,17 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         width: 38,
                         height: 38,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE1DCEA),
+                          color: Colors.white.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(11),
-                          border: Border.all(color: _borderColor),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.4),
+                          ),
                         ),
-                        child: const Icon(Icons.arrow_back_ios_new,
-                            size: 15, color: _mutedPurple),
+                        child: const Icon(
+                          Icons.arrow_back_ios_new,
+                          size: 15,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 14),
@@ -216,15 +219,21 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Messages',
-                              style: GoogleFonts.nunito(
-                                fontSize: 26,
-                                fontWeight: FontWeight.w600,
-                                color: _deepPurple,
-                              )),
-                          Text('Care team communication',
-                              style: GoogleFonts.nunito(
-                                  fontSize: 11, color: _mutedPurple)),
+                          Text(
+                            'Messages',
+                            style: GoogleFonts.nunito(
+                              fontSize: 26,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            'Care team communication',
+                            style: GoogleFonts.nunito(
+                              fontSize: 11,
+                              color: Colors.white.withOpacity(0.75),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -239,12 +248,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 height: 36,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   children: [
                     _filterChip(null, 'All'),
-                    ...MessageAudience.values
-                        .map((a) => _filterChip(a, a.label)),
+                    ...MessageAudience.values.map(
+                      (a) => _filterChip(a, a.label),
+                    ),
                   ],
                 ),
               ),
@@ -261,14 +270,13 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     ? _emptyState()
                     : ListView.builder(
                         controller: _scrollCtrl,
-                        padding: const EdgeInsets.fromLTRB(
-                            20, 8, 20, 12),
+                        padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
                         itemCount: filtered.length,
                         itemBuilder: (_, i) {
                           final msg = filtered[i];
-                          final showDate = i == 0 ||
-                              !_isSameDay(filtered[i - 1].sentAt,
-                                  msg.sentAt);
+                          final showDate =
+                              i == 0 ||
+                              !_isSameDay(filtered[i - 1].sentAt, msg.sentAt);
                           return Column(
                             children: [
                               if (showDate) _dateDivider(msg.sentAt),
@@ -293,16 +301,14 @@ class _MessagesScreenState extends State<MessagesScreen> {
 
   Widget _filterChip(MessageAudience? audience, String label) {
     final isSelected = _filterAudience == audience;
-    final color =
-        audience != null ? audience.color : _purple;
+    final color = audience != null ? audience.color : _purple;
 
     return GestureDetector(
       onTap: () => setState(() => _filterAudience = audience),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         margin: const EdgeInsets.only(right: 8),
-        padding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
         decoration: BoxDecoration(
           color: isSelected
               ? color.withOpacity(0.15)
@@ -313,13 +319,14 @@ class _MessagesScreenState extends State<MessagesScreen> {
             width: isSelected ? 1.5 : 1,
           ),
         ),
-        child: Text(label,
-            style: GoogleFonts.nunito(
-              fontSize: 12,
-              fontWeight:
-                  isSelected ? FontWeight.w700 : FontWeight.w400,
-              color: isSelected ? color : _mutedPurple,
-            )),
+        child: Text(
+          label,
+          style: GoogleFonts.nunito(
+            fontSize: 12,
+            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
+            color: isSelected ? color : _mutedPurple,
+          ),
+        ),
       ),
     );
   }
@@ -327,27 +334,23 @@ class _MessagesScreenState extends State<MessagesScreen> {
   Widget _dateDivider(DateTime date) {
     final label = _isSameDay(date, DateTime.now())
         ? 'Today'
-        : _isSameDay(
-                date,
-                DateTime.now()
-                    .subtract(const Duration(days: 1)))
-            ? 'Yesterday'
-            : DateFormat('MMM d').format(date);
+        : _isSameDay(date, DateTime.now().subtract(const Duration(days: 1)))
+        ? 'Yesterday'
+        : DateFormat('MMM d').format(date);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
         children: [
-          Expanded(
-              child: Divider(color: _borderColor, thickness: 1)),
+          Expanded(child: Divider(color: _borderColor, thickness: 1)),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text(label,
-                style: GoogleFonts.nunito(
-                    fontSize: 11, color: _lightPurple)),
+            child: Text(
+              label,
+              style: GoogleFonts.nunito(fontSize: 11, color: _lightPurple),
+            ),
           ),
-          Expanded(
-              child: Divider(color: _borderColor, thickness: 1)),
+          Expanded(child: Divider(color: _borderColor, thickness: 1)),
         ],
       ),
     );
@@ -393,18 +396,21 @@ class _MessagesScreenState extends State<MessagesScreen> {
               children: [
                 if (!msg.isMe)
                   Padding(
-                    padding: const EdgeInsets.only(
-                        left: 4, bottom: 3),
-                    child: Text(msg.senderName,
-                        style: GoogleFonts.nunito(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: _mutedPurple,
-                        )),
+                    padding: const EdgeInsets.only(left: 4, bottom: 3),
+                    child: Text(
+                      msg.senderName,
+                      style: GoogleFonts.nunito(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: _mutedPurple,
+                      ),
+                    ),
                   ),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 10),
+                    horizontal: 14,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: msg.isMe
                         ? const Color(0xFF6B5B8E)
@@ -412,23 +418,19 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     borderRadius: BorderRadius.only(
                       topLeft: const Radius.circular(16),
                       topRight: const Radius.circular(16),
-                      bottomLeft: Radius.circular(
-                          msg.isMe ? 16 : 4),
-                      bottomRight: Radius.circular(
-                          msg.isMe ? 4 : 16),
+                      bottomLeft: Radius.circular(msg.isMe ? 16 : 4),
+                      bottomRight: Radius.circular(msg.isMe ? 4 : 16),
                     ),
-                    border: msg.isMe
-                        ? null
-                        : Border.all(color: _borderColor),
+                    border: msg.isMe ? null : Border.all(color: _borderColor),
                   ),
-                  child: Text(msg.content,
-                      style: GoogleFonts.nunito(
-                        fontSize: 13,
-                        color: msg.isMe
-                            ? Colors.white
-                            : _deepPurple,
-                        height: 1.4,
-                      )),
+                  child: Text(
+                    msg.content,
+                    style: GoogleFonts.nunito(
+                      fontSize: 13,
+                      color: msg.isMe ? Colors.white : _deepPurple,
+                      height: 1.4,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 3),
                 Row(
@@ -443,19 +445,21 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       ),
                     ),
                     const SizedBox(width: 4),
-                    Text(msg.audience.label,
-                        style: GoogleFonts.nunito(
-                          fontSize: 9,
-                          color: _lightPurple,
-                        )),
+                    Text(
+                      msg.audience.label,
+                      style: GoogleFonts.nunito(
+                        fontSize: 9,
+                        color: _lightPurple,
+                      ),
+                    ),
                     const SizedBox(width: 6),
                     Text(
-                        DateFormat('h:mm a')
-                            .format(msg.sentAt),
-                        style: GoogleFonts.nunito(
-                          fontSize: 9,
-                          color: _lightPurple,
-                        )),
+                      DateFormat('h:mm a').format(msg.sentAt),
+                      style: GoogleFonts.nunito(
+                        fontSize: 9,
+                        color: _lightPurple,
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -480,58 +484,57 @@ class _MessagesScreenState extends State<MessagesScreen> {
           // Audience selector
           Row(
             children: [
-              Text('Send to:',
-                  style: GoogleFonts.nunito(
-                    fontSize: 11,
-                    color: _mutedPurple,
-                    fontWeight: FontWeight.w500,
-                  )),
+              Text(
+                'Send to:',
+                style: GoogleFonts.nunito(
+                  fontSize: 11,
+                  color: _mutedPurple,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               const SizedBox(width: 8),
               ...MessageAudience.values.map((a) {
                 final isSelected = _selectedAudience == a;
                 return GestureDetector(
-                  onTap: () =>
-                      setState(() => _selectedAudience = a),
+                  onTap: () => setState(() => _selectedAudience = a),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 180),
                     margin: const EdgeInsets.only(right: 6),
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 4),
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: isSelected
                           ? a.color.withOpacity(0.15)
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: isSelected
-                            ? a.color
-                            : _borderColor,
+                        color: isSelected ? a.color : _borderColor,
                         width: isSelected ? 1.5 : 1,
                       ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(a.icon,
-                            size: 11,
-                            color: isSelected
-                                ? a.color
-                                : _lightPurple),
+                        Icon(
+                          a.icon,
+                          size: 11,
+                          color: isSelected ? a.color : _lightPurple,
+                        ),
                         const SizedBox(width: 4),
                         Text(
                           a == MessageAudience.family
                               ? 'Family'
                               : a == MessageAudience.medical
-                                  ? 'Medical'
-                                  : 'Everyone',
+                              ? 'Medical'
+                              : 'Everyone',
                           style: GoogleFonts.nunito(
                             fontSize: 10,
                             fontWeight: isSelected
                                 ? FontWeight.w700
                                 : FontWeight.w400,
-                            color: isSelected
-                                ? a.color
-                                : _lightPurple,
+                            color: isSelected ? a.color : _lightPurple,
                           ),
                         ),
                       ],
@@ -556,17 +559,18 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   child: TextField(
                     controller: _messageCtrl,
                     maxLines: null,
-                    style: GoogleFonts.nunito(
-                        fontSize: 13, color: _deepPurple),
+                    style: GoogleFonts.nunito(fontSize: 13, color: _deepPurple),
                     decoration: InputDecoration(
                       hintText: 'Write a message...',
                       hintStyle: GoogleFonts.nunito(
-                          fontSize: 13,
-                          color: const Color(0xFFB8B0CC)),
+                        fontSize: 13,
+                        color: const Color(0xFFB8B0CC),
+                      ),
                       border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 10),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 10,
+                      ),
                     ),
                     onSubmitted: (_) => _sendMessage(),
                   ),
@@ -589,8 +593,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       ),
                     ],
                   ),
-                  child: const Icon(Icons.send_rounded,
-                      color: Colors.white, size: 18),
+                  child: const Icon(
+                    Icons.send_rounded,
+                    color: Colors.white,
+                    size: 18,
+                  ),
                 ),
               ),
             ],
@@ -612,20 +619,26 @@ class _MessagesScreenState extends State<MessagesScreen> {
               color: const Color(0xFFE1DCEA),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.chat_bubble_outline_rounded,
-                size: 32, color: _lightPurple),
+            child: const Icon(
+              Icons.chat_bubble_outline_rounded,
+              size: 32,
+              color: _lightPurple,
+            ),
           ),
           const SizedBox(height: 16),
-          Text('No messages yet',
-              style: GoogleFonts.nunito(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: _deepPurple,
-              )),
+          Text(
+            'No messages yet',
+            style: GoogleFonts.nunito(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: _deepPurple,
+            ),
+          ),
           const SizedBox(height: 6),
-          Text('Send the first message below',
-              style: GoogleFonts.nunito(
-                  fontSize: 13, color: _mutedPurple)),
+          Text(
+            'Send the first message below',
+            style: GoogleFonts.nunito(fontSize: 13, color: _mutedPurple),
+          ),
         ],
       ),
     );

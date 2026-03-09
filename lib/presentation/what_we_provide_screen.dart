@@ -6,8 +6,7 @@ class WhatWeProvideScreen extends StatefulWidget {
   const WhatWeProvideScreen({super.key});
 
   @override
-  State<WhatWeProvideScreen> createState() =>
-      _WhatWeProvideScreenState();
+  State<WhatWeProvideScreen> createState() => _WhatWeProvideScreenState();
 }
 
 class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
@@ -20,7 +19,13 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
         children: [
           // Main content
           Container(
-            color: Colors.white,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF74659A), Color(0xFFDFDBE5)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -33,10 +38,13 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
                         // ✅ FIXED BACK BUTTON
                         GestureDetector(
                           onTap: () => context.pop(),
-                          child: const Icon(Icons.arrow_back),
+                          child: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.menu),
+                          icon: const Icon(Icons.menu, color: Colors.white),
                           onPressed: () {
                             setState(() {
                               _isDrawerOpen = !_isDrawerOpen;
@@ -56,7 +64,7 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 0.2,
-                      color: const Color.fromARGB(255, 160, 128, 239),
+                      color: Colors.white,
                     ),
                   ),
 
@@ -81,8 +89,7 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
                               fontSize: 32,
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.italic,
-                              color:
-                                  const Color.fromARGB(255, 160, 128, 239),
+                              color: const Color.fromARGB(255, 160, 128, 239),
                             ),
                           ),
                           const TextSpan(text: ' and clarity'),
@@ -192,8 +199,7 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
                         onPressed: () => context.go('/setup'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF6B5B95),
-                          padding:
-                              const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(28),
                           ),
@@ -210,8 +216,11 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
                               ),
                             ),
                             const SizedBox(width: 8),
-                            const Icon(Icons.arrow_forward,
-                                color: Colors.white, size: 18),
+                            const Icon(
+                              Icons.arrow_forward,
+                              color: Colors.white,
+                              size: 18,
+                            ),
                           ],
                         ),
                       ),
@@ -228,10 +237,8 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
           if (_isDrawerOpen)
             Positioned.fill(
               child: GestureDetector(
-                onTap: () =>
-                    setState(() => _isDrawerOpen = false),
-                child: Container(
-                    color: Colors.black.withOpacity(0.5)),
+                onTap: () => setState(() => _isDrawerOpen = false),
+                child: Container(color: Colors.black.withOpacity(0.5)),
               ),
             ),
 
@@ -268,16 +275,13 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
                       ),
                       const SizedBox(height: 20),
                       Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GestureDetector(
                               onTap: () {
-                                setState(() =>
-                                    _isDrawerOpen = false);
+                                setState(() => _isDrawerOpen = false);
                                 context.go('/');
                               },
                               child: Text(
@@ -293,8 +297,7 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
                             const SizedBox(height: 24),
                             GestureDetector(
                               onTap: () {
-                                setState(() =>
-                                    _isDrawerOpen = false);
+                                setState(() => _isDrawerOpen = false);
                                 context.go('/how_it_works');
                               },
                               child: Text(
@@ -340,12 +343,10 @@ class _FeatureCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFFE4E1EA),
-        border:
-            Border.all(color: const Color(0xFFE4E1EA).withOpacity(0.45)),
+        border: Border.all(color: const Color(0xFFE4E1EA).withOpacity(0.45)),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
-          BoxShadow(
-              color: Colors.black.withOpacity(0.05), blurRadius: 8),
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8),
         ],
       ),
       padding: const EdgeInsets.all(22),

@@ -19,7 +19,13 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
         children: [
           // Main content
           Container(
-            color: Colors.white,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF74659A), Color(0xFFDFDBE5)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -31,10 +37,13 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
                       children: [
                         GestureDetector(
                           onTap: () => context.go('/'),
-                          child: const Icon(Icons.arrow_back),
+                          child: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.menu),
+                          icon: const Icon(Icons.menu, color: Colors.white),
                           onPressed: () {
                             setState(() {
                               _isDrawerOpen = !_isDrawerOpen;
@@ -52,7 +61,7 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0.2,
-                      color: const Color(0xFF8B7BB5),
+                      color: Colors.white.withOpacity(0.85),
                     ),
                   ),
                   const SizedBox(height: 10),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../core/session_manager.dart';
 import '../core/supabase_service.dart';
 import '../domain/models.dart';
@@ -79,53 +80,71 @@ class _CarePlanScreenState extends State<CarePlanScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF74659A),
+        foregroundColor: Colors.white,
+        elevation: 0,
         title: Text(
           "${SessionManager().currentCareTeam?.patientFirstName ?? 'Patient'}'s Care Plan",
+          style: GoogleFonts.nunito(
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+          ),
         ),
         actions: [
           IconButton(icon: const Icon(Icons.save), onPressed: _saveCarePlan),
         ],
       ),
-      body: FutureBuilder<CarePlan?>(
-        future: _carePlanFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF74659A), Color(0xFFDFDBE5)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: FutureBuilder<CarePlan?>(
+          future: _carePlanFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
 
-          return Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  _buildTextField(
-                    _medicationsSummaryController,
-                    'Medications Summary',
-                  ),
-                  _buildTextField(
-                    _positioningTurningController,
-                    'Positioning / Turning',
-                  ),
-                  _buildTextField(_transfersController, 'Transfers'),
-                  _buildTextField(_mobilityController, 'Mobility'),
-                  _buildTextField(_personalCareController, 'Personal Care'),
-                  _buildTextField(
-                    _otherInstructionsController,
-                    'Other Instructions',
-                  ),
-                  _buildTextField(
-                    _hospiceInstructionsController,
-                    'Hospice Instructions',
-                  ),
-                ],
+            return Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    _buildTextField(
+                      _medicationsSummaryController,
+                      'Medications Summary',
+                    ),
+                    _buildTextField(
+                      _positioningTurningController,
+                      'Positioning / Turning',
+                    ),
+                    _buildTextField(_transfersController, 'Transfers'),
+                    _buildTextField(_mobilityController, 'Mobility'),
+                    _buildTextField(_personalCareController, 'Personal Care'),
+                    _buildTextField(
+                      _otherInstructionsController,
+                      'Other Instructions',
+                    ),
+                    _buildTextField(
+                      _hospiceInstructionsController,
+                      'Hospice Instructions',
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

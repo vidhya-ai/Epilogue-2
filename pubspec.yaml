@@ -18,6 +18,10 @@ dependencies:
   uuid: ^4.5.3
   url_launcher: ^6.3.0
   image_picker: ^1.1.2
+  table_calendar: ^3.1.2
+  google_sign_in: ^6.2.1      # for Google auth
+  googleapis: ^11.0.0          # for Calendar API
+  googleapis_auth: ^1.4.1      # for OAuth
 
 dev_dependencies:
   flutter_test:

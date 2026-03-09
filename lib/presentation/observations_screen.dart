@@ -14,9 +14,8 @@ const _purple = Color(0xFF7A64A4);
 const _mutedPurple = Color(0xFF6C648B);
 const _lightPurple = Color(0xFFB0A8C8);
 const _borderColor = Color(0xFFD4CDDF);
-const _cardBg = Color(0xFFF0EDF6);
-const _bg1 = Color(0xFFE6E2EE);
-const _bg2 = Color(0xFFDAD4E6);
+const _bg1 = Color(0xFF74659A);
+const _bg2 = Color(0xFFDFDBE5);
 
 class ObservationsScreen extends StatefulWidget {
   const ObservationsScreen({super.key});
@@ -249,23 +248,6 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // ── Patient name banner ──
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 8,
-                ),
-                color: _purple.withOpacity(0.08),
-                child: Text(
-                  "${SessionManager().currentCareTeam?.patientFirstName ?? 'Patient'}'s Care",
-                  style: GoogleFonts.nunito(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: _purple,
-                  ),
-                ),
-              ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
                 child: Row(
@@ -282,14 +264,16 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
                         width: 38,
                         height: 38,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE1DCEA),
+                          color: Colors.white.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(11),
-                          border: Border.all(color: _borderColor),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.4),
+                          ),
                         ),
                         child: const Icon(
                           Icons.arrow_back_ios_new,
                           size: 15,
-                          color: _mutedPurple,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -303,14 +287,15 @@ class _ObservationsScreenState extends State<ObservationsScreen> {
                             style: GoogleFonts.nunito(
                               fontSize: 26,
                               fontWeight: FontWeight.w600,
-                              color: _deepPurple,
+                              color: Colors.white,
                             ),
                           ),
                           Text(
-                            '${_notes.length} entries',
+                            "${SessionManager().currentCareTeam?.patientFirstName ?? 'Your'}'s Care Space",
                             style: GoogleFonts.nunito(
-                              fontSize: 11,
-                              color: _mutedPurple,
+                              fontSize: 20,
+                              color: Colors.white.withOpacity(0.75),
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],

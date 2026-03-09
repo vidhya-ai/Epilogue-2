@@ -17,8 +17,8 @@ const _mutedPurple = Color(0xFF6C648B);
 const _lightPurple = Color(0xFFB0A8C8);
 const _borderColor = Color(0xFFD4CDDF);
 const _cardBg = Color(0xFFF0EDF6);
-const _bg1 = Color(0xFFE6E2EE);
-const _bg2 = Color(0xFFDAD4E6);
+const _bg1 = Color(0xFF74659A);
+const _bg2 = Color(0xFFDFDBE5);
 
 class MedicationsScreen extends StatefulWidget {
   const MedicationsScreen({super.key});
@@ -70,6 +70,213 @@ class _MedicationsScreenState extends State<MedicationsScreen>
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
+  }
+
+  // ---------- Just Administered ----------
+  Future<void> _showAdministerDialog(Medication med) async {
+    DateTime selectedTime = DateTime.now();
+    final member = SessionManager().currentMember;
+
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: _cardBg,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (ctx, setModalState) {
+            final dateStr = DateFormat('MMM d, yyyy').format(selectedTime);
+            final timeStr = DateFormat('h:mm a').format(selectedTime);
+            return Padding(
+              padding: EdgeInsets.only(
+                left: 24,
+                right: 24,
+                top: 24,
+                bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: _borderColor,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Log Administration',
+                    style: GoogleFonts.playfairDisplay(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: _deepPurple,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    med.name ?? '',
+                    style: GoogleFonts.nunito(
+                      fontSize: 14,
+                      color: _mutedPurple,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  // Timestamp row — tappable to edit
+                  GestureDetector(
+                    onTap: () async {
+                      final pickedDate = await showDatePicker(
+                        context: ctx,
+                        initialDate: selectedTime,
+                        firstDate: DateTime(2020),
+                        lastDate: DateTime.now(),
+                      );
+                      if (pickedDate == null) return;
+                      if (!ctx.mounted) return;
+                      final pickedTime = await showTimePicker(
+                        context: ctx,
+                        initialTime: TimeOfDay.fromDateTime(selectedTime),
+                      );
+                      if (pickedTime == null) return;
+                      setModalState(() {
+                        selectedTime = DateTime(
+                          pickedDate.year,
+                          pickedDate.month,
+                          pickedDate.day,
+                          pickedTime.hour,
+                          pickedTime.minute,
+                        );
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _purple.withOpacity(0.06),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: _purple.withOpacity(0.20)),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.access_time_rounded,
+                            size: 18,
+                            color: _purple,
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              '$dateStr  ·  $timeStr',
+                              style: GoogleFonts.nunito(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: _deepPurple,
+                              ),
+                            ),
+                          ),
+                          Icon(
+                            Icons.edit_outlined,
+                            size: 15,
+                            color: _mutedPurple,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Tap to change date/time',
+                      style: GoogleFonts.nunito(
+                        fontSize: 11,
+                        color: _lightPurple,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  // Confirm button
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _purple,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        elevation: 0,
+                      ),
+                      onPressed: () async {
+                        final log = DoseLog(
+                          id: _uuid.v4(),
+                          careTeamId: _careTeamId,
+                          medicationId: med.id,
+                          medicationName: med.name,
+                          doseTime: selectedTime,
+                          amountGiven: med.typicalDose,
+                          whoGave: member?.name,
+                          loggedByMemberId: member?.id,
+                          loggedByMemberName: member?.name,
+                        );
+                        try {
+                          await _service.logDose(log);
+                          if (!ctx.mounted) return;
+                          Navigator.pop(ctx);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Dose logged for ${med.name}',
+                                style: GoogleFonts.nunito(fontSize: 13),
+                              ),
+                              backgroundColor: _purple,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          );
+                        } catch (e) {
+                          debugPrint('Error logging dose: $e');
+                          if (!ctx.mounted) return;
+                          Navigator.pop(ctx);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Failed to log dose: $e',
+                                style: GoogleFonts.nunito(fontSize: 13),
+                              ),
+                              backgroundColor: Colors.red.shade700,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      child: Text(
+                        'Confirm Administration',
+                        style: GoogleFonts.nunito(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   // Deactivate by setting pattern to 'inactive' — preserves history
@@ -157,10 +364,12 @@ class _MedicationsScreenState extends State<MedicationsScreen>
     final dosageCtrl = TextEditingController();
     final unitCtrl = TextEditingController();
     final scheduleCtrl = TextEditingController();
+    final notesCtrl = TextEditingController();
     String route = 'By mouth';
-    String frequency = 'Regular schedule';
+    int freqAmount = 1;
+    final freqAmountCtrl = TextEditingController(text: '1');
+    String freqUnit = 'hours';
     String? prescribedDate;
-    String? lastUpdatedBy;
 
     final routes = [
       'By mouth',
@@ -171,18 +380,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
       'Inhaled',
       'Other',
     ];
-    final frequencies = [
-      'Regular schedule',
-      'PRN (As needed)',
-      'Once daily',
-      'Twice daily',
-      'Three times daily',
-      'Every 4 hours',
-      'Every 6 hours',
-      'Every 8 hours',
-      'Every 12 hours',
-      'At bedtime',
-    ];
+    final freqUnits = ['hours', 'days', 'weeks'];
 
     showModalBottomSheet(
       context: context,
@@ -296,18 +494,172 @@ class _MedicationsScreenState extends State<MedicationsScreen>
 
                 // Frequency
                 _modalLabel('Frequency'),
-                _modalDropdown(
-                  value: frequency,
-                  items: frequencies,
-                  onChanged: (v) => setModal(() => frequency = v!),
+                Text(
+                  'Every',
+                  style: GoogleFonts.nunito(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: _deepPurple,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    // Counter: minus button
+                    GestureDetector(
+                      onTap: () {
+                        if (freqAmount > 1) {
+                          setModal(() {
+                            freqAmount--;
+                            freqAmountCtrl.text = '$freqAmount';
+                          });
+                        }
+                      },
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.85),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: _borderColor, width: 1.5),
+                        ),
+                        child: const Icon(
+                          Icons.remove,
+                          size: 18,
+                          color: _deepPurple,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    // Amount input
+                    SizedBox(
+                      width: 56,
+                      height: 40,
+                      child: TextField(
+                        controller: freqAmountCtrl,
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.nunito(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: _deepPurple,
+                        ),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.85),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: _borderColor,
+                              width: 1.5,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: _borderColor,
+                              width: 1.5,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: _purple, width: 1.5),
+                          ),
+                          counterText: '',
+                        ),
+                        maxLength: 3,
+                        onChanged: (v) {
+                          final parsed = int.tryParse(v);
+                          if (parsed != null && parsed > 0) {
+                            setModal(() => freqAmount = parsed);
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    // Counter: plus button
+                    GestureDetector(
+                      onTap: () => setModal(() {
+                        freqAmount++;
+                        freqAmountCtrl.text = '$freqAmount';
+                      }),
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.85),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: _borderColor, width: 1.5),
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          size: 18,
+                          color: _deepPurple,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    // Unit selector
+                    Expanded(
+                      child: Container(
+                        height: 40,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.85),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: _borderColor, width: 1.5),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: freqUnit,
+                            isExpanded: true,
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              size: 18,
+                              color: _mutedPurple,
+                            ),
+                            style: GoogleFonts.nunito(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: _deepPurple,
+                            ),
+                            items: freqUnits
+                                .map(
+                                  (u) => DropdownMenuItem(
+                                    value: u,
+                                    child: Text(
+                                      u,
+                                      style: GoogleFonts.nunito(fontSize: 15),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (v) => setModal(() => freqUnit = v!),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'e.g. every 4 hours, every 2 days, every 48–72 hours',
+                  style: GoogleFonts.nunito(
+                    fontSize: 16,
+                    color: _mutedPurple,
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
                 const SizedBox(height: 16),
 
-                // Schedule details
-                _modalLabel('Schedule details'),
+                // Notes
+                _modalLabel('Notes'),
                 _modalField(
-                  controller: scheduleCtrl,
-                  hint: 'e.g. Morning and Night',
+                  controller: notesCtrl,
+                  hint: 'e.g. When to take, special instructions, etc.',
                 ),
                 const SizedBox(height: 16),
 
@@ -448,7 +800,8 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                                 ),
                                 const SizedBox(height: 16),
                                 Text(
-                                  'Confirm medication',
+                                  'Confirm medication for ${SessionManager().currentCareTeam?.patientFirstName ?? 'patient'}',
+                                  textAlign: TextAlign.center,
                                   style: GoogleFonts.nunito(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700,
@@ -489,7 +842,10 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                                           unitCtrl.text.trim(),
                                         ),
                                       _confirmRow('Route', route),
-                                      _confirmRow('Frequency', frequency),
+                                      _confirmRow(
+                                        'Frequency',
+                                        'Every $freqAmount $freqUnit',
+                                      ),
                                       if (scheduleCtrl.text.trim().isNotEmpty)
                                         _confirmRow(
                                           'Schedule',
@@ -584,7 +940,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                             ? null
                             : unitCtrl.text.trim(),
                         route: route,
-                        pattern: frequency,
+                        pattern: 'Every $freqAmount $freqUnit',
                         scheduleDetails: scheduleCtrl.text.trim().isEmpty
                             ? prescribedDate
                             : '${scheduleCtrl.text.trim()}${prescribedDate != null ? ' · Prescribed: $prescribedDate' : ''}',
@@ -666,26 +1022,41 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                         width: 38,
                         height: 38,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE1DCEA),
+                          color: Colors.white.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(11),
-                          border: Border.all(color: _borderColor),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.4),
+                          ),
                         ),
                         child: const Icon(
                           Icons.arrow_back_ios_new,
                           size: 15,
-                          color: _mutedPurple,
+                          color: Colors.white,
                         ),
                       ),
                     ),
                     const SizedBox(width: 14),
                     Expanded(
-                      child: Text(
-                        'Medications',
-                        style: GoogleFonts.nunito(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w600,
-                          color: _deepPurple,
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Medications',
+                            style: GoogleFonts.nunito(
+                              fontSize: 26,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            "${SessionManager().currentCareTeam?.patientFirstName ?? 'Your'}'s Care Space",
+                            style: GoogleFonts.nunito(
+                              fontSize: 20,
+                              color: Colors.white.withOpacity(0.75),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     GestureDetector(
@@ -694,14 +1065,16 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                         width: 38,
                         height: 38,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE1DCEA),
+                          color: Colors.white.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(11),
-                          border: Border.all(color: _borderColor),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.4),
+                          ),
                         ),
                         child: const Icon(
                           Icons.refresh_rounded,
                           size: 18,
-                          color: _mutedPurple,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -771,7 +1144,7 @@ class _MedicationsScreenState extends State<MedicationsScreen>
               ),
 
               // ── Bottom Nav ──
-              const PremiumBottomNav(currentIndex: 1),
+              const PremiumBottomNav(currentIndex: 0),
               const SizedBox(height: 10),
             ],
           ),
@@ -995,6 +1368,44 @@ class _MedicationsScreenState extends State<MedicationsScreen>
                 ],
               ),
             ],
+
+            // Just Administered button
+            if (isActive) ...[
+              const SizedBox(height: 12),
+              const Divider(color: _borderColor, height: 1),
+              const SizedBox(height: 10),
+              GestureDetector(
+                onTap: () => _showAdministerDialog(med),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                    color: _purple.withOpacity(0.10),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: _purple.withOpacity(0.25)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.check_circle_outline,
+                        size: 16,
+                        color: _purple,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        'Just Administered',
+                        style: GoogleFonts.nunito(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: _purple,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),
@@ -1071,9 +1482,9 @@ class _MedicationsScreenState extends State<MedicationsScreen>
       child: Text(
         text,
         style: GoogleFonts.nunito(
-          fontSize: 13,
+          fontSize: 16,
           fontWeight: FontWeight.w600,
-          color: _mutedPurple,
+          color: const Color.fromARGB(255, 7, 7, 7),
           letterSpacing: 0.2,
         ),
       ),

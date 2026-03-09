@@ -9,9 +9,16 @@ class PremiumBottomNav extends StatelessWidget {
 
   static const _items = [
     _NavItem(icon: Icons.home_rounded, label: 'Home', route: '/dashboard'),
-    _NavItem(icon: Icons.medication_outlined, label: 'Meds', route: '/medications'),
-    _NavItem(icon: Icons.calendar_today_outlined, label: 'Calendar', route: '/calendar'),
-    _NavItem(icon: Icons.favorite_border_rounded, label: 'Moments', route: '/moments'),
+    _NavItem(
+      icon: Icons.calendar_today_outlined,
+      label: 'Calendar',
+      route: '/calendar',
+    ),
+    _NavItem(
+      icon: Icons.chat_bubble_outline_rounded,
+      label: 'Messages',
+      route: '/messages',
+    ),
   ];
 
   @override
@@ -100,5 +107,9 @@ class _NavItem {
   final IconData icon;
   final String label;
   final String route;
-  const _NavItem({required this.icon, required this.label, required this.route});
+  const _NavItem({
+    required this.icon,
+    required this.label,
+    required this.route,
+  });
 }

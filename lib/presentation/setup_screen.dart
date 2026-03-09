@@ -55,7 +55,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
         height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFE6E2EE), Color(0xFFDAD4E6)],
+            colors: [Color(0xFF74659A), Color(0xFFDFDBE5)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -74,50 +74,58 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                     children: [
                       const SizedBox(height: 16),
 
-                      // Back button
-                      GestureDetector(
-                        onTap: () => context.go('/'),
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFE1DCEA),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: const Color(0xFFCFC8DB)),
+                      // Top row: back arrow + centered step indicator
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: GestureDetector(
+                              onTap: () => context.go('/'),
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.4),
+                                  ),
+                                ),
+                                child: const Icon(
+                                  Icons.arrow_back_ios_new,
+                                  size: 16,
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                ),
+                              ),
+                            ),
                           ),
-                          child: const Icon(
-                            Icons.arrow_back_ios_new,
-                            size: 16,
-                            color: Color(0xFF6C648B),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.25),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.35),
+                              ),
+                            ),
+                            child: Text(
+                              'STEP 1 OF 3',
+                              style: GoogleFonts.nunito(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 2,
+                                color: const Color.fromARGB(255, 0, 0, 0),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
 
-                      const SizedBox(height: 32),
-
-                      // Step indicator
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFE1DCEA),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: const Color(0xFFCFC8DB)),
-                        ),
-                        child: Text(
-                          'STEP 1 OF 2',
-                          style: GoogleFonts.nunito(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 2,
-                            color: const Color(0xFF7A7195),
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 60),
 
                       // Title
                       Text(
@@ -125,7 +133,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                         style: GoogleFonts.nunito(
                           fontSize: 48,
                           fontWeight: FontWeight.w600,
-                          color: const Color(0xFF443C63),
+                          color: const Color.fromARGB(255, 0, 0, 0),
                           height: 1.0,
                         ),
                       ),
@@ -135,10 +143,10 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                       Text(
                         "We'll help coordinate care and keep\neveryone connected.",
                         style: GoogleFonts.nunito(
-                          fontSize: 17,
-                          fontStyle: FontStyle.italic,
+                          fontSize: 20,
+
                           fontWeight: FontWeight.w600,
-                          color: const Color(0xFF6C648B),
+                          color: const Color.fromARGB(255, 0, 0, 0),
                           height: 1.4,
                         ),
                       ),
@@ -150,7 +158,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                         children: [
                           Expanded(
                             child: Divider(
-                              color: const Color(0xFFD4CDDF),
+                              color: const Color.fromARGB(255, 0, 0, 0),
                               thickness: 1,
                             ),
                           ),
@@ -160,7 +168,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                           ),
                           Expanded(
                             child: Divider(
-                              color: const Color(0xFFD4CDDF),
+                              color: const Color.fromARGB(255, 0, 0, 0),
                               thickness: 1,
                             ),
                           ),
@@ -235,14 +243,13 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                                 style: GoogleFonts.nunito(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
-                                  color: Colors.white,
+                                  color: const Color.fromARGB(
+                                    255,
+                                    255,
+                                    255,
+                                    255,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 10),
-                              const Icon(
-                                Icons.arrow_forward,
-                                color: Colors.white,
-                                size: 18,
                               ),
                             ],
                           ),
@@ -250,18 +257,6 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                       ),
 
                       const SizedBox(height: 20),
-
-                      // Privacy note
-                      Center(
-                        child: Text(
-                          '🔒  Your information stays private to your care team',
-                          style: GoogleFonts.nunito(
-                            fontSize: 11,
-                            color: const Color(0xFF9B92B8),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
 
                       const SizedBox(height: 40),
                     ],
@@ -296,12 +291,10 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
             child: Text(
               label,
               style: GoogleFonts.nunito(
-                fontSize: 13,
+                fontSize: 17,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.3,
-                color: isFocused
-                    ? const Color(0xFF7A64A4)
-                    : const Color(0xFF6C648B),
+                color: Colors.black,
               ),
             ),
           ),
@@ -329,6 +322,9 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
             child: TextFormField(
               controller: controller,
               keyboardType: keyboardType,
+              textCapitalization: keyboardType == TextInputType.emailAddress
+                  ? TextCapitalization.none
+                  : TextCapitalization.words,
               style: GoogleFonts.nunito(
                 fontSize: 15,
                 color: const Color(0xFF443C63),
@@ -339,8 +335,8 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
               decoration: InputDecoration(
                 hintText: hint,
                 hintStyle: GoogleFonts.nunito(
-                  fontSize: 14,
-                  color: const Color(0xFFB8B0CC),
+                  fontSize: 16,
+                  color: const Color(0xFF7A7195),
                 ),
                 prefixIcon: Icon(
                   icon,

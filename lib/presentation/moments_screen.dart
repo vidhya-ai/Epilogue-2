@@ -7,8 +7,6 @@ import 'package:uuid/uuid.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import '../core/session_manager.dart';
-import '../core/supabase_service.dart';
-import '../domain/models.dart';
 import 'premium_bottom_nav.dart';
 
 // ─── Colors ───────────────────────────────────────────────────────────────────
@@ -17,8 +15,8 @@ const _purple = Color(0xFF7A64A4);
 const _mutedPurple = Color(0xFF6C648B);
 const _lightPurple = Color(0xFFB0A8C8);
 const _borderColor = Color(0xFFD4CDDF);
-const _bg1 = Color(0xFFE6E2EE);
-const _bg2 = Color(0xFFDAD4E6);
+const _bg1 = Color(0xFF74659A);
+const _bg2 = Color(0xFFDFDBE5);
 const _warmAmber = Color(0xFFE8A87C);
 const _softRose = Color(0xFFD4849A);
 
@@ -105,7 +103,6 @@ class MomentsScreen extends StatefulWidget {
 
 class _MomentsScreenState extends State<MomentsScreen>
     with SingleTickerProviderStateMixin {
-  final _service = SupabaseService();
   final _uuid = const Uuid();
   final _picker = ImagePicker();
 
@@ -651,23 +648,6 @@ class _MomentsScreenState extends State<MomentsScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ── Patient name banner ──
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 8,
-                ),
-                color: const Color(0xFF7A64A4).withOpacity(0.08),
-                child: Text(
-                  "${SessionManager().currentCareTeam?.patientFirstName ?? 'Patient'}'s Care",
-                  style: GoogleFonts.nunito(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF7A64A4),
-                  ),
-                ),
-              ),
               // ── Header ──
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
@@ -685,14 +665,16 @@ class _MomentsScreenState extends State<MomentsScreen>
                         width: 38,
                         height: 38,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE1DCEA),
+                          color: Colors.white.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(11),
-                          border: Border.all(color: _borderColor),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.4),
+                          ),
                         ),
                         child: const Icon(
                           Icons.arrow_back_ios_new,
                           size: 15,
-                          color: _mutedPurple,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -706,14 +688,15 @@ class _MomentsScreenState extends State<MomentsScreen>
                             style: GoogleFonts.nunito(
                               fontSize: 28,
                               fontWeight: FontWeight.w600,
-                              color: _deepPurple,
+                              color: Colors.white,
                             ),
                           ),
                           Text(
-                            'Family memories & messages',
+                            "${SessionManager().currentCareTeam?.patientFirstName ?? 'Your'}'s Care Space",
                             style: GoogleFonts.nunito(
-                              fontSize: 11,
-                              color: _mutedPurple,
+                              fontSize: 20,
+                              color: Colors.white.withOpacity(0.75),
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],
@@ -796,7 +779,7 @@ class _MomentsScreenState extends State<MomentsScreen>
               ),
 
               // ── Bottom Nav ──
-              const PremiumBottomNav(currentIndex: 3),
+              const PremiumBottomNav(currentIndex: 0),
               const SizedBox(height: 10),
             ],
           ),
