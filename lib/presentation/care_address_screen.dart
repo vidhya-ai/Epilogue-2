@@ -131,7 +131,7 @@ class _CareAddressScreenState extends State<CareAddressScreen>
 
   // TODO: Replace with Google Geocoding API
   // GET https://maps.googleapis.com/maps/api/geocode/json?address={street},{city},{state}+{zip}&key=YOUR_KEY
-  // Parse 'administrative_area_level_2' — zip alone is insufficient (two addresses 1 mile apart can be in different counties)
+  // Parse 'administrative_area_level_2' Ã¢â‚¬â€ zip alone is insufficient (two addresses 1 mile apart can be in different counties)
   Future<void> _deriveCounty() async {
     final street = _streetCtrl.text.trim();
     final city = _cityCtrl.text.trim();
@@ -296,7 +296,7 @@ class _CareAddressScreenState extends State<CareAddressScreen>
                               child: Text(
                                 'STEP 3 OF 3',
                                 style: GoogleFonts.nunito(
-                                  fontSize: 10,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: 2,
                                   color: const Color.fromARGB(255, 0, 0, 0),
@@ -418,11 +418,11 @@ class _CareAddressScreenState extends State<CareAddressScreen>
                             ),
                           const SizedBox(height: 20),
                           Text(
-                            'Provide the Care Address',
+                             "Provide patient's care address",
                             style: GoogleFonts.nunito(
                               fontSize: 24,
                               fontWeight: FontWeight.w800,
-                              color: Colors.white,
+                              color: const Color.fromARGB(255, 0, 0, 0),
                             ),
                           ),
                           const SizedBox(height: 14),
@@ -474,7 +474,7 @@ class _CareAddressScreenState extends State<CareAddressScreen>
                                           hint: Text(
                                             'State',
                                             style: GoogleFonts.nunito(
-                                              fontSize: 14,
+                                              fontSize: 16,
                                               color: const Color(0xFFB8B0CC),
                                             ),
                                           ),
@@ -484,7 +484,7 @@ class _CareAddressScreenState extends State<CareAddressScreen>
                                             color: _mutedPurple,
                                           ),
                                           style: GoogleFonts.nunito(
-                                            fontSize: 14,
+                                            fontSize: 16,
                                             color: _deepPurple,
                                             fontWeight: FontWeight.w600,
                                           ),
@@ -495,7 +495,7 @@ class _CareAddressScreenState extends State<CareAddressScreen>
                                                   child: Text(
                                                     s,
                                                     style: GoogleFonts.nunito(
-                                                      fontSize: 14,
+                                                      fontSize: 16,
                                                     ),
                                                   ),
                                                 ),
@@ -551,7 +551,7 @@ class _CareAddressScreenState extends State<CareAddressScreen>
                                 Text(
                                   'Determining county...',
                                   style: GoogleFonts.nunito(
-                                    fontSize: 11,
+                                    fontSize: 15,
                                     color: _mutedPurple,
                                   ),
                                 ),
@@ -570,7 +570,7 @@ class _CareAddressScreenState extends State<CareAddressScreen>
                                 Text(
                                   _derivedCounty!,
                                   style: GoogleFonts.nunito(
-                                    fontSize: 11,
+                                    fontSize: 15,
                                     color: _mutedPurple,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -672,7 +672,7 @@ class _CareAddressScreenState extends State<CareAddressScreen>
             ? TextCapitalization.none
             : TextCapitalization.words,
         style: GoogleFonts.nunito(
-          fontSize: 14,
+          fontSize: 16,
           color: _deepPurple,
           fontWeight: FontWeight.w500,
         ),
@@ -694,3 +694,4 @@ class _CareAddressScreenState extends State<CareAddressScreen>
     );
   }
 }
+

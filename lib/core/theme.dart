@@ -23,19 +23,19 @@ class AppTheme {
     ),
     titleLarge: GoogleFonts.nunito(fontSize: 22, fontWeight: FontWeight.w700),
     titleMedium: GoogleFonts.nunito(fontSize: 16, fontWeight: FontWeight.w500),
-    titleSmall: GoogleFonts.nunito(fontSize: 14, fontWeight: FontWeight.w500),
+    titleSmall: GoogleFonts.nunito(fontSize: 16, fontWeight: FontWeight.w500),
     bodyLarge: GoogleFonts.nunito(
       fontSize: 16,
       fontWeight: FontWeight.w400,
       height: 1.5,
     ),
     bodyMedium: GoogleFonts.nunito(
-      fontSize: 14,
+      fontSize: 16,
       fontWeight: FontWeight.w400,
       height: 1.4,
     ),
-    labelLarge: GoogleFonts.nunito(fontSize: 14, fontWeight: FontWeight.w600),
-    labelSmall: GoogleFonts.nunito(fontSize: 11, fontWeight: FontWeight.w600),
+    labelLarge: GoogleFonts.nunito(fontSize: 16, fontWeight: FontWeight.w600),
+    labelSmall: GoogleFonts.nunito(fontSize: 13, fontWeight: FontWeight.w600),
   );
 
   static ThemeData get lightTheme {

@@ -112,7 +112,7 @@ class _JoinTeamScreenState extends State<JoinTeamScreen> {
                       Text(
                         'Your Email',
                         style: GoogleFonts.nunito(
-                          fontSize: 13,
+                          fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xFF2E2540),
                         ),
@@ -137,7 +137,7 @@ class _JoinTeamScreenState extends State<JoinTeamScreen> {
                           decoration: InputDecoration(
                             hintText: 'name@example.com',
                             hintStyle: GoogleFonts.nunito(
-                              fontSize: 14,
+                              fontSize: 16,
                               color: const Color(0xFFB8B0CC),
                             ),
                             prefixIcon: const Icon(
@@ -157,7 +157,7 @@ class _JoinTeamScreenState extends State<JoinTeamScreen> {
                       Text(
                         'Access PIN',
                         style: GoogleFonts.nunito(
-                          fontSize: 13,
+                          fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xFF2E2540),
                         ),
@@ -183,7 +183,7 @@ class _JoinTeamScreenState extends State<JoinTeamScreen> {
                           decoration: InputDecoration(
                             hintText: 'Enter your PIN',
                             hintStyle: GoogleFonts.nunito(
-                              fontSize: 14,
+                              fontSize: 16,
                               color: const Color(0xFFB8B0CC),
                             ),
                             prefixIcon: const Icon(
@@ -235,3 +235,4 @@ class _JoinTeamScreenState extends State<JoinTeamScreen> {
     );
   }
 }
+

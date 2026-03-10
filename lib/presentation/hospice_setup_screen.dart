@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'care_address_screen.dart';
 
-// ─── Hospice Data Model ───────────────────────────────────────────────────────
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Hospice Data Model Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 class HospiceOrg {
   final String id;
   final String name;
@@ -30,10 +30,10 @@ class HospiceOrg {
 
   // Full location string shown in results
   String get locationLine => '$address, $city, $state $zipCode';
-  String get countyLine => '$county County · $coverageArea';
+  String get countyLine => '$county County Ã‚Â· $coverageArea';
 }
 
-// ─── Static hospice table (replace with Supabase query later) ─────────────────
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Static hospice table (replace with Supabase query later) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 const List<HospiceOrg> _hospiceList = [
   HospiceOrg(
     id: 'valley_main',
@@ -117,7 +117,7 @@ const List<HospiceOrg> _hospiceList = [
   ),
 ];
 
-// ─── Colors ───────────────────────────────────────────────────────────────────
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Colors Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 const _bg1 = Color(0xFF74659A);
 const _bg2 = Color(0xFFDFDBE5);
 const _purple = Color(0xFF7A64A4);
@@ -170,7 +170,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
         .toList();
   }
 
-  // Group results: parent name → list of locations
+  // Group results: parent name Ã¢â€ â€™ list of locations
   Map<String, List<HospiceOrg>> get _groupedResults {
     final map = <String, List<HospiceOrg>>{};
     for (final h in _results) {
@@ -250,7 +250,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
           email: widget.email,
           hospiceId: _selectedHospice?.id ?? '',
           hospiceName: _selectedHospice != null
-              ? '${_selectedHospice!.name} — ${_selectedHospice!.city}'
+              ? '${_selectedHospice!.name} Ã¢â‚¬â€ ${_selectedHospice!.city}'
               : '',
           nurseLineNumber: _selectedHospice?.nurseLineNumber,
         ),
@@ -357,7 +357,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                                 child: Text(
                                   'STEP 2 OF 3',
                                   style: GoogleFonts.nunito(
-                                    fontSize: 10,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w700,
                                     letterSpacing: 2,
                                     color: const Color.fromARGB(255, 0, 0, 0),
@@ -434,7 +434,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
 
                             const SizedBox(height: 32),
 
-                            // ── Single autocomplete search field ──
+                            // Ã¢â€â‚¬Ã¢â€â‚¬ Single autocomplete search field Ã¢â€â‚¬Ã¢â€â‚¬
                             AnimatedContainer(
                               duration: const Duration(milliseconds: 200),
                               decoration: BoxDecoration(
@@ -509,13 +509,13 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                               ),
                             ),
 
-                            // ── Autocomplete results ──
+                            // Ã¢â€â‚¬Ã¢â€â‚¬ Autocomplete results Ã¢â€â‚¬Ã¢â€â‚¬
                             if (_showResults) ...[
                               const SizedBox(height: 6),
                               _buildResults(),
                             ],
 
-                            // ── Selected location confirmation ──
+                            // Ã¢â€â‚¬Ã¢â€â‚¬ Selected location confirmation Ã¢â€â‚¬Ã¢â€â‚¬
                             if (_selectedHospice != null && !_showResults) ...[
                               const SizedBox(height: 14),
                               _selectedConfirmation(),
@@ -538,7 +538,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                                     child: Text(
                                       'Start typing to find your hospice provider. If they have multiple locations, you can select the closest one.',
                                       style: GoogleFonts.nunito(
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         color: const Color.fromARGB(
                                           255,
                                           36,
@@ -595,7 +595,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
     );
   }
 
-  // ── Grouped autocomplete results (GPS-style) ──────────────────────────────
+  // Ã¢â€â‚¬Ã¢â€â‚¬ Grouped autocomplete results (GPS-style) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
   Widget _buildResults() {
     final grouped = _groupedResults;
     if (grouped.isEmpty) {
@@ -614,7 +614,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
               child: Text(
                 'No hospice found. Try a different name, city, or zip.',
                 style: GoogleFonts.nunito(
-                  fontSize: 13,
+                  fontSize: 15,
                   color: const Color.fromARGB(255, 0, 0, 0),
                 ),
               ),
@@ -662,7 +662,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                       Text(
                         orgName,
                         style: GoogleFonts.nunito(
-                          fontSize: 11,
+                          fontSize: 15,
                           fontWeight: FontWeight.w800,
                           color: _mutedPurple,
                           letterSpacing: 0.4,
@@ -681,7 +681,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                         child: Text(
                           '${locations.length} locations',
                           style: GoogleFonts.nunito(
-                            fontSize: 10,
+                            fontSize: 16,
                             fontWeight: FontWeight.w700,
                             color: _purple,
                           ),
@@ -739,7 +739,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                   Text(
                     isIndented ? '${h.city}, ${h.state}' : h.name,
                     style: GoogleFonts.nunito(
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: FontWeight.w700,
                       color: _deepPurple,
                     ),
@@ -747,7 +747,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                   Text(
                     h.address,
                     style: GoogleFonts.nunito(
-                      fontSize: 12,
+                      fontSize: 16,
                       color: _mutedPurple,
                     ),
                   ),
@@ -755,7 +755,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                   Text(
                     h.countyLine,
                     style: GoogleFonts.nunito(
-                      fontSize: 11,
+                      fontSize: 15,
                       color: const Color(0xFFB0A8C8),
                     ),
                   ),
@@ -772,7 +772,7 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
     );
   }
 
-  // ── Selected confirmation chip ────────────────────────────────────────────
+  // Ã¢â€â‚¬Ã¢â€â‚¬ Selected confirmation chip Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
   Widget _selectedConfirmation() {
     final h = _selectedHospice!;
     return Container(
@@ -808,12 +808,12 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
                 ),
                 Text(
                   '${h.address}, ${h.city}, ${h.state}',
-                  style: GoogleFonts.nunito(fontSize: 14, color: Colors.black),
+                  style: GoogleFonts.nunito(fontSize: 16, color: Colors.black),
                 ),
                 Text(
                   h.countyLine,
                   style: GoogleFonts.nunito(
-                    fontSize: 14,
+                    fontSize: 16,
                     color: Colors.black87,
                   ),
                 ),
@@ -829,3 +829,4 @@ class _HospiceSetupScreenState extends State<HospiceSetupScreen>
     );
   }
 }
+

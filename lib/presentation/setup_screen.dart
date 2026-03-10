@@ -144,7 +144,7 @@ class _SetupInfoScreenState extends State<SetupInfoScreen>
                           child: Text(
                             'STEP 1 OF 3',
                             style: GoogleFonts.nunito(
-                              fontSize: 10,
+                              fontSize: 16,
                               fontWeight: FontWeight.w700,
                               letterSpacing: 2,
                               color: const Color.fromARGB(255, 0, 0, 0),
@@ -425,3 +425,4 @@ class _CapitalizeWordsFormatter extends TextInputFormatter {
     return newValue.copyWith(text: newText, selection: newValue.selection);
   }
 }
+

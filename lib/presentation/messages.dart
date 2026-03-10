@@ -82,7 +82,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
   final _messageCtrl = TextEditingController();
   final _scrollCtrl = ScrollController();
 
-  // Demo messages — replace with Supabase later
+  // Demo messages Ã¢â‚¬â€ replace with Supabase later
   final List<_Message> _messages = [
     _Message(
       id: '1',
@@ -184,7 +184,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // ── Header ──
+              // Ã¢â€â‚¬Ã¢â€â‚¬ Header Ã¢â€â‚¬Ã¢â€â‚¬
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
                 child: Row(
@@ -230,7 +230,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           Text(
                             'Care team communication',
                             style: GoogleFonts.nunito(
-                              fontSize: 11,
+                              fontSize: 15,
                               color: Colors.white.withOpacity(0.75),
                             ),
                           ),
@@ -243,7 +243,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
 
               const SizedBox(height: 10),
 
-              // ── Filter tabs ──
+              // Ã¢â€â‚¬Ã¢â€â‚¬ Filter tabs Ã¢â€â‚¬Ã¢â€â‚¬
               SizedBox(
                 height: 36,
                 child: ListView(
@@ -264,7 +264,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 child: Divider(color: _borderColor, thickness: 1),
               ),
 
-              // ── Messages list ──
+              // Ã¢â€â‚¬Ã¢â€â‚¬ Messages list Ã¢â€â‚¬Ã¢â€â‚¬
               Expanded(
                 child: filtered.isEmpty
                     ? _emptyState()
@@ -287,7 +287,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       ),
               ),
 
-              // ── Compose area ──
+              // Ã¢â€â‚¬Ã¢â€â‚¬ Compose area Ã¢â€â‚¬Ã¢â€â‚¬
               _composeArea(),
 
               const PremiumBottomNav(currentIndex: 0),
@@ -322,7 +322,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
         child: Text(
           label,
           style: GoogleFonts.nunito(
-            fontSize: 12,
+            fontSize: 16,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
             color: isSelected ? color : _mutedPurple,
           ),
@@ -347,7 +347,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
               label,
-              style: GoogleFonts.nunito(fontSize: 11, color: _lightPurple),
+              style: GoogleFonts.nunito(fontSize: 15, color: _lightPurple),
             ),
           ),
           Expanded(child: Divider(color: _borderColor, thickness: 1)),
@@ -379,7 +379,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 child: Text(
                   msg.senderName[0].toUpperCase(),
                   style: GoogleFonts.nunito(
-                    fontSize: 12,
+                    fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: audienceColor,
                   ),
@@ -400,7 +400,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     child: Text(
                       msg.senderName,
                       style: GoogleFonts.nunito(
-                        fontSize: 11,
+                        fontSize: 15,
                         fontWeight: FontWeight.w600,
                         color: _mutedPurple,
                       ),
@@ -426,7 +426,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   child: Text(
                     msg.content,
                     style: GoogleFonts.nunito(
-                      fontSize: 13,
+                      fontSize: 15,
                       color: msg.isMe ? Colors.white : _deepPurple,
                       height: 1.4,
                     ),
@@ -448,7 +448,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     Text(
                       msg.audience.label,
                       style: GoogleFonts.nunito(
-                        fontSize: 9,
+                        fontSize: 13,
                         color: _lightPurple,
                       ),
                     ),
@@ -456,7 +456,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     Text(
                       DateFormat('h:mm a').format(msg.sentAt),
                       style: GoogleFonts.nunito(
-                        fontSize: 9,
+                        fontSize: 13,
                         color: _lightPurple,
                       ),
                     ),
@@ -487,7 +487,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
               Text(
                 'Send to:',
                 style: GoogleFonts.nunito(
-                  fontSize: 11,
+                  fontSize: 15,
                   color: _mutedPurple,
                   fontWeight: FontWeight.w500,
                 ),
@@ -530,7 +530,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                               ? 'Medical'
                               : 'Everyone',
                           style: GoogleFonts.nunito(
-                            fontSize: 10,
+                            fontSize: 16,
                             fontWeight: isSelected
                                 ? FontWeight.w700
                                 : FontWeight.w400,
@@ -559,11 +559,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   child: TextField(
                     controller: _messageCtrl,
                     maxLines: null,
-                    style: GoogleFonts.nunito(fontSize: 13, color: _deepPurple),
+                    style: GoogleFonts.nunito(fontSize: 15, color: _deepPurple),
                     decoration: InputDecoration(
                       hintText: 'Write a message...',
                       hintStyle: GoogleFonts.nunito(
-                        fontSize: 13,
+                        fontSize: 15,
                         color: const Color(0xFFB8B0CC),
                       ),
                       border: InputBorder.none,
@@ -637,7 +637,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
           const SizedBox(height: 6),
           Text(
             'Send the first message below',
-            style: GoogleFonts.nunito(fontSize: 13, color: _mutedPurple),
+            style: GoogleFonts.nunito(fontSize: 15, color: _mutedPurple),
           ),
         ],
       ),
@@ -647,3 +647,4 @@ class _MessagesScreenState extends State<MessagesScreen> {
   bool _isSameDay(DateTime a, DateTime b) =>
       a.year == b.year && a.month == b.month && a.day == b.day;
 }
+

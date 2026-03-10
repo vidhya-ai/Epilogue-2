@@ -35,7 +35,7 @@ class _WhatWeProvideScreenState extends State<WhatWeProvideScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // ✅ FIXED BACK BUTTON
+                        // Ã¢Å“â€¦ FIXED BACK BUTTON
                         GestureDetector(
                           onTap: () => context.pop(),
                           child: const Icon(
@@ -383,7 +383,7 @@ class _FeatureCard extends StatelessWidget {
                 Text(
                   description,
                   style: GoogleFonts.nunito(
-                    fontSize: 13,
+                    fontSize: 15,
                     color: const Color(0xFF8A7FA8),
                     fontStyle: FontStyle.italic,
                     height: 1.75,
@@ -421,7 +421,7 @@ class _ValueCard extends StatelessWidget {
         Text(
           label.toUpperCase(),
           style: GoogleFonts.nunito(
-            fontSize: 10,
+            fontSize: 16,
             fontWeight: FontWeight.w600,
             letterSpacing: 0.14,
             color: Colors.white.withOpacity(0.65),
@@ -431,3 +431,4 @@ class _ValueCard extends StatelessWidget {
     );
   }
 }
+

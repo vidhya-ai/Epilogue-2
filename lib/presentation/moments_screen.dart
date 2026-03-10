@@ -9,7 +9,7 @@ import 'dart:io';
 import '../core/session_manager.dart';
 import 'premium_bottom_nav.dart';
 
-// ─── Colors ───────────────────────────────────────────────────────────────────
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Colors Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 const _deepPurple = Color(0xFF2E2540);
 const _purple = Color(0xFF7A64A4);
 const _mutedPurple = Color(0xFF6C648B);
@@ -20,7 +20,7 @@ const _bg2 = Color(0xFFDFDBE5);
 const _warmAmber = Color(0xFFE8A87C);
 const _softRose = Color(0xFFD4849A);
 
-// ─── Moment categories ────────────────────────────────────────────────────────
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Moment categories Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 class _MomentCategory {
   final String id;
   final String label;
@@ -38,42 +38,42 @@ const _categories = [
   _MomentCategory(
     id: 'memory',
     label: 'Memory',
-    emoji: '✨',
+    emoji: 'Ã¢Å“Â¨',
     color: Color(0xFF9B7EBD),
   ),
   _MomentCategory(
     id: 'gratitude',
     label: 'Gratitude',
-    emoji: '🙏',
+    emoji: 'Ã°Å¸â„¢Â',
     color: Color(0xFFE8A87C),
   ),
   _MomentCategory(
     id: 'photo',
     label: 'Photo',
-    emoji: '📷',
+    emoji: 'Ã°Å¸â€œÂ·',
     color: Color(0xFF7ABFB8),
   ),
   _MomentCategory(
     id: 'message',
     label: 'Message',
-    emoji: '💌',
+    emoji: 'Ã°Å¸â€™Å’',
     color: Color(0xFFD4849A),
   ),
   _MomentCategory(
     id: 'milestone',
     label: 'Milestone',
-    emoji: '🌟',
+    emoji: 'Ã°Å¸Å’Å¸',
     color: Color(0xFFB5C99A),
   ),
   _MomentCategory(
     id: 'prayer',
     label: 'Prayer',
-    emoji: '🕊️',
+    emoji: 'Ã°Å¸â€¢Å Ã¯Â¸Â',
     color: Color(0xFF8BB8E8),
   ),
 ];
 
-// ─── Demo moment model ────────────────────────────────────────────────────────
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Demo moment model Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 class _DemoMoment {
   final String id;
   final String category;
@@ -129,14 +129,14 @@ class _MomentsScreenState extends State<MomentsScreen>
   }
 
   void _loadDemoMoments() {
-    // Demo moments — replace with Supabase later
+    // Demo moments Ã¢â‚¬â€ replace with Supabase later
     setState(() {
       _moments = [
         _DemoMoment(
           id: '1',
           category: 'memory',
           content:
-              'Dad told me about the first time he drove a car — a red Ford in 1967. He laughed the whole time he told it. I never want to forget that laugh.',
+              'Dad told me about the first time he drove a car Ã¢â‚¬â€ a red Ford in 1967. He laughed the whole time he told it. I never want to forget that laugh.',
           authorName: 'Sarah',
           createdAt: DateTime.now().subtract(const Duration(days: 2)),
         ),
@@ -152,7 +152,7 @@ class _MomentsScreenState extends State<MomentsScreen>
           id: '3',
           category: 'message',
           content:
-              'Dad — I want you to know that every sacrifice you made for us was seen and felt. You are so loved. Rest easy.',
+              'Dad Ã¢â‚¬â€ I want you to know that every sacrifice you made for us was seen and felt. You are so loved. Rest easy.',
           authorName: 'James',
           createdAt: DateTime.now().subtract(const Duration(hours: 14)),
         ),
@@ -206,7 +206,7 @@ class _MomentsScreenState extends State<MomentsScreen>
         SnackBar(
           content: Text(
             'Only family members can add Moments.',
-            style: GoogleFonts.nunito(fontSize: 13),
+            style: GoogleFonts.nunito(fontSize: 15),
           ),
           backgroundColor: _deepPurple,
           behavior: SnackBarBehavior.floating,
@@ -272,7 +272,7 @@ class _MomentsScreenState extends State<MomentsScreen>
                     Text(
                       'Capture something worth keeping.',
                       style: GoogleFonts.nunito(
-                        fontSize: 13,
+                        fontSize: 15,
                         color: _mutedPurple,
                       ),
                     ),
@@ -292,11 +292,11 @@ class _MomentsScreenState extends State<MomentsScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // ── Category picker ──
+                      // Ã¢â€â‚¬Ã¢â€â‚¬ Category picker Ã¢â€â‚¬Ã¢â€â‚¬
                       Text(
                         'What kind of moment is this?',
                         style: GoogleFonts.nunito(
-                          fontSize: 13,
+                          fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: _mutedPurple,
                         ),
@@ -337,7 +337,7 @@ class _MomentsScreenState extends State<MomentsScreen>
                                   Text(
                                     cat.label,
                                     style: GoogleFonts.nunito(
-                                      fontSize: 13,
+                                      fontSize: 15,
                                       fontWeight: isSelected
                                           ? FontWeight.w700
                                           : FontWeight.w400,
@@ -355,11 +355,11 @@ class _MomentsScreenState extends State<MomentsScreen>
 
                       const SizedBox(height: 22),
 
-                      // ── Media picker ──
+                      // Ã¢â€â‚¬Ã¢â€â‚¬ Media picker Ã¢â€â‚¬Ã¢â€â‚¬
                       Text(
                         'Add a photo or video (optional)',
                         style: GoogleFonts.nunito(
-                          fontSize: 13,
+                          fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: _mutedPurple,
                         ),
@@ -389,7 +389,7 @@ class _MomentsScreenState extends State<MomentsScreen>
                                           Text(
                                             'Video selected',
                                             style: GoogleFonts.nunito(
-                                              fontSize: 13,
+                                              fontSize: 15,
                                               color: _mutedPurple,
                                             ),
                                           ),
@@ -495,20 +495,20 @@ class _MomentsScreenState extends State<MomentsScreen>
 
                       const SizedBox(height: 20),
 
-                      // ── Text content ──
+                      // Ã¢â€â‚¬Ã¢â€â‚¬ Text content Ã¢â€â‚¬Ã¢â€â‚¬
                       Text(
                         'Write something (optional)',
                         style: GoogleFonts.nunito(
-                          fontSize: 13,
+                          fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: _mutedPurple,
                         ),
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        'A memory, a message, a prayer — whatever feels right.',
+                        'A memory, a message, a prayer Ã¢â‚¬â€ whatever feels right.',
                         style: GoogleFonts.nunito(
-                          fontSize: 11,
+                          fontSize: 15,
                           color: _lightPurple,
                         ),
                       ),
@@ -523,14 +523,14 @@ class _MomentsScreenState extends State<MomentsScreen>
                           controller: contentCtrl,
                           maxLines: 6,
                           style: GoogleFonts.nunito(
-                            fontSize: 14,
+                            fontSize: 16,
                             color: _deepPurple,
                             height: 1.6,
                           ),
                           decoration: InputDecoration(
                             hintText: 'In their own words, or yours...',
                             hintStyle: GoogleFonts.nunito(
-                              fontSize: 14,
+                              fontSize: 16,
                               color: const Color(0xFFB8B0CC),
                             ),
                             border: InputBorder.none,
@@ -541,7 +541,7 @@ class _MomentsScreenState extends State<MomentsScreen>
 
                       const SizedBox(height: 28),
 
-                      // ── Save button ──
+                      // Ã¢â€â‚¬Ã¢â€â‚¬ Save button Ã¢â€â‚¬Ã¢â€â‚¬
                       SizedBox(
                         width: double.infinity,
                         height: 56,
@@ -618,7 +618,7 @@ class _MomentsScreenState extends State<MomentsScreen>
               label,
               textAlign: TextAlign.center,
               style: GoogleFonts.nunito(
-                fontSize: 11,
+                fontSize: 15,
                 color: _mutedPurple,
                 fontWeight: FontWeight.w500,
               ),
@@ -648,7 +648,7 @@ class _MomentsScreenState extends State<MomentsScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ── Header ──
+              // Ã¢â€â‚¬Ã¢â€â‚¬ Header Ã¢â€â‚¬Ã¢â€â‚¬
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
                 child: Row(
@@ -724,7 +724,7 @@ class _MomentsScreenState extends State<MomentsScreen>
                           Text(
                             'Family',
                             style: GoogleFonts.nunito(
-                              fontSize: 11,
+                              fontSize: 15,
                               fontWeight: FontWeight.w600,
                               color: _warmAmber,
                             ),
@@ -738,14 +738,14 @@ class _MomentsScreenState extends State<MomentsScreen>
 
               const SizedBox(height: 12),
 
-              // ── Category filter ──
+              // Ã¢â€â‚¬Ã¢â€â‚¬ Category filter Ã¢â€â‚¬Ã¢â€â‚¬
               SizedBox(
                 height: 38,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   children: [
-                    _catFilter(null, '✦', 'All'),
+                    _catFilter(null, 'Ã¢Å“Â¦', 'All'),
                     ..._categories.map(
                       (c) => _catFilter(c.id, c.emoji, c.label),
                     ),
@@ -759,7 +759,7 @@ class _MomentsScreenState extends State<MomentsScreen>
                 child: Divider(color: _borderColor, thickness: 1),
               ),
 
-              // ── Moments feed ──
+              // Ã¢â€â‚¬Ã¢â€â‚¬ Moments feed Ã¢â€â‚¬Ã¢â€â‚¬
               Expanded(
                 child: _isLoading
                     ? const Center(
@@ -778,7 +778,7 @@ class _MomentsScreenState extends State<MomentsScreen>
                       ),
               ),
 
-              // ── Bottom Nav ──
+              // Ã¢â€â‚¬Ã¢â€â‚¬ Bottom Nav Ã¢â€â‚¬Ã¢â€â‚¬
               const PremiumBottomNav(currentIndex: 0),
               const SizedBox(height: 10),
             ],
@@ -786,7 +786,7 @@ class _MomentsScreenState extends State<MomentsScreen>
         ),
       ),
 
-      // ── FAB ──
+      // Ã¢â€â‚¬Ã¢â€â‚¬ FAB Ã¢â€â‚¬Ã¢â€â‚¬
       floatingActionButton: _isFamilyMember
           ? Padding(
               padding: const EdgeInsets.only(bottom: 80),
@@ -817,7 +817,7 @@ class _MomentsScreenState extends State<MomentsScreen>
                         'Add Moment',
                         style: GoogleFonts.nunito(
                           color: Colors.white,
-                          fontSize: 14,
+                          fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -830,7 +830,7 @@ class _MomentsScreenState extends State<MomentsScreen>
     );
   }
 
-  // ─── Category filter chip ──────────────────────────────────────────────────
+  // Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Category filter chip Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
   Widget _catFilter(String? id, String emoji, String label) {
     final isSelected = _selectedCategoryFilter == id;
     final cat = id != null ? _categories.firstWhere((c) => c.id == id) : null;
@@ -855,12 +855,12 @@ class _MomentsScreenState extends State<MomentsScreen>
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(emoji, style: const TextStyle(fontSize: 13)),
+            Text(emoji, style: const TextStyle(fontSize: 15)),
             const SizedBox(width: 5),
             Text(
               label,
               style: GoogleFonts.nunito(
-                fontSize: 12,
+                fontSize: 16,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
                 color: isSelected ? color : _mutedPurple,
               ),
@@ -871,7 +871,7 @@ class _MomentsScreenState extends State<MomentsScreen>
     );
   }
 
-  // ─── Moment card ──────────────────────────────────────────────────────────
+  // Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Moment card Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
   Widget _momentCard(_DemoMoment moment, {double animDelay = 0}) {
     final cat = _categories.firstWhere(
       (c) => c.id == moment.category,
@@ -950,12 +950,12 @@ class _MomentsScreenState extends State<MomentsScreen>
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(cat.emoji, style: const TextStyle(fontSize: 12)),
+                          Text(cat.emoji, style: const TextStyle(fontSize: 16)),
                           const SizedBox(width: 4),
                           Text(
                             cat.label,
                             style: GoogleFonts.nunito(
-                              fontSize: 11,
+                              fontSize: 15,
                               fontWeight: FontWeight.w600,
                               color: cat.color,
                             ),
@@ -967,7 +967,7 @@ class _MomentsScreenState extends State<MomentsScreen>
                     Text(
                       timeStr,
                       style: GoogleFonts.nunito(
-                        fontSize: 10,
+                        fontSize: 16,
                         color: _lightPurple,
                       ),
                     ),
@@ -980,7 +980,7 @@ class _MomentsScreenState extends State<MomentsScreen>
                   Text(
                     moment.content,
                     style: GoogleFonts.nunito(
-                      fontSize: 14,
+                      fontSize: 16,
                       color: _deepPurple,
                       height: 1.65,
                     ),
@@ -1003,7 +1003,7 @@ class _MomentsScreenState extends State<MomentsScreen>
                         child: Text(
                           initials,
                           style: GoogleFonts.nunito(
-                            fontSize: 10,
+                            fontSize: 16,
                             fontWeight: FontWeight.w700,
                             color: cat.color,
                           ),
@@ -1014,7 +1014,7 @@ class _MomentsScreenState extends State<MomentsScreen>
                     Text(
                       moment.authorName,
                       style: GoogleFonts.nunito(
-                        fontSize: 12,
+                        fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: _mutedPurple,
                       ),
@@ -1034,7 +1034,7 @@ class _MomentsScreenState extends State<MomentsScreen>
                           Text(
                             'Love',
                             style: GoogleFonts.nunito(
-                              fontSize: 11,
+                              fontSize: 15,
                               color: _softRose,
                             ),
                           ),
@@ -1073,7 +1073,7 @@ class _MomentsScreenState extends State<MomentsScreen>
               borderRadius: BorderRadius.circular(24),
             ),
             child: const Center(
-              child: Text('✨', style: TextStyle(fontSize: 36)),
+              child: Text('Ã¢Å“Â¨', style: TextStyle(fontSize: 36)),
             ),
           ),
           const SizedBox(height: 18),
@@ -1090,7 +1090,7 @@ class _MomentsScreenState extends State<MomentsScreen>
             'Capture memories, messages\nand moments worth keeping.',
             textAlign: TextAlign.center,
             style: GoogleFonts.nunito(
-              fontSize: 13,
+              fontSize: 15,
               color: _mutedPurple,
               height: 1.5,
             ),
@@ -1100,3 +1100,4 @@ class _MomentsScreenState extends State<MomentsScreen>
     );
   }
 }
+

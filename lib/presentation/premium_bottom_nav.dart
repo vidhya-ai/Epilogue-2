@@ -90,7 +90,7 @@ class PremiumBottomNav extends StatelessWidget {
           Text(
             item.label,
             style: GoogleFonts.nunito(
-              fontSize: 9,
+              fontSize: 13,
               fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
               color: isActive
                   ? const Color(0xFF6B5B8E)
@@ -113,3 +113,4 @@ class _NavItem {
     required this.route,
   });
 }
+

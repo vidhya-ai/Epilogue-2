@@ -15,15 +15,14 @@ const _cardBg = Color(0xFFF0EDF6);
 const _bg1 = Color(0xFF74659A);
 const _bg2 = Color(0xFFDFDBE5);
 
-class DeprescribedHistoryScreen extends StatefulWidget {
-  const DeprescribedHistoryScreen({super.key});
+class HistoryScreen extends StatefulWidget {
+  const HistoryScreen({super.key});
 
   @override
-  State<DeprescribedHistoryScreen> createState() =>
-      _DeprescribedHistoryScreenState();
+  State<HistoryScreen> createState() => _HistoryScreenState();
 }
 
-class _DeprescribedHistoryScreenState extends State<DeprescribedHistoryScreen> {
+class _HistoryScreenState extends State<HistoryScreen> {
   final _service = SupabaseService();
   List<Medication> _deprescribedMeds = [];
   bool _isLoading = true;
@@ -130,7 +129,7 @@ class _DeprescribedHistoryScreenState extends State<DeprescribedHistoryScreen> {
                           Text(
                             "${SessionManager().currentCareTeam?.patientFirstName ?? 'Your'}'s Medications",
                             style: GoogleFonts.nunito(
-                              fontSize: 14,
+                              fontSize: 16,
                               color: Colors.white.withOpacity(0.75),
                               fontWeight: FontWeight.w500,
                             ),
@@ -177,7 +176,7 @@ class _DeprescribedHistoryScreenState extends State<DeprescribedHistoryScreen> {
                                   Text(
                                     dateLabel,
                                     style: GoogleFonts.nunito(
-                                      fontSize: 13,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white.withOpacity(0.8),
                                     ),
@@ -250,7 +249,7 @@ class _DeprescribedHistoryScreenState extends State<DeprescribedHistoryScreen> {
                         Text(
                           med.strength!,
                           style: GoogleFonts.nunito(
-                            fontSize: 12,
+                            fontSize: 16,
                             color: _mutedPurple,
                           ),
                         ),
@@ -269,7 +268,7 @@ class _DeprescribedHistoryScreenState extends State<DeprescribedHistoryScreen> {
                   child: Text(
                     'Deprescribed',
                     style: GoogleFonts.nunito(
-                      fontSize: 11,
+                      fontSize: 15,
                       color: _lightPurple,
                       fontWeight: FontWeight.w600,
                     ),
@@ -300,7 +299,7 @@ class _DeprescribedHistoryScreenState extends State<DeprescribedHistoryScreen> {
               Text(
                 med.scheduleDetails!,
                 style: GoogleFonts.nunito(
-                  fontSize: 12,
+                  fontSize: 16,
                   color: _mutedPurple,
                   fontStyle: FontStyle.italic,
                 ),
@@ -319,7 +318,7 @@ class _DeprescribedHistoryScreenState extends State<DeprescribedHistoryScreen> {
                   Text(
                     'Added $addedDate',
                     style: GoogleFonts.nunito(
-                      fontSize: 11,
+                      fontSize: 15,
                       color: _lightPurple,
                     ),
                   ),
@@ -336,7 +335,7 @@ class _DeprescribedHistoryScreenState extends State<DeprescribedHistoryScreen> {
                   Text(
                     'Deprescribed $deprescribedDate',
                     style: GoogleFonts.nunito(
-                      fontSize: 11,
+                      fontSize: 15,
                       color: _lightPurple,
                     ),
                   ),
@@ -365,7 +364,7 @@ class _DeprescribedHistoryScreenState extends State<DeprescribedHistoryScreen> {
           Text(
             label,
             style: GoogleFonts.nunito(
-              fontSize: 11,
+              fontSize: 15,
               color: _mutedPurple,
               fontWeight: FontWeight.w500,
             ),
@@ -405,10 +404,11 @@ class _DeprescribedHistoryScreenState extends State<DeprescribedHistoryScreen> {
           const SizedBox(height: 6),
           Text(
             'Deprescribed medications will appear here',
-            style: GoogleFonts.nunito(fontSize: 13, color: _mutedPurple),
+            style: GoogleFonts.nunito(fontSize: 15, color: _mutedPurple),
           ),
         ],
       ),
     );
   }
 }
+

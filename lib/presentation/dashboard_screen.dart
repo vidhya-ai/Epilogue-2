@@ -127,7 +127,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         ),
         child: Column(
           children: [
-            // ── Top Bar (dark band from top of screen) ──
+            // â”€â”€ Top Bar (dark band from top of screen) â”€â”€
             Container(
               width: double.infinity,
               color: const Color(0xFF74659A),
@@ -145,7 +145,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
             ),
 
-            // ── Rest of the page ──
+            // â”€â”€ Rest of the page â”€â”€
             Expanded(
               child: SafeArea(
                 top: false,
@@ -158,7 +158,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                         children: [
                           const SizedBox(height: 18),
 
-                          // ── Welcome ──
+                          // â”€â”€ Welcome â”€â”€
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Column(
@@ -187,7 +187,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
                           const SizedBox(height: 18),
 
-                          // ── Grid ──
+                          // â”€â”€ Grid â”€â”€
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
@@ -199,7 +199,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
                           const SizedBox(height: 12),
 
-                          // ── Emergency ──
+                          // â”€â”€ Emergency â”€â”€
                           if (careTeam.nurseLineNumber != null &&
                               careTeam.nurseLineNumber!.isNotEmpty)
                             Padding(
@@ -211,7 +211,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
                           const SizedBox(height: 10),
 
-                          // ── Bottom Nav ──
+                          // â”€â”€ Bottom Nav â”€â”€
                           _BottomNav(currentIndex: 0),
 
                           const SizedBox(height: 10),
@@ -225,7 +225,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  // ─── Top Bar ───────────────────────────────────────────────────────────────
+  // â”€â”€â”€ Top Bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   Widget _topBar(String today, CareTeam careTeam, BuildContext context) {
     return Row(
       children: [
@@ -269,7 +269,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               Text(
                 today,
                 style: GoogleFonts.nunito(
-                  fontSize: 13,
+                  fontSize: 15,
                   color: Colors.white.withOpacity(0.85),
                   fontWeight: FontWeight.w700,
                 ),
@@ -300,7 +300,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  // ─── Grid ──────────────────────────────────────────────────────────────────
+  // â”€â”€â”€ Grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   Widget _grid() {
     final cards = [
       _CardData(
@@ -374,7 +374,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       child: SizedBox(
         width: size,
         height: size,
-        // ✅ clipBehavior.none allows badge to overflow outside card boundary
+        // âœ… clipBehavior.none allows badge to overflow outside card boundary
         child: Stack(
           clipBehavior: Clip.none,
           children: [
@@ -414,7 +414,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                         c.title,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.nunito(
-                          fontSize: size * 0.09,
+                          fontSize: size * 0.13,
                           fontWeight: FontWeight.w600,
                           color: const Color.fromARGB(255, 9, 9, 9),
                         ),
@@ -424,8 +424,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                         c.subtitle,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.nunito(
-                          fontSize: size * 0.1,
-                          color: _mutedPurple,
+                          fontSize: size * 0.09,
+                          color: const Color.fromARGB(255, 34, 34, 35),
                         ),
                       ),
                     ],
@@ -434,13 +434,13 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
             ),
 
-            // ✅ Badge — always visible, top-right corner
+            // âœ… Badge â€” always visible, top-right corner
             Positioned(
               top: -8,
               right: -8,
               child: Container(
-                width: 30,
-                height: 30,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
                   color: Colors.black,
                   shape: BoxShape.circle,
@@ -458,7 +458,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     c.badge.toString(),
                     style: GoogleFonts.nunito(
                       color: Colors.white,
-                      fontSize: 13,
+                      fontSize: 18,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
@@ -471,7 +471,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  // ─── Emergency ─────────────────────────────────────────────────────────────
+  // â”€â”€â”€ Emergency â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   Widget _emergencyCard(CareTeam careTeam) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -509,7 +509,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 Text(
                   'Emergency Help',
                   style: GoogleFonts.nunito(
-                    fontSize: 13,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: Colors.redAccent,
                   ),
@@ -517,7 +517,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 Text(
                   'Nurse on call 24/7',
                   style: GoogleFonts.nunito(
-                    fontSize: 11,
+                    fontSize: 15,
                     color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.6),
                   ),
                 ),
@@ -574,7 +574,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 'CALL NOW',
                 style: GoogleFonts.nunito(
                   color: Colors.white,
-                  fontSize: 11,
+                  fontSize: 15,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.5,
                 ),
@@ -587,7 +587,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 }
 
-// ─── Card Data ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Card Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 class _CardData {
   final String title, subtitle, route;
   final IconData icon;
@@ -601,7 +601,7 @@ class _CardData {
   });
 }
 
-// ─── Bottom Nav ───────────────────────────────────────────────────────────────
+// â”€â”€â”€ Bottom Nav â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 class _BottomNav extends StatelessWidget {
   final int currentIndex;
   const _BottomNav({required this.currentIndex});
@@ -686,7 +686,7 @@ class _BottomNav extends StatelessWidget {
           Text(
             item.label,
             style: GoogleFonts.nunito(
-              fontSize: 9,
+              fontSize: 13,
               fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
               color: isActive
                   ? const Color(0xFF6B5B8E)
@@ -710,7 +710,7 @@ class _NavItem {
   });
 }
 
-// ─── Drawer ───────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Drawer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 class _AppDrawer extends StatelessWidget {
   final String patientName;
   const _AppDrawer({required this.patientName});
@@ -739,7 +739,7 @@ class _AppDrawer extends StatelessWidget {
                   Text(
                     "$patientName's Care Space",
                     style: GoogleFonts.nunito(
-                      fontSize: 13,
+                      fontSize: 15,
                       color: _mutedPurple,
                     ),
                   ),
@@ -803,7 +803,7 @@ class _AppDrawer extends StatelessWidget {
       title: Text(
         label,
         style: GoogleFonts.nunito(
-          fontSize: 14,
+          fontSize: 16,
           fontWeight: FontWeight.w500,
           color: color ?? const Color(0xFF443C63),
         ),
@@ -813,3 +813,4 @@ class _AppDrawer extends StatelessWidget {
     );
   }
 }
+

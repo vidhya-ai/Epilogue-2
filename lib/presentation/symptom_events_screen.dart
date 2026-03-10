@@ -56,7 +56,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
   }
 
   void _showLogSymptomModal() {
-    // Maps symptom ID → selected option value (for dropdown symptoms).
+    // Maps symptom ID Ã¢â€ â€™ selected option value (for dropdown symptoms).
     final selectedValues = <String, String>{};
     // Set of selected symptom IDs.
     final selectedIds = <String>{};
@@ -146,7 +146,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // ── Symptoms ──
+                        // Ã¢â€â‚¬Ã¢â€â‚¬ Symptoms Ã¢â€â‚¬Ã¢â€â‚¬
                         Text(
                           'Symptoms',
                           style: GoogleFonts.nunito(
@@ -157,7 +157,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Select all that apply — severity/level appears after selection',
+                          'Select all that apply Ã¢â‚¬â€ severity/level appears after selection',
                           style: GoogleFonts.nunito(
                             fontSize: 15,
                             color: _lightPurple,
@@ -165,7 +165,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                         ),
                         const SizedBox(height: 10),
 
-                        // ── Symptom chips (alphabetical) ──
+                        // Ã¢â€â‚¬Ã¢â€â‚¬ Symptom chips (alphabetical) Ã¢â€â‚¬Ã¢â€â‚¬
                         Wrap(
                           spacing: 8,
                           runSpacing: 8,
@@ -318,7 +318,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                           ),
                         ],
 
-                        // ── Per-symptom severity / detail (dependent fields) ──
+                        // Ã¢â€â‚¬Ã¢â€â‚¬ Per-symptom severity / detail (dependent fields) Ã¢â€â‚¬Ã¢â€â‚¬
                         if (withOptions.isNotEmpty) ...[
                           const SizedBox(height: 20),
                           Text(
@@ -342,7 +342,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                             final current =
                                 selectedValues[def.id] ?? def.options.first;
                             final label = def.description != null
-                                ? '${def.name}  ·  ${def.description}'
+                                ? '${def.name}  Ã‚Â·  ${def.description}'
                                 : def.name;
                             // Ensure a note controller exists
                             symptomNotes[def.id] ??= TextEditingController();
@@ -459,7 +459,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                                           hintText:
                                               'Notes for ${def.name} (optional)',
                                           hintStyle: GoogleFonts.nunito(
-                                            fontSize: 14,
+                                            fontSize: 16,
                                             color: const Color(0xFFB8B0CC),
                                           ),
                                           border: InputBorder.none,
@@ -483,7 +483,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
 
                         const SizedBox(height: 20),
 
-                        // ── Nurse Alert Banner ──
+                        // Ã¢â€â‚¬Ã¢â€â‚¬ Nurse Alert Banner Ã¢â€â‚¬Ã¢â€â‚¬
                         if (showNurseAlert)
                           Container(
                             padding: const EdgeInsets.all(14),
@@ -516,7 +516,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
 
                         if (showNurseAlert) const SizedBox(height: 12),
 
-                        // ── Already contacted nurse ──
+                        // Ã¢â€â‚¬Ã¢â€â‚¬ Already contacted nurse Ã¢â€â‚¬Ã¢â€â‚¬
                         GestureDetector(
                           onTap: () =>
                               setModal(() => nurseContacted = !nurseContacted),
@@ -580,7 +580,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
 
                         const SizedBox(height: 16),
 
-                        // ── Additional notes ──
+                        // Ã¢â€â‚¬Ã¢â€â‚¬ Additional notes Ã¢â€â‚¬Ã¢â€â‚¬
                         Text(
                           'Additional notes (optional)',
                           style: GoogleFonts.nunito(
@@ -617,7 +617,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
 
                         const SizedBox(height: 24),
 
-                        // ── Submit ──
+                        // Ã¢â€â‚¬Ã¢â€â‚¬ Submit Ã¢â€â‚¬Ã¢â€â‚¬
                         SizedBox(
                           width: double.infinity,
                           height: 60,
@@ -678,7 +678,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                                     // Alert symptoms always Severe
                                     if (hasAlert) severity = 'Severe';
 
-                                    // ── Confirmation dialog with patient name ──
+                                    // Ã¢â€â‚¬Ã¢â€â‚¬ Confirmation dialog with patient name Ã¢â€â‚¬Ã¢â€â‚¬
                                     final confirmed = await showDialog<bool>(
                                       context: ctx,
                                       builder: (dCtx) => AlertDialog(
@@ -839,7 +839,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // ── Header ──
+              // Ã¢â€â‚¬Ã¢â€â‚¬ Header Ã¢â€â‚¬Ã¢â€â‚¬
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
                 child: Row(
@@ -902,7 +902,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                 child: Divider(color: _borderColor, thickness: 1),
               ),
 
-              // ── Body ──
+              // Ã¢â€â‚¬Ã¢â€â‚¬ Body Ã¢â€â‚¬Ã¢â€â‚¬
               Expanded(
                 child: _isLoading
                     ? const Center(
@@ -950,7 +950,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                   'Log Symptoms',
                   style: GoogleFonts.nunito(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -964,7 +964,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
 
   Widget _eventCard(SymptomEvent event) {
     final time = event.eventTime != null
-        ? DateFormat('MMM d · h:mm a').format(event.eventTime!)
+        ? DateFormat('MMM d Ã‚Â· h:mm a').format(event.eventTime!)
         : '';
     final severityColor =
         {
@@ -1011,7 +1011,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                 child: Text(
                   event.severity ?? 'Unknown',
                   style: GoogleFonts.nunito(
-                    fontSize: 11,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700,
                     color: severityColor,
                   ),
@@ -1039,7 +1039,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                       Text(
                         'Nurse notified',
                         style: GoogleFonts.nunito(
-                          fontSize: 10,
+                          fontSize: 16,
                           color: Colors.red.shade500,
                           fontWeight: FontWeight.w600,
                         ),
@@ -1051,7 +1051,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
               const Spacer(),
               Text(
                 time,
-                style: GoogleFonts.nunito(fontSize: 10, color: _lightPurple),
+                style: GoogleFonts.nunito(fontSize: 16, color: _lightPurple),
               ),
             ],
           ),
@@ -1075,7 +1075,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                 child: Text(
                   s,
                   style: GoogleFonts.nunito(
-                    fontSize: 11,
+                    fontSize: 15,
                     color: isSev ? Colors.red.shade600 : _mutedPurple,
                   ),
                 ),
@@ -1087,7 +1087,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
             Text(
               event.whatHappened!,
               style: GoogleFonts.nunito(
-                fontSize: 12,
+                fontSize: 16,
                 color: _mutedPurple,
                 fontStyle: FontStyle.italic,
               ),
@@ -1099,7 +1099,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
               Expanded(
                 child: Text(
                   'Logged by ${event.createdByMemberName ?? 'Unknown'}',
-                  style: GoogleFonts.nunito(fontSize: 10, color: _lightPurple),
+                  style: GoogleFonts.nunito(fontSize: 16, color: _lightPurple),
                 ),
               ),
               if (isEditable) ...[
@@ -1138,7 +1138,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
                       Text(
                         'Locked',
                         style: GoogleFonts.nunito(
-                          fontSize: 13,
+                          fontSize: 15,
                           color: Colors.grey.shade500,
                           fontWeight: FontWeight.w600,
                         ),
@@ -1176,7 +1176,7 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
             Text(
               label,
               style: GoogleFonts.nunito(
-                fontSize: 14,
+                fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: color,
               ),
@@ -1443,3 +1443,4 @@ class _SymptomEventsScreenState extends State<SymptomEventsScreen> {
     );
   }
 }
+

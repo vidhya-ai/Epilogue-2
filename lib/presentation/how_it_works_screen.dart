@@ -58,7 +58,7 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
                   Text(
                     'GETTING STARTED',
                     style: GoogleFonts.nunito(
-                      fontSize: 10,
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0.2,
                       color: Colors.white.withOpacity(0.85),
@@ -118,7 +118,7 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
                           number: '3',
                           title: 'Stay together',
                           description:
-                              'Everyone stays informed, coordinated, and connected — no matter the distance.',
+                              'Everyone stays informed, coordinated, and connected Ã¢â‚¬â€ no matter the distance.',
                           isFirst: false,
                         ),
                       ],
@@ -267,7 +267,7 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
                                     Text(
                                       'Get Started',
                                       style: GoogleFonts.nunito(
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white,
                                       ),
@@ -374,7 +374,7 @@ class _StepCard extends StatelessWidget {
                 Text(
                   description,
                   style: GoogleFonts.nunito(
-                    fontSize: 13,
+                    fontSize: 15,
                     color: const Color(0xFF8A7FA8),
                     fontStyle: FontStyle.italic,
                     height: 1.75,
@@ -388,3 +388,4 @@ class _StepCard extends StatelessWidget {
     );
   }
 }
+

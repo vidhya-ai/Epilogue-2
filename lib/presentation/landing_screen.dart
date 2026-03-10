@@ -88,7 +88,7 @@ class _LandingScreenState extends State<LandingScreen> {
                                 Text(
                                   'Today',
                                   style: GoogleFonts.nunito(
-                                    fontSize: 13,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.w800,
                                     letterSpacing: 3.0,
                                     color: Colors.white,
