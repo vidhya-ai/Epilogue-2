@@ -1622,88 +1622,82 @@ class _MedicationCardState extends State<MedicationCard> {
               // Expanded Action Area
               if (_expanded) ...[
                 const SizedBox(height: 16),
-                const Divider(color: _borderColor, height: 1),
+                const Divider(color: _borderColor),
                 const SizedBox(height: 16),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: PopupMenuButton<String>(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    color: Colors.white,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        color: _purple.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: _purple.withOpacity(0.2)),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Actions',
-                            style: GoogleFonts.nunito(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: _deepPurple,
+                Row(
+                  children: [
+                    if (widget.isActive) ...[
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: _purple,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
+                            elevation: 0,
                           ),
-                          const SizedBox(width: 6),
-                          const Icon(Icons.keyboard_arrow_down, size: 18),
-                        ],
-                      ),
-                    ),
-                    onSelected: (value) {
-                      if (value == 'administer') {
-                        widget.onLogAdministered?.call();
-                      } else if (value == 'history') {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const HistoryScreen(),
-                          ),
-                        );
-                      } else if (value == 'deprescribe') {
-                        widget.onDeprescribe?.call();
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      if (widget.isActive)
-                        PopupMenuItem(
-                          value: 'administer',
+                          onPressed: widget.onLogAdministered,
                           child: Text(
                             'Administer',
                             style: GoogleFonts.nunito(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                      PopupMenuItem(
-                        value: 'history',
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          side: const BorderSide(color: _borderColor),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const HistoryScreen(),
+                            ),
+                          );
+                        },
                         child: Text(
-                          'View History',
+                          'History',
                           style: GoogleFonts.nunito(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
+                            color: _deepPurple,
                           ),
                         ),
                       ),
-                      if (widget.isActive)
-                        PopupMenuItem(
-                          value: 'deprescribe',
+                    ),
+                    if (widget.isActive) ...[
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            side: BorderSide(color: Colors.red.shade200),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: widget.onDeprescribe,
                           child: Text(
                             'Deprescribe',
                             style: GoogleFonts.nunito(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w700,
                               color: Colors.red.shade700,
                             ),
                           ),
                         ),
+                      ),
                     ],
-                  ),
+                  ],
                 ),
               ],
             ],
